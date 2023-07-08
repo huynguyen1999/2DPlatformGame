@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -281,6 +282,26 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AssetsPPU: 100
+  m_RefResolutionX: 1920
+  m_RefResolutionY: 1080
+  m_UpscaleRT: 0
+  m_PixelSnapping: 0
+  m_CropFrameX: 0
+  m_CropFrameY: 0
+  m_StretchFill: 0
 --- !u!1 &594418783
 GameObject:
   m_ObjectHideFlags: 0
@@ -4960,11 +4981,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   MaxJumps: 2
-  GroundCheckRadius: 0.25
+  GroundCheckRadius: 0.28
   MovementSpeed: 10
   JumpForce: 15
   WallCheckDistance: 0.35
   WallSlideSpeed: 2
+  MovementForceInAir: 5
+  AirDragMultiplier: 0.8
+  JumpHeightMultiplier: 0.5
+  WallHopForce: 10
+  WallJumpForce: 10
+  WallHopDirection: {x: 1, y: 0.5}
+  WallJumpDirection: {x: 1, y: 2}
 --- !u!95 &645837772
 Animator:
   serializedVersion: 5

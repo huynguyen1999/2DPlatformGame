@@ -24,17 +24,21 @@ public class PlayerController : MonoBehaviour
     public float MovementForceInAir = 30f;
     public float AirDragMultiplier = 0.8f;
     public float JumpHeightMultiplier = 0.5f;
+    public float WallHopForce;
+    public float WallJumpForce;
+    public Vector2 WallHopDirection;
+    public Vector2 WallJumpDirection;
 
     private Rigidbody2D _rb;
     private Animator _animator;
 
     private float _movementDirection = 0f;
-    private bool _isFacingRight = true;
     private bool _isWalking = false;
     private bool _isGrounded = false;
     private bool _isJumpable = false;
     private bool _isAgainstWall = false;
     private bool _isWallSliding = false;
+    private int _facingDirection = 1;
     private int _jumpsLeft;
     // Start is called before the first frame update
     void Start()
@@ -68,32 +72,48 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         if (!_isJumpable) return;
-
-        _rb.velocity = new Vector2(_rb.velocity.x, JumpForce);
-        _jumpsLeft -= 1;
+        if (!_isWallSliding)
+        {
+            _rb.velocity = new Vector2(_rb.velocity.x, JumpForce);
+            _jumpsLeft -= 1;
+        }
+        else if (Mathf.Approximately(_movementDirection, 0f))
+        {
+            _isWallSliding = false;
+            Vector2 forceToAdd = new(WallHopForce * WallHopDirection.x * -_facingDirection, WallHopForce * WallHopDirection.y);
+            _rb.AddForce(forceToAdd, ForceMode2D.Impulse);
+            _jumpsLeft -= 1;
+        }
+        else if ((_isWallSliding || _isAgainstWall))
+        {
+            _isWallSliding = false;
+            Vector2 forceToAdd = new(WallJumpForce * WallJumpDirection.x * Mathf.Sign(_movementDirection), WallJumpForce * WallJumpDirection.y);
+            _rb.AddForce(forceToAdd, ForceMode2D.Impulse);
+            _jumpsLeft -= 1;
+        }
     }
     private void CheckMovementDirection()
     {
-        if (_isFacingRight && _movementDirection < 0)
+        if (_facingDirection == 1 && _movementDirection < 0)
         {
             Flip();
         }
-        else if (!_isFacingRight && _movementDirection > 0)
+        else if (_facingDirection == -1 && _movementDirection > 0)
         {
             Flip();
         }
 
-        _isWalking = Mathf.Abs(_rb.velocity.x) > Constants.TolerableError;
+        _isWalking = _isGrounded && !Mathf.Approximately(_movementDirection, 0f);
     }
     private void Flip()
     {
         if (_isWallSliding) return;
-        _isFacingRight = !_isFacingRight;
+        _facingDirection *= -1;
         transform.Rotate(0f, 180f, 0f);
     }
     private void CheckJumpable()
     {
-        if (_isGrounded && _rb.velocity.y <= 0)
+        if (_isWallSliding || (_isGrounded && _rb.velocity.y <= 0))
         {
             _jumpsLeft = MaxJumps;
         }
@@ -122,22 +142,23 @@ public class PlayerController : MonoBehaviour
     }
     private void ApplyMovement()
     {
+        Debug.Log(_movementDirection);
         if (_isGrounded)
         {
             _rb.velocity = new Vector2(_movementDirection * MovementSpeed, _rb.velocity.y);
         }
-        else if (!_isWallSliding && _movementDirection != 0)
+        else if (!_isWallSliding && !Mathf.Approximately(_movementDirection, 0f))
         {
             Vector2 forceToAdd = new(_movementDirection * MovementForceInAir, 0);
             _rb.AddForce(forceToAdd);
-            if (Mathf.Abs(_rb.velocity.x) > MovementSpeed)
-            {
-                _rb.velocity = new Vector2(MovementSpeed * _movementDirection, _rb.velocity.y);
-            }
         }
-        else if (!_isWallSliding && Mathf.Abs(_movementDirection) <= Constants.TolerableError)
+        else if (!_isWallSliding && Mathf.Approximately(_movementDirection, 0f))
         {
             _rb.velocity = new Vector2(_rb.velocity.x * 0.95f, _rb.velocity.y);
+        }
+        if (Mathf.Abs(_rb.velocity.x) > MovementSpeed)
+        {
+            _rb.velocity = new Vector2(MovementSpeed * _movementDirection, _rb.velocity.y);
         }
         ApplySliding();
     }
