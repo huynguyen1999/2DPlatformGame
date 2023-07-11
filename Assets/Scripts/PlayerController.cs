@@ -1,6 +1,6 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public enum Animation
 {
@@ -9,52 +9,58 @@ public enum Animation
     IsWallSliding,
     VerticalVelocity
 }
+public delegate void Command();
 
 public class PlayerController : MonoBehaviour
 {
-    public Transform WallCheck;
-    public Transform GroundCheck;
-    public LayerMask Ground;
-    public int MaxJumps = 2;
-    public float GroundCheckRadius = .3f;
-    public float MovementSpeed = 10f;
-    public float JumpForce = 15f;
-    public float WallCheckDistance = 0.4f;
-    public float WallSlideSpeed = 2f;
-    public float MovementForceInAir = 30f;
-    public float AirDragMultiplier = 0.8f;
-    public float JumpHeightMultiplier = 0.5f;
-    public float WallHopForce;
-    public float WallJumpForce;
-    public Vector2 WallHopDirection;
+    public int AmountOfJumps;
+    public float MovementSpeed;
+    public float WallSlidseSpeed;
+    public float NormalJumpPower;
+    public float WallJumpPower;
+    public float BoxCastDistance;
+    public float WallSlideTimerSet;
+    public float WallClingTimerSet;
+    public float WallSlideTransitionTimerSet;
+    public float WallJumpTransitionTimerSet;
+
     public Vector2 WallJumpDirection;
+    public LayerMask WhatIsGround;
 
-    private Rigidbody2D _rb;
-    private Animator _animator;
 
-    private float _movementDirection = 0f;
+    private int _amountOfJumpsLeft;
+    private int _facingDirection = 1;
     private bool _isWalking = false;
     private bool _isGrounded = false;
-    private bool _isJumpable = false;
     private bool _isAgainstWall = false;
     private bool _isWallSliding = false;
-    private int _facingDirection = 1;
-    private int _jumpsLeft;
-    // Start is called before the first frame update
-    void Start()
-    {
-        _rb = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
-        _jumpsLeft = MaxJumps;
-    }
+    private bool _canNormalJump = true;
+    private bool _canWallJump = true;
+    private bool _canMove = true;
+    private bool _canFlip = true;
+    private bool _canWallSlide = true;
+    private float _movementDirection = 0f;
+    private float _wallSlideTimer;
+    private float _wallClingTimer;
+    private float _wallSlideTransitionTimer;
+    private float _wallJumpTransitionTimer;
+    private Animator _animator;
+    private Rigidbody2D _rigidBody;
+    private List<Command> _jumpCommands;
+    private BoxCollider2D _collider;
 
-    // Update is called once per frame
-    void Update()
+    public void Start()
+    {
+        _rigidBody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        _collider = GetComponent<BoxCollider2D>();
+        _amountOfJumpsLeft = AmountOfJumps;
+        WallJumpDirection.Normalize();
+    }
+    public void Update()
     {
         CheckInput();
-        CheckMovementDirection();
-        CheckJumpable();
-        CheckIfWallSliding();
+        CheckIfCanJump();
         UpdateAnimations();
     }
     private void CheckInput()
@@ -62,123 +68,164 @@ public class PlayerController : MonoBehaviour
         _movementDirection = Input.GetAxisRaw("Horizontal");
         if (Input.GetButtonDown("Jump"))
         {
-            Jump();
-        }
-        if (Input.GetButtonUp("Jump"))
-        {
-            _rb.velocity = new Vector2(_rb.velocity.x, _rb.velocity.y * JumpHeightMultiplier);
-        }
-    }
-    private void Jump()
-    {
-        if (!_isJumpable) return;
-        if (!_isWallSliding)
-        {
-            _rb.velocity = new Vector2(_rb.velocity.x, JumpForce);
-            _jumpsLeft -= 1;
-        }
-        else if (Mathf.Approximately(_movementDirection, 0f))
-        {
-            _isWallSliding = false;
-            Vector2 forceToAdd = new(WallHopForce * WallHopDirection.x * -_facingDirection, WallHopForce * WallHopDirection.y);
-            _rb.AddForce(forceToAdd, ForceMode2D.Impulse);
-            _jumpsLeft -= 1;
-        }
-        else if ((_isWallSliding || _isAgainstWall))
-        {
-            _isWallSliding = false;
-            Vector2 forceToAdd = new(WallJumpForce * WallJumpDirection.x * Mathf.Sign(_movementDirection), WallJumpForce * WallJumpDirection.y);
-            _rb.AddForce(forceToAdd, ForceMode2D.Impulse);
-            _jumpsLeft -= 1;
+            if (!_isWallSliding)
+            {
+                _jumpCommands.Add(NormalJump);
+            }
+            else
+            {
+                _jumpCommands.Add(WallJump);
+            }
         }
     }
-    private void CheckMovementDirection()
+    private void CheckIfCanJump()
     {
-        if (_facingDirection == 1 && _movementDirection < 0)
+        if (_isGrounded)
         {
-            Flip();
-        }
-        else if (_facingDirection == -1 && _movementDirection > 0)
-        {
-            Flip();
+            _amountOfJumpsLeft = AmountOfJumps;
         }
 
-        _isWalking = _isGrounded && !Mathf.Approximately(_movementDirection, 0f);
-    }
-    private void Flip()
-    {
-        if (_isWallSliding) return;
-        _facingDirection *= -1;
-        transform.Rotate(0f, 180f, 0f);
-    }
-    private void CheckJumpable()
-    {
-        if (_isWallSliding || (_isGrounded && _rb.velocity.y <= 0))
+        if (_isWallSliding)
         {
-            _jumpsLeft = MaxJumps;
+            _canWallJump = true;
         }
 
-        if (_jumpsLeft <= 0)
+        if (_amountOfJumpsLeft <= 0)
         {
-            _isJumpable = false;
+            _canNormalJump = false;
         }
-        else { _isJumpable = true; }
+        else
+        {
+            _canNormalJump = true;
+        }
     }
-    private void CheckIfWallSliding()
+    private void NormalJump()
     {
-        _isWallSliding = _isAgainstWall && !_isGrounded && _rb.velocity.y < 0;
+        if (_canNormalJump)
+        {
+            _amountOfJumpsLeft--;
+            _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, NormalJumpPower);
+        }
+
+    }
+    private void WallJump()
+    {
+        // check if can wall jump
+        if (_canWallJump)
+        {
+            _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, 0f);
+            Vector2 jumpForceToAdd = new(WallJumpPower * WallJumpDirection.x * _facingDirection * -1, WallJumpPower * WallJumpDirection.y);
+            _rigidBody.AddForce(jumpForceToAdd, ForceMode2D.Impulse);
+            Flip();
+            _canMove = false;
+            _canFlip = false;
+        }
     }
     private void UpdateAnimations()
     {
         _animator.SetBool(Animation.IsWalking.ToString(), _isWalking);
         _animator.SetBool(Animation.IsGrounded.ToString(), _isGrounded);
         _animator.SetBool(Animation.IsWallSliding.ToString(), _isWallSliding);
-        _animator.SetFloat(Animation.VerticalVelocity.ToString(), _rb.velocity.y);
+        _animator.SetFloat(Animation.VerticalVelocity.ToString(), _rigidBody.velocity.y);
     }
-    private void FixedUpdate()
+
+    public void FixedUpdate()
     {
+        CheckCurrentState();
+        CheckTimers();
         ApplyMovement();
-        CheckSurroundings();
+    }
+    private void CheckCurrentState()
+    {
+        _isGrounded = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size, 0f, -Vector2.up, BoxCastDistance, WhatIsGround).collider != null;
+
+        _isAgainstWall = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size, 0f, transform.right, BoxCastDistance, WhatIsGround).collider != null;
+
+        _isWalking = _isGrounded && !Mathf.Approximately(_movementDirection, 0f);
+
+
+        // before
+        if (_isWallSliding == true)
+        {
+            _isWallSliding = !_isGrounded && _isAgainstWall && _wallSlideTimer > 0f;
+            if (_wallSlideTimer <= 0f) // unable to slide 
+            {
+                _canWallSlide = false;
+                _wallSlideTransitionTimer = WallSlideTransitionTimerSet;
+            }
+        }
+        else if (_canWallSlide && (_movementDirection * _facingDirection > 0f) && !_isGrounded && _isAgainstWall)
+        {
+            _isWallSliding = true;
+            _wallClingTimer = WallClingTimerSet;
+            _wallSlideTimer = WallSlideTimerSet;
+        }
+        // after
+        _rigidBody.gravityScale = _isWallSliding ? 0f : 8f;
+        _canMove = !_isWallSliding; // not enough
+    }
+    private void CheckTimers()
+    {
+        if (_isWallSliding)
+        {
+            if (_wallSlideTimer > 0f)
+            {
+                _wallSlideTimer -= Time.deltaTime;
+            }
+
+            if (_wallClingTimer > 0f)
+            {
+                _wallClingTimer -= Time.deltaTime;
+            }
+        }
+
+        if (_wallSlideTransitionTimer > 0f)
+        {
+            _wallSlideTransitionTimer -= Time.deltaTime;
+        }
+        else
+        {
+            _canWallSlide = true;
+        }
     }
     private void ApplyMovement()
     {
-        Debug.Log(_movementDirection);
-        if (_isGrounded)
+        // perform jumps
+        while (_jumpCommands.Count > 0)
         {
-            _rb.velocity = new Vector2(_movementDirection * MovementSpeed, _rb.velocity.y);
+            _jumpCommands[0]();
+            _jumpCommands.RemoveAt(0);
         }
-        else if (!_isWallSliding && !Mathf.Approximately(_movementDirection, 0f))
-        {
-            Vector2 forceToAdd = new(_movementDirection * MovementForceInAir, 0);
-            _rb.AddForce(forceToAdd);
-        }
-        else if (!_isWallSliding && Mathf.Approximately(_movementDirection, 0f))
-        {
-            _rb.velocity = new Vector2(_rb.velocity.x * 0.95f, _rb.velocity.y);
-        }
-        if (Mathf.Abs(_rb.velocity.x) > MovementSpeed)
-        {
-            _rb.velocity = new Vector2(MovementSpeed * _movementDirection, _rb.velocity.y);
-        }
-        ApplySliding();
-    }
-    private void ApplySliding()
-    {
-        if (!_isWallSliding) return;
-        if (_rb.velocity.y < -WallSlideSpeed)
-        {
-            _rb.velocity = new Vector2(_rb.velocity.x, -WallSlideSpeed);
-        }
-    }
-    private void CheckSurroundings()
-    {
-        _isGrounded = Physics2D.OverlapCircle(GroundCheck.position, GroundCheckRadius, Ground);
-        _isAgainstWall = Physics2D.Raycast(WallCheck.position, transform.right, WallCheckDistance, Ground);
-    }
 
-    public void OnDrawGizmos()
+        if (_canMove)
+        {
+            _rigidBody.velocity = new Vector2(MovementSpeed * _movementDirection, _rigidBody.velocity.y);
+        }
+
+        if (_isWallSliding)
+        {
+            if (_movementDirection * _facingDirection > 0f && _wallClingTimer > 0f) // wall cling
+            {
+                _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, 0f);
+
+            }
+            else // wall slide
+            {
+                _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, -WallSlidseSpeed);
+            }
+        }
+
+        if (_movementDirection * _facingDirection < 0f)
+        {
+            Flip();
+        }
+    }
+    private void Flip()
     {
-        Gizmos.DrawWireSphere(GroundCheck.position, GroundCheckRadius);
-        Gizmos.DrawLine(WallCheck.position, new Vector3(WallCheck.position.x + WallCheckDistance, WallCheck.position.y, WallCheck.position.z));
+        if (_canFlip && !_isWallSliding)
+        {
+            _facingDirection *= -1;
+            transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
     }
 }

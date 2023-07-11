@@ -241,7 +241,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03999996, y: -0.7699995, z: -10}
+  m_LocalPosition: {x: 1.1459999, y: -0.89000034, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4882,7 +4882,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 645837766}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.52, y: 9.1, z: 0}
+  m_LocalPosition: {x: -1.414, y: 8.98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4951,7 +4951,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 4
+  m_GravityScale: 8
   m_Material: {fileID: 6200000, guid: 12f429c0a714d4ad2b71331c324bed51, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -4961,7 +4961,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &645837771
 MonoBehaviour:
@@ -4975,24 +4975,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d079eb2318fb74dbb8d4c6ede924d75b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WallCheck: {fileID: 1835222471}
-  GroundCheck: {fileID: 52412946}
-  Ground:
+  AmountOfJumps: 2
+  MovementSpeed: 10
+  WallSlidseSpeed: 2
+  NormalJumpPower: 20
+  WallJumpPower: 20
+  BoxCastDistance: 0.01
+  WallSlideTimerSet: 2
+  WallClingTimerSet: 1
+  WallSlideTransitionTimerSet: 0.2
+  WallJumpTransitionTimerSet: 0.2
+  WallJumpDirection: {x: 1, y: 2}
+  WhatIsGround:
     serializedVersion: 2
     m_Bits: 256
-  MaxJumps: 2
-  GroundCheckRadius: 0.28
-  MovementSpeed: 10
-  JumpForce: 15
-  WallCheckDistance: 0.35
-  WallSlideSpeed: 2
-  MovementForceInAir: 5
-  AirDragMultiplier: 0.8
-  JumpHeightMultiplier: 0.5
-  WallHopForce: 10
-  WallJumpForce: 10
-  WallHopDirection: {x: 1, y: 0.5}
-  WallJumpDirection: {x: 1, y: 2}
 --- !u!95 &645837772
 Animator:
   serializedVersion: 5
@@ -120571,7 +120567,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124966547}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03999996, y: -0.7699995, z: -10}
+  m_LocalPosition: {x: 1.1459999, y: -0.89000034, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
