@@ -9,24 +9,25 @@ public enum Animation
     IsWallSliding,
     VerticalVelocity
 }
+
 public delegate void Command();
 
 public class PlayerController : MonoBehaviour
 {
     public int AmountOfJumps;
     public float MovementSpeed;
-    public float WallSlidseSpeed;
+    public float WallSlideSpeed;
     public float NormalJumpPower;
     public float WallJumpPower;
     public float BoxCastDistance;
     public float WallSlideTimerSet;
     public float WallClingTimerSet;
     public float WallSlideTransitionTimerSet;
-    public float WallJumpTransitionTimerSet;
+    public float TurnTimerSet;
 
     public Vector2 WallJumpDirection;
     public LayerMask WhatIsGround;
-
+    public Transform LedgeCheck;
 
     private int _amountOfJumpsLeft;
     private int _facingDirection = 1;
@@ -34,19 +35,21 @@ public class PlayerController : MonoBehaviour
     private bool _isGrounded = false;
     private bool _isAgainstWall = false;
     private bool _isWallSliding = false;
+    private bool _isTouchingLedge = false;
     private bool _canNormalJump = true;
     private bool _canWallJump = true;
     private bool _canMove = true;
     private bool _canFlip = true;
     private bool _canWallSlide = true;
+    private bool _canClimbLedge = false;
     private float _movementDirection = 0f;
     private float _wallSlideTimer;
     private float _wallClingTimer;
     private float _wallSlideTransitionTimer;
-    private float _wallJumpTransitionTimer;
+    private float _turnTimer;
     private Animator _animator;
     private Rigidbody2D _rigidBody;
-    private List<Command> _jumpCommands;
+    private List<Command> _jumpCommands = new();
     private BoxCollider2D _collider;
 
     public void Start()
@@ -57,12 +60,14 @@ public class PlayerController : MonoBehaviour
         _amountOfJumpsLeft = AmountOfJumps;
         WallJumpDirection.Normalize();
     }
+
     public void Update()
     {
         CheckInput();
         CheckIfCanJump();
         UpdateAnimations();
     }
+
     private void CheckInput()
     {
         _movementDirection = Input.GetAxisRaw("Horizontal");
@@ -78,6 +83,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
     private void CheckIfCanJump()
     {
         if (_isGrounded)
@@ -99,6 +105,7 @@ public class PlayerController : MonoBehaviour
             _canNormalJump = true;
         }
     }
+
     private void NormalJump()
     {
         if (_canNormalJump)
@@ -106,21 +113,28 @@ public class PlayerController : MonoBehaviour
             _amountOfJumpsLeft--;
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, NormalJumpPower);
         }
-
     }
+
     private void WallJump()
     {
         // check if can wall jump
         if (_canWallJump)
         {
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, 0f);
-            Vector2 jumpForceToAdd = new(WallJumpPower * WallJumpDirection.x * _facingDirection * -1, WallJumpPower * WallJumpDirection.y);
+            Vector2 jumpForceToAdd =
+                new(
+                    WallJumpPower * WallJumpDirection.x * _facingDirection * -1,
+                    WallJumpPower * WallJumpDirection.y
+                );
             _rigidBody.AddForce(jumpForceToAdd, ForceMode2D.Impulse);
+            _isWallSliding = false;
             Flip();
             _canMove = false;
             _canFlip = false;
+            _turnTimer = TurnTimerSet;
         }
     }
+
     private void UpdateAnimations()
     {
         _animator.SetBool(Animation.IsWalking.ToString(), _isWalking);
@@ -135,26 +149,60 @@ public class PlayerController : MonoBehaviour
         CheckTimers();
         ApplyMovement();
     }
+
     private void CheckCurrentState()
     {
-        _isGrounded = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size, 0f, -Vector2.up, BoxCastDistance, WhatIsGround).collider != null;
+        _isGrounded =
+            Physics2D
+                .BoxCast(
+                    _collider.bounds.center,
+                    _collider.bounds.size,
+                    0f,
+                    -Vector2.up,
+                    BoxCastDistance,
+                    WhatIsGround
+                )
+                .collider != null;
 
-        _isAgainstWall = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size, 0f, transform.right, BoxCastDistance, WhatIsGround).collider != null;
+        _isAgainstWall =
+            Physics2D
+                .Raycast(
+                    _collider.bounds.center,
+                    transform.right,
+                    _collider.bounds.extents.x + BoxCastDistance,
+                    WhatIsGround
+                )
+                .collider != null;
+
+        _isTouchingLedge =
+            _isAgainstWall
+            && Physics2D
+                .Raycast(
+                    LedgeCheck.position,
+                    transform.right,
+                    _collider.bounds.extents.x + BoxCastDistance,
+                    WhatIsGround
+                )
+                .collider == null;
 
         _isWalking = _isGrounded && !Mathf.Approximately(_movementDirection, 0f);
-
 
         // before
         if (_isWallSliding == true)
         {
             _isWallSliding = !_isGrounded && _isAgainstWall && _wallSlideTimer > 0f;
-            if (_wallSlideTimer <= 0f) // unable to slide 
+            if (_wallSlideTimer <= 0f) // unable to slide
             {
                 _canWallSlide = false;
                 _wallSlideTransitionTimer = WallSlideTransitionTimerSet;
             }
         }
-        else if (_canWallSlide && (_movementDirection * _facingDirection > 0f) && !_isGrounded && _isAgainstWall)
+        else if (
+            _canWallSlide
+            && (_movementDirection * _facingDirection > 0f)
+            && !_isGrounded
+            && _isAgainstWall
+        )
         {
             _isWallSliding = true;
             _wallClingTimer = WallClingTimerSet;
@@ -162,8 +210,8 @@ public class PlayerController : MonoBehaviour
         }
         // after
         _rigidBody.gravityScale = _isWallSliding ? 0f : 8f;
-        _canMove = !_isWallSliding; // not enough
     }
+
     private void CheckTimers()
     {
         if (_isWallSliding)
@@ -187,7 +235,18 @@ public class PlayerController : MonoBehaviour
         {
             _canWallSlide = true;
         }
+
+        if (_turnTimer > 0f)
+        {
+            _turnTimer -= Time.deltaTime;
+        }
+        else
+        {
+            _canMove = true;
+            _canFlip = true;
+        }
     }
+
     private void ApplyMovement()
     {
         // perform jumps
@@ -197,9 +256,12 @@ public class PlayerController : MonoBehaviour
             _jumpCommands.RemoveAt(0);
         }
 
-        if (_canMove)
+        if (_canMove && !_isWallSliding)
         {
-            _rigidBody.velocity = new Vector2(MovementSpeed * _movementDirection, _rigidBody.velocity.y);
+            _rigidBody.velocity = new Vector2(
+                MovementSpeed * _movementDirection,
+                _rigidBody.velocity.y
+            );
         }
 
         if (_isWallSliding)
@@ -207,11 +269,10 @@ public class PlayerController : MonoBehaviour
             if (_movementDirection * _facingDirection > 0f && _wallClingTimer > 0f) // wall cling
             {
                 _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, 0f);
-
             }
             else // wall slide
             {
-                _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, -WallSlidseSpeed);
+                _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, -WallSlideSpeed);
             }
         }
 
@@ -220,6 +281,7 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
     }
+
     private void Flip()
     {
         if (_canFlip && !_isWallSliding)

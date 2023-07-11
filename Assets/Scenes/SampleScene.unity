@@ -4888,6 +4888,7 @@ Transform:
   m_Children:
   - {fileID: 52412946}
   - {fileID: 1835222471}
+  - {fileID: 1310140876}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4977,18 +4978,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AmountOfJumps: 2
   MovementSpeed: 10
-  WallSlidseSpeed: 2
+  WallSlideSpeed: 2
   NormalJumpPower: 20
   WallJumpPower: 20
-  BoxCastDistance: 0.01
+  BoxCastDistance: 0.02
   WallSlideTimerSet: 2
   WallClingTimerSet: 1
   WallSlideTransitionTimerSet: 0.2
-  WallJumpTransitionTimerSet: 0.2
+  TurnTimerSet: 0.25
   WallJumpDirection: {x: 1, y: 2}
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 256
+  LedgeCheck: {fileID: 0}
 --- !u!95 &645837772
 Animator:
   serializedVersion: 5
@@ -119912,6 +119914,37 @@ Transform:
   - {fileID: 519420032}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1310140875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1310140876}
+  m_Layer: 0
+  m_Name: LedgeCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1310140876
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310140875}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 645837768}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1784240136
 GameObject:
