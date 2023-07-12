@@ -7,6 +7,7 @@ public enum Animation
     IsGrounded,
     IsWalking,
     IsWallSliding,
+    IsClimbingLedge,
     VerticalVelocity
 }
 
@@ -20,17 +21,23 @@ public class PlayerController : MonoBehaviour
     public float NormalJumpPower;
     public float WallJumpPower;
     public float BoxCastDistance;
+    public float WallCheckDistance;
     public float WallSlideTimerSet;
     public float WallClingTimerSet;
     public float WallSlideTransitionTimerSet;
     public float TurnTimerSet;
+    public float MaxFallingSpeed;
 
+    public Vector2 LedgeClimbOffset1;
+    public Vector2 LedgeClimbOffset2;
     public Vector2 WallJumpDirection;
     public LayerMask WhatIsGround;
     public Transform LedgeCheck;
+    public Transform WallCheck;
 
     private int _amountOfJumpsLeft;
     private int _facingDirection = 1;
+    private bool _ledgeDetected = false;
     private bool _isWalking = false;
     private bool _isGrounded = false;
     private bool _isAgainstWall = false;
@@ -41,7 +48,7 @@ public class PlayerController : MonoBehaviour
     private bool _canMove = true;
     private bool _canFlip = true;
     private bool _canWallSlide = true;
-    private bool _canClimbLedge = false;
+    private bool _isClimbingLedge = false;
     private float _movementDirection = 0f;
     private float _wallSlideTimer;
     private float _wallClingTimer;
@@ -51,6 +58,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private List<Command> _jumpCommands = new();
     private BoxCollider2D _collider;
+    private Vector2 _ledgeBottomPosition;
+    private Vector2 _ledgePosition1;
+    private Vector2 _ledgePosition2;
 
     public void Start()
     {
@@ -66,6 +76,7 @@ public class PlayerController : MonoBehaviour
         CheckInput();
         CheckIfCanJump();
         UpdateAnimations();
+        CheckLedgeClimb();
     }
 
     private void CheckInput()
@@ -106,6 +117,42 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void CheckLedgeClimb()
+    {
+        if (_ledgeDetected && !_isClimbingLedge)
+        {
+            _isClimbingLedge = true;
+            _isWallSliding = false;
+            _canWallSlide = false;
+            _canMove = false;
+            _canFlip = false;
+            _ledgePosition1 = new Vector2(
+                _ledgeBottomPosition.x
+                    + _facingDirection * (WallCheckDistance - LedgeClimbOffset1.x),
+                _ledgeBottomPosition.y + LedgeClimbOffset1.y
+            );
+            _ledgePosition2 = new Vector2(
+                _ledgeBottomPosition.x
+                    + _facingDirection * (WallCheckDistance + LedgeClimbOffset2.x),
+                _ledgePosition1.y + LedgeClimbOffset2.y
+            );
+        }
+        if (_isClimbingLedge)
+        {
+            _turnTimer = TurnTimerSet;
+            transform.position = _ledgePosition1;
+        }
+    }
+
+    private void FinishLedgeClimb()
+    {
+        _ledgeDetected = false;
+        _isClimbingLedge = false;
+        _canWallSlide = true;
+        _turnTimer = 0f;
+        transform.position = _ledgePosition2;
+    }
+
     private void NormalJump()
     {
         if (_canNormalJump)
@@ -140,6 +187,7 @@ public class PlayerController : MonoBehaviour
         _animator.SetBool(Animation.IsWalking.ToString(), _isWalking);
         _animator.SetBool(Animation.IsGrounded.ToString(), _isGrounded);
         _animator.SetBool(Animation.IsWallSliding.ToString(), _isWallSliding);
+        _animator.SetBool(Animation.IsClimbingLedge.ToString(), _isClimbingLedge);
         _animator.SetFloat(Animation.VerticalVelocity.ToString(), _rigidBody.velocity.y);
     }
 
@@ -167,9 +215,9 @@ public class PlayerController : MonoBehaviour
         _isAgainstWall =
             Physics2D
                 .Raycast(
-                    _collider.bounds.center,
+                    WallCheck.transform.position,
                     transform.right,
-                    _collider.bounds.extents.x + BoxCastDistance,
+                    WallCheckDistance,
                     WhatIsGround
                 )
                 .collider != null;
@@ -185,12 +233,19 @@ public class PlayerController : MonoBehaviour
                 )
                 .collider == null;
 
+        if (_isTouchingLedge)
+        {
+            _ledgeDetected = true;
+            _ledgeBottomPosition = _collider.bounds.center;
+        }
+
         _isWalking = _isGrounded && !Mathf.Approximately(_movementDirection, 0f);
 
         // before
         if (_isWallSliding == true)
         {
-            _isWallSliding = !_isGrounded && _isAgainstWall && _wallSlideTimer > 0f;
+            _isWallSliding =
+                !_isClimbingLedge && !_isGrounded && _isAgainstWall && _wallSlideTimer > 0f;
             if (_wallSlideTimer <= 0f) // unable to slide
             {
                 _canWallSlide = false;
@@ -199,6 +254,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (
             _canWallSlide
+            && !_isClimbingLedge
             && (_movementDirection * _facingDirection > 0f)
             && !_isGrounded
             && _isAgainstWall
@@ -209,7 +265,7 @@ public class PlayerController : MonoBehaviour
             _wallSlideTimer = WallSlideTimerSet;
         }
         // after
-        _rigidBody.gravityScale = _isWallSliding ? 0f : 8f;
+        _rigidBody.gravityScale = (_isWallSliding || _isClimbingLedge) ? 0f : 4f;
     }
 
     private void CheckTimers()
@@ -262,6 +318,10 @@ public class PlayerController : MonoBehaviour
                 MovementSpeed * _movementDirection,
                 _rigidBody.velocity.y
             );
+        }
+        if (_rigidBody.velocity.y < -MaxFallingSpeed)
+        {
+            _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, -MaxFallingSpeed);
         }
 
         if (_isWallSliding)
