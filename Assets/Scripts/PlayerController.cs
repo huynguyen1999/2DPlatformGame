@@ -8,6 +8,7 @@ public enum Animation
     IsWalking,
     IsWallSliding,
     IsClimbingLedge,
+    IsDashing,
     VerticalVelocity
 }
 
@@ -27,6 +28,10 @@ public class PlayerController : MonoBehaviour
     public float WallSlideTransitionTimerSet;
     public float TurnTimerSet;
     public float MaxFallingSpeed;
+    public float DashTime;
+    public float DashSpeed;
+    public float DistanceBetweenAfterImages;
+    public float DashCoolDown;
 
     public Vector2 LedgeClimbOffset1;
     public Vector2 LedgeClimbOffset2;
@@ -47,8 +52,10 @@ public class PlayerController : MonoBehaviour
     private bool _canWallJump = true;
     private bool _canMove = true;
     private bool _canFlip = true;
+    private bool _canDash = true;
     private bool _canWallSlide = true;
     private bool _isClimbingLedge = false;
+    private bool _isDashing = false;
     private float _movementDirection = 0f;
     private float _wallSlideTimer;
     private float _wallClingTimer;
@@ -61,6 +68,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _ledgeBottomPosition;
     private Vector2 _ledgePosition1;
     private Vector2 _ledgePosition2;
+    private Vector2 _lastFrameDashPosition;
 
     public void Start()
     {
@@ -93,6 +101,45 @@ public class PlayerController : MonoBehaviour
                 _jumpCommands.Add(WallJump);
             }
         }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            AttemptToDash();
+        }
+    }
+
+    private void AttemptToDash()
+    {
+        if (!_canDash || _isClimbingLedge)
+        {
+            return;
+        }
+        if (_isWallSliding)
+        {
+            _isWallSliding = false;
+            Flip();
+        }
+        _canDash = false;
+        _isDashing = true;
+        _canMove = false;
+        _canFlip = false;
+        _turnTimer = TurnTimerSet;
+        // PlayerAfterImagePool.Instance.GetFromPool();
+        _lastFrameDashPosition = transform.position;
+        StartCoroutine(StopDash());
+        StartCoroutine(ResetDashCoolDown());
+    }
+
+    private IEnumerator StopDash()
+    {
+        yield return new WaitForSeconds(DashTime);
+        _isDashing = false;
+        _turnTimer = 0f;
+    }
+
+    private IEnumerator ResetDashCoolDown()
+    {
+        yield return new WaitForSeconds(DashCoolDown);
+        _canDash = true;
     }
 
     private void CheckIfCanJump()
@@ -185,6 +232,7 @@ public class PlayerController : MonoBehaviour
     private void UpdateAnimations()
     {
         _animator.SetBool(Animation.IsWalking.ToString(), _isWalking);
+        _animator.SetBool(Animation.IsDashing.ToString(), _isDashing);
         _animator.SetBool(Animation.IsGrounded.ToString(), _isGrounded);
         _animator.SetBool(Animation.IsWallSliding.ToString(), _isWallSliding);
         _animator.SetBool(Animation.IsClimbingLedge.ToString(), _isClimbingLedge);
@@ -239,13 +287,18 @@ public class PlayerController : MonoBehaviour
             _ledgeBottomPosition = _collider.bounds.center;
         }
 
-        _isWalking = _isGrounded && !Mathf.Approximately(_movementDirection, 0f);
+        _isWalking = !_isDashing && _isGrounded && !Mathf.Approximately(_movementDirection, 0f);
 
         // before
+
         if (_isWallSliding == true)
         {
             _isWallSliding =
-                !_isClimbingLedge && !_isGrounded && _isAgainstWall && _wallSlideTimer > 0f;
+                !_isDashing
+                && !_isClimbingLedge
+                && !_isGrounded
+                && _isAgainstWall
+                && _wallSlideTimer > 0f;
             if (_wallSlideTimer <= 0f) // unable to slide
             {
                 _canWallSlide = false;
@@ -254,6 +307,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (
             _canWallSlide
+            && !_isDashing
             && !_isClimbingLedge
             && (_movementDirection * _facingDirection > 0f)
             && !_isGrounded
@@ -339,6 +393,21 @@ public class PlayerController : MonoBehaviour
         if (_movementDirection * _facingDirection < 0f)
         {
             Flip();
+        }
+
+        if (_isDashing)
+        {
+            // apply dashing calculations
+            _turnTimer = TurnTimerSet;
+            _rigidBody.velocity = new Vector2(_facingDirection * DashSpeed, _rigidBody.velocity.y);
+            if (
+                Mathf.Abs(transform.position.x - _lastFrameDashPosition.x)
+                > DistanceBetweenAfterImages
+            )
+            {
+                PlayerAfterImagePool.Instance.GetFromPool();
+                _lastFrameDashPosition = transform.position;
+            }
         }
     }
 

@@ -271,6 +271,52 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
+--- !u!1 &543360499
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 543360501}
+  - component: {fileID: 543360500}
+  m_Layer: 0
+  m_Name: PlayerAfterImagePool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &543360500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543360499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0acc5f746f9b4ab78a4c7b60f5f6f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AfterImagePrefab: {fileID: 4248603562088128693, guid: 493947fc8653f432aa58b5dcdb738d40, type: 3}
+  PoolCapacity: 10
+--- !u!4 &543360501
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543360499}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.708406, y: 15.750908, z: -0.044065073}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &594418783
 GameObject:
   m_ObjectHideFlags: 0
@@ -4786,7 +4832,7 @@ GameObject:
   - component: {fileID: 645837772}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4956,6 +5002,10 @@ MonoBehaviour:
   WallSlideTransitionTimerSet: 0.2
   TurnTimerSet: 0.25
   MaxFallingSpeed: 25
+  DashTime: 0.5
+  DashSpeed: 30
+  DistanceBetweenAfterImages: 0.5
+  DashCoolDown: 2
   LedgeClimbOffset1: {x: 0.5, y: -0.8}
   LedgeClimbOffset2: {x: 0.3, y: 2}
   WallJumpDirection: {x: 1, y: 1.2}
