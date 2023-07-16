@@ -33,12 +33,12 @@ public class PlayerAfterImagePool : MonoBehaviour
 
     public void AddToPool(GameObject instance)
     {
-        instance.SetActive(false);
         if (_availableObjects.Count >= PoolCapacity)
         {
             Destroy(instance);
             return;
         }
+        instance.SetActive(false);
         _availableObjects.Enqueue(instance);
     }
 

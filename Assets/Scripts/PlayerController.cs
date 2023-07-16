@@ -56,8 +56,9 @@ public class PlayerController : MonoBehaviour
     private bool _canWallSlide = true;
     private bool _isClimbingLedge = false;
     private bool _isDashing = false;
+    private bool _isPreviousWallSliding = false;
     private float _movementDirection = 0f;
-    private float _wallSlideTimer;
+    private float _wallSlideTimer = 100f;
     private float _wallClingTimer;
     private float _wallSlideTransitionTimer;
     private float _turnTimer;
@@ -101,7 +102,7 @@ public class PlayerController : MonoBehaviour
                 _jumpCommands.Add(WallJump);
             }
         }
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             AttemptToDash();
         }
@@ -113,17 +114,12 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        if (_isWallSliding)
-        {
-            _isWallSliding = false;
-            Flip();
-        }
         _canDash = false;
         _isDashing = true;
         _canMove = false;
         _canFlip = false;
         _turnTimer = TurnTimerSet;
-        // PlayerAfterImagePool.Instance.GetFromPool();
+        PlayerAfterImagePool.Instance.GetFromPool();
         _lastFrameDashPosition = transform.position;
         StartCoroutine(StopDash());
         StartCoroutine(ResetDashCoolDown());
@@ -168,6 +164,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_ledgeDetected && !_isClimbingLedge)
         {
+            Flip(true);
             _isClimbingLedge = true;
             _isWallSliding = false;
             _canWallSlide = false;
@@ -217,12 +214,12 @@ public class PlayerController : MonoBehaviour
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, 0f);
             Vector2 jumpForceToAdd =
                 new(
-                    WallJumpPower * WallJumpDirection.x * _facingDirection * -1,
+                    WallJumpPower * WallJumpDirection.x * _facingDirection,
                     WallJumpPower * WallJumpDirection.y
                 );
             _rigidBody.AddForce(jumpForceToAdd, ForceMode2D.Impulse);
             _isWallSliding = false;
-            Flip();
+            // Flip();
             _canMove = false;
             _canFlip = false;
             _turnTimer = TurnTimerSet;
@@ -264,6 +261,14 @@ public class PlayerController : MonoBehaviour
             Physics2D
                 .Raycast(
                     WallCheck.transform.position,
+                    -transform.right,
+                    WallCheckDistance,
+                    WhatIsGround
+                )
+                .collider != null
+            || Physics2D
+                .Raycast(
+                    WallCheck.transform.position,
                     transform.right,
                     WallCheckDistance,
                     WhatIsGround
@@ -272,6 +277,7 @@ public class PlayerController : MonoBehaviour
 
         _isTouchingLedge =
             _isAgainstWall
+            && !_isWallSliding
             && Physics2D
                 .Raycast(
                     LedgeCheck.position,
@@ -289,37 +295,31 @@ public class PlayerController : MonoBehaviour
 
         _isWalking = !_isDashing && _isGrounded && !Mathf.Approximately(_movementDirection, 0f);
 
-        // before
+        _isWallSliding =
+            // _canWallSlide &&
+            !_isDashing && !_isClimbingLedge && !_isGrounded && _isAgainstWall;
 
-        if (_isWallSliding == true)
+        if (_isWallSliding && !_isPreviousWallSliding)
         {
-            _isWallSliding =
-                !_isDashing
-                && !_isClimbingLedge
-                && !_isGrounded
-                && _isAgainstWall
-                && _wallSlideTimer > 0f;
-            if (_wallSlideTimer <= 0f) // unable to slide
-            {
-                _canWallSlide = false;
-                _wallSlideTransitionTimer = WallSlideTransitionTimerSet;
-            }
+            _isWallSliding = _isWallSliding && (_movementDirection * _facingDirection > 0f);
         }
-        else if (
-            _canWallSlide
-            && !_isDashing
-            && !_isClimbingLedge
-            && (_movementDirection * _facingDirection > 0f)
-            && !_isGrounded
-            && _isAgainstWall
-        )
+
+        if (_isWallSliding && _wallSlideTimer <= 0f)
         {
-            _isWallSliding = true;
-            _wallClingTimer = WallClingTimerSet;
-            _wallSlideTimer = WallSlideTimerSet;
+            // _isWallSliding = false;
+            // _canWallSlide = false;
+            _wallSlideTransitionTimer = WallSlideTransitionTimerSet;
         }
+
+        if (_isWallSliding == true && _isWallSliding != _isPreviousWallSliding)
+        {
+            Flip(true);
+        }
+
+        _isPreviousWallSliding = _isWallSliding;
+
         // after
-        _rigidBody.gravityScale = (_isWallSliding || _isClimbingLedge) ? 0f : 4f;
+        _rigidBody.gravityScale = (_isWallSliding || _isClimbingLedge || _isDashing) ? 0f : 4f;
     }
 
     private void CheckTimers()
@@ -380,7 +380,7 @@ public class PlayerController : MonoBehaviour
 
         if (_isWallSliding)
         {
-            if (_movementDirection * _facingDirection > 0f && _wallClingTimer > 0f) // wall cling
+            if (_movementDirection * _facingDirection < 0f && _wallClingTimer > 0f) // wall cling
             {
                 _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, 0f);
             }
@@ -390,7 +390,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (_movementDirection * _facingDirection < 0f)
+        if (_movementDirection * _facingDirection < 0f && !_isWallSliding)
         {
             Flip();
         }
@@ -399,7 +399,7 @@ public class PlayerController : MonoBehaviour
         {
             // apply dashing calculations
             _turnTimer = TurnTimerSet;
-            _rigidBody.velocity = new Vector2(_facingDirection * DashSpeed, _rigidBody.velocity.y);
+            _rigidBody.velocity = new Vector2(_facingDirection * DashSpeed, 0f);
             if (
                 Mathf.Abs(transform.position.x - _lastFrameDashPosition.x)
                 > DistanceBetweenAfterImages
@@ -411,9 +411,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Flip()
+    private void Flip(bool isForced = false)
     {
-        if (_canFlip && !_isWallSliding)
+        if (_canFlip || isForced)
         {
             _facingDirection *= -1;
             transform.Rotate(0.0f, 180.0f, 0.0f);
