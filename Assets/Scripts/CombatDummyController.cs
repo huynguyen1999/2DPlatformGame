@@ -1,30 +1,105 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+enum CombatDummyAnimation
+{
+    IsLeftHit,
+    Damaged
+}
 
 public class CombatDummyController : MonoBehaviour
 {
     public float MaxHealth;
-    public GameObject Alive,
-        BrokenTop,
-        BrokenBottom;
-    public Rigidbody2D RigidBodyAlive,
-        RigidiBodyBrokenTop,
-        RigidBodyBrokenBottom;
-    private float _currentHealth;
 
-    private void Start() { }
+    public bool IsKnockBackApplied;
+    public GameObject GOAlive,
+        GOBrokenTop,
+        GOBrokenBottom,
+        HitParticle;
+    public Vector2 KnockBackForce;
+    public float KnockBackDuration;
+    public float DeathTorque;
+    private Rigidbody2D _rbAlive,
+        _rbBrokenTop,
+        _rbBrokenBottom;
+    private Animator _animatorAlive;
+    private float _currentHealth;
+    private bool _isKnockingBack;
+
+    private void Start()
+    {
+        _currentHealth = MaxHealth;
+        GOAlive.SetActive(true);
+        GOBrokenTop.SetActive(false);
+        GOBrokenBottom.SetActive(false);
+        _rbAlive = GOAlive.GetComponent<Rigidbody2D>();
+        _animatorAlive = GOAlive.GetComponent<Animator>();
+        _rbBrokenTop = GOBrokenTop.GetComponent<Rigidbody2D>();
+        _rbBrokenBottom = GOBrokenBottom.GetComponent<Rigidbody2D>();
+        KnockBackForce.Normalize();
+    }
 
     private void Update() { }
 
-    public void OnAttack(PlayerCombatController player)
+    public void OnAttack(PlayerCombatController player, float damage)
     {
         float dotProduct = Vector2.Dot(player.transform.right, transform.right);
-        if (dotProduct > 0f)
-        {
-            Debug.Log("Is hit from the left");
+        bool isLeftHit = dotProduct > 0f;
+        _animatorAlive.SetBool(CombatDummyAnimation.IsLeftHit.ToString(), isLeftHit);
+        _animatorAlive.SetTrigger(CombatDummyAnimation.Damaged.ToString());
+        if (isLeftHit)
+        { // attack behind
+            damage *= 2;
         }
-        else if (dotProduct < 0f)
+        _currentHealth -= damage;
+        Instantiate(
+            HitParticle,
+            GOAlive.transform.position,
+            Quaternion.Euler(0f, 0f, Random.Range(0f, 360f))
+        );
+        if (_currentHealth <= 0f)
         {
-            Debug.Log("Is hit from the right");
+            Die(player, damage);
         }
+        else if (IsKnockBackApplied)
+        {
+            KnockBack(player, damage);
+        }
+    }
+
+    private void Die(PlayerCombatController player, float damage)
+    {
+        GOAlive.SetActive(false);
+        GOBrokenBottom.SetActive(true);
+        GOBrokenTop.SetActive(true);
+        GOBrokenTop.transform.position = GOAlive.transform.position;
+        GOBrokenBottom.transform.position = GOAlive.transform.position;
+        _rbBrokenTop.velocity = new Vector2(
+            damage * KnockBackForce.x * player.transform.right.x,
+            damage * KnockBackForce.y
+        );
+        _rbBrokenTop.AddTorque(DeathTorque * player.transform.right.x, ForceMode2D.Impulse);
+        _rbBrokenBottom.velocity = new Vector2(
+            damage * KnockBackForce.x * player.transform.right.x,
+            damage * KnockBackForce.y
+        );
+    }
+
+    private void KnockBack(PlayerCombatController player, float damage)
+    {
+        _isKnockingBack = true;
+        _rbAlive.velocity = new Vector2(
+            damage * KnockBackForce.x * player.transform.right.x,
+            damage * KnockBackForce.y
+        );
+        StartCoroutine(StopKnockBack());
+    }
+
+    private IEnumerator StopKnockBack()
+    {
+        yield return new WaitForSeconds(KnockBackDuration);
+        _isKnockingBack = false;
+        _rbAlive.velocity = new Vector2(0f, _rbAlive.velocity.y);
     }
 }

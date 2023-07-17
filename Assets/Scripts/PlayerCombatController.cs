@@ -87,7 +87,7 @@ public class PlayerCombatController : MonoBehaviour
         {
             CombatDummyController hitDummy =
                 collision.gameObject.GetComponentInParent<CombatDummyController>();
-            hitDummy.OnAttack(this);
+            hitDummy.OnAttack(this, Attack1Damage);
         }
     }
 }
