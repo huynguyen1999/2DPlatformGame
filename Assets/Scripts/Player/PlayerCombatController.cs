@@ -85,9 +85,8 @@ public class PlayerCombatController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            CombatDummyController hitDummy =
-                collision.gameObject.GetComponentInParent<CombatDummyController>();
-            hitDummy.OnAttack(this, Attack1Damage);
+            IDamageable enemy = collision.gameObject.GetComponentInParent<IDamageable>();
+            enemy.OnAttack(transform, Attack1Damage);
         }
     }
 }

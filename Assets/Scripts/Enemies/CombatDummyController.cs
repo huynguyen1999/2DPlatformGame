@@ -8,7 +8,7 @@ enum CombatDummyAnimation
     Damaged
 }
 
-public class CombatDummyController : MonoBehaviour
+public class CombatDummyController : MonoBehaviour, IDamageable
 {
     public float MaxHealth;
 
@@ -42,9 +42,9 @@ public class CombatDummyController : MonoBehaviour
 
     private void Update() { }
 
-    public void OnAttack(PlayerCombatController player, float damage)
+    public void OnAttack(Transform playerTransform, float damage)
     {
-        float dotProduct = Vector2.Dot(player.transform.right, transform.right);
+        float dotProduct = Vector2.Dot(playerTransform.right, transform.right);
         bool isLeftHit = dotProduct > 0f;
         _animatorAlive.SetBool(CombatDummyAnimation.IsLeftHit.ToString(), isLeftHit);
         _animatorAlive.SetTrigger(CombatDummyAnimation.Damaged.ToString());
@@ -60,15 +60,15 @@ public class CombatDummyController : MonoBehaviour
         );
         if (_currentHealth <= 0f)
         {
-            Die(player, damage);
+            Die(playerTransform, damage);
         }
         else if (IsKnockBackApplied)
         {
-            KnockBack(player, damage);
+            KnockBack(playerTransform, damage);
         }
     }
 
-    private void Die(PlayerCombatController player, float damage)
+    private void Die(Transform playerTransform, float damage)
     {
         GOAlive.SetActive(false);
         GOBrokenBottom.SetActive(true);
@@ -76,21 +76,21 @@ public class CombatDummyController : MonoBehaviour
         GOBrokenTop.transform.position = GOAlive.transform.position;
         GOBrokenBottom.transform.position = GOAlive.transform.position;
         _rbBrokenTop.velocity = new Vector2(
-            damage * KnockBackForce.x * player.transform.right.x,
+            damage * KnockBackForce.x * playerTransform.right.x,
             damage * KnockBackForce.y
         );
-        _rbBrokenTop.AddTorque(DeathTorque * player.transform.right.x, ForceMode2D.Impulse);
+        _rbBrokenTop.AddTorque(DeathTorque * playerTransform.right.x, ForceMode2D.Impulse);
         _rbBrokenBottom.velocity = new Vector2(
-            damage * KnockBackForce.x * player.transform.right.x,
+            damage * KnockBackForce.x * playerTransform.right.x,
             damage * KnockBackForce.y
         );
     }
 
-    private void KnockBack(PlayerCombatController player, float damage)
+    private void KnockBack(Transform playerTransform, float damage)
     {
         _isKnockingBack = true;
         _rbAlive.velocity = new Vector2(
-            damage * KnockBackForce.x * player.transform.right.x,
+            damage * KnockBackForce.x * playerTransform.right.x,
             damage * KnockBackForce.y
         );
         StartCoroutine(StopKnockBack());

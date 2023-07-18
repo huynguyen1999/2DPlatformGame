@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAfterImageSprite : MonoBehaviour
 {
-    public float AlphaMultiplier;
+    public float AlphaMultiplier = 0.85f;
     public float AlphaSet;
     public float ActiveTime;
 
