@@ -156,6 +156,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1675887831}
+  - {fileID: 1570471948}
   m_Father: {fileID: 1615024267}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -391,7 +392,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.59000015, y: -15.85, z: -10}
+  m_LocalPosition: {x: 8.32, y: 17.21, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5080,7 +5081,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 645837766}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.15, y: -5.98, z: 0}
+  m_LocalPosition: {x: 5.76, y: 27.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5189,9 +5190,11 @@ MonoBehaviour:
   DashSpeed: 50
   DistanceBetweenAfterImages: 0.5
   DashCoolDown: 2
+  KnockBackDuration: 0.2
   LedgeClimbOffset1: {x: 0.5, y: -0.8}
   LedgeClimbOffset2: {x: 0.3, y: 2}
   WallJumpDirection: {x: 1, y: 1.2}
+  KnockBackForce: {x: 10, y: 10}
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 256
@@ -120205,6 +120208,37 @@ Transform:
   m_Father: {fileID: 645837768}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1570471947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1570471948}
+  m_Layer: 6
+  m_Name: TouchDamageCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1570471948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570471947}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.03, y: -0.41, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 88145005}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1615024266
 GameObject:
   m_ObjectHideFlags: 0
@@ -120230,7 +120264,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1615024266}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.37, y: -6, z: 0}
+  m_LocalPosition: {x: 10.93, y: 24.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -120253,12 +120287,23 @@ MonoBehaviour:
   RayCastDistance: 0.3
   MovementSpeed: 5
   MaxHealth: 100
-  KnockBackDuration: 1
+  KnockBackDuration: 0.2
+  TouchDamageDelay: 0.7
+  TouchDamage: 10
+  TouchDamageWidth: 2
+  TouchDamageHeight: 1
   KnockBackDirection: {x: 1, y: 1.5}
-  WallCheck: {fileID: 1675887831}
+  EdgeCheck: {fileID: 1675887831}
+  TouchDamageCheck: {fileID: 1570471948}
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 256
+  WhatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 128
+  HitParticle: {fileID: 7791288847363565558, guid: ae4a3efcdbaa24ea5957806e7e736e75, type: 3}
+  DeathChunkParticle: {fileID: 4932149443583106716, guid: b7f991a35ec93441eb63761a932ca02d, type: 3}
+  DeathBloodParticle: {fileID: 4965261417558092261, guid: b26019bcd8fe34ed98201bdd9b89a8aa, type: 3}
 --- !u!1 &1675887830
 GameObject:
   m_ObjectHideFlags: 0
@@ -120269,7 +120314,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1675887831}
   m_Layer: 6
-  m_Name: WallCheck
+  m_Name: EdgeCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120944,7 +120989,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124966547}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.59000015, y: -15.85, z: -10}
+  m_LocalPosition: {x: 8.32, y: 17.21, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

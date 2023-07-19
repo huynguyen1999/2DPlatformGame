@@ -32,10 +32,12 @@ public class PlayerController : MonoBehaviour
     public float DashSpeed;
     public float DistanceBetweenAfterImages;
     public float DashCoolDown;
+    public float KnockBackDuration;
 
     public Vector2 LedgeClimbOffset1;
     public Vector2 LedgeClimbOffset2;
     public Vector2 WallJumpDirection;
+    public Vector2 KnockBackForce;
     public LayerMask WhatIsGround;
     public Transform LedgeCheck;
     public Transform WallCheck;
@@ -57,6 +59,7 @@ public class PlayerController : MonoBehaviour
     private bool _isClimbingLedge = false;
     private bool _isDashing = false;
     private bool _isPreviousWallSliding = false;
+    private bool _isKnockBack = false;
     private float _movementDirection = 0f;
     private float _wallSlideTimer = 100f;
     private float _wallClingTimer;
@@ -70,6 +73,11 @@ public class PlayerController : MonoBehaviour
     private Vector2 _ledgePosition1;
     private Vector2 _ledgePosition2;
     private Vector2 _lastFrameDashPosition;
+
+    public bool IsDashing
+    {
+        get { return _isDashing; }
+    }
 
     public void Start()
     {
@@ -359,6 +367,8 @@ public class PlayerController : MonoBehaviour
 
     private void ApplyMovement()
     {
+        if (_isKnockBack || _isClimbingLedge)
+            return;
         // perform jumps
         while (_jumpCommands.Count > 0)
         {
@@ -418,5 +428,19 @@ public class PlayerController : MonoBehaviour
             _facingDirection *= -1;
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }
+    }
+
+    public void KnockBack(float hitDirection)
+    {
+        _isKnockBack = true;
+        _rigidBody.velocity = new Vector2(KnockBackForce.x * hitDirection, KnockBackForce.y);
+        StartCoroutine(HandleKnockBackCooldown());
+    }
+
+    private IEnumerator HandleKnockBackCooldown()
+    {
+        yield return new WaitForSeconds(KnockBackDuration);
+        _isKnockBack = false;
+        _rigidBody.velocity = new Vector2(0f, _rigidBody.velocity.y);
     }
 }

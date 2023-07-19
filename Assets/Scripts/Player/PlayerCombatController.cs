@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyInterfaces;
 
 public enum CombatAnimation
 {
@@ -10,7 +11,7 @@ public enum CombatAnimation
     FirstAttack
 }
 
-public class PlayerCombatController : MonoBehaviour
+public class PlayerCombatController : MonoBehaviour, IDamageable
 {
     public bool CombatEnabled;
     public float InputTimer;
@@ -23,11 +24,13 @@ public class PlayerCombatController : MonoBehaviour
     private bool _isAttack1;
     private float _lastInputTime = Mathf.NegativeInfinity;
     private Animator _animator;
+    private PlayerController _playerController;
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
         _animator.SetBool(CombatAnimation.CanAttack.ToString(), CombatEnabled);
+        _playerController = GetComponent<PlayerController>();
     }
 
     private void Update()
@@ -88,5 +91,45 @@ public class PlayerCombatController : MonoBehaviour
             IDamageable enemy = collision.gameObject.GetComponentInParent<IDamageable>();
             enemy.OnAttack(transform, Attack1Damage);
         }
+    }
+
+    public void OnAttack(Transform enemy, float damage)
+    {
+        if (_playerController.IsDashing)
+            return;
+        float dotProduct = Vector2.Dot(enemy.right, transform.right);
+        bool isFromBehind = dotProduct > 0f;
+        float damageDirection = isFromBehind ? transform.right.x : -transform.right.x;
+        if (isFromBehind)
+        {
+            damage *= 2;
+        }
+        _playerController.KnockBack(damageDirection);
+        // _currentHealth -= damage;
+        // Instantiate(
+        //     HitParticle,
+        //     _aliveGO.transform.position,
+        //     Quaternion.Euler(0f, 0f, Random.Range(0f, 360f))
+        // );
+        // if (_currentHealth <= 0f)
+        // {
+        //     SwitchState(State.Dead);
+        // }
+        // else
+        // {
+        //     SwitchState(State.KnockBack);
+        // }
+    }
+
+    public void OnTouchDamage(Transform enemy, float damage)
+    {
+        if (_playerController.IsDashing)
+            return;
+        float damageDirection = 1;
+        if (transform.position.x < enemy.position.x)
+        {
+            damageDirection = -1;
+        }
+        _playerController.KnockBack(damageDirection);
     }
 }

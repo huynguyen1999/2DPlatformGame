@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using MyInterfaces;
 
 enum CombatDummyAnimation
 {
@@ -102,4 +103,5 @@ public class CombatDummyController : MonoBehaviour, IDamageable
         _isKnockingBack = false;
         _rbAlive.velocity = new Vector2(0f, _rbAlive.velocity.y);
     }
+    public void OnTouchDamage(Transform enemy, float damage) { }
 }

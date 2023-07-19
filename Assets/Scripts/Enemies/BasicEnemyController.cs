@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyInterfaces;
 
 public class BasicEnemyController : MonoBehaviour, IDamageable
 {
@@ -15,9 +16,16 @@ public class BasicEnemyController : MonoBehaviour, IDamageable
     public float MovementSpeed;
     public float MaxHealth;
     public float KnockBackDuration;
+
+    public float TouchDamageDelay,
+        TouchDamage,
+        TouchDamageWidth,
+        TouchDamageHeight;
     public Vector2 KnockBackDirection;
-    public Transform WallCheck;
-    public LayerMask WhatIsGround;
+    public Transform EdgeCheck,
+        TouchDamageCheck;
+    public LayerMask WhatIsGround,
+        WhatIsPlayer;
     public GameObject HitParticle,
         DeathChunkParticle,
         DeathBloodParticle;
@@ -30,7 +38,10 @@ public class BasicEnemyController : MonoBehaviour, IDamageable
     private float _currentHealth;
     private bool _isGrounded;
     private bool _isAgainstWall;
+    private bool _canDealTouchDamage = true;
     private float _damageDirection;
+    private Vector2 _touchDamageBotLeft,
+        _touchDamageTopRight;
 
     private void Start()
     {
@@ -113,6 +124,41 @@ public class BasicEnemyController : MonoBehaviour, IDamageable
         }
     }
 
+    public void OnTouchDamage(Transform player, float damage) { }
+
+    private void CheckTouchDamage()
+    {
+        if (!_canDealTouchDamage)
+            return;
+
+        _touchDamageBotLeft.Set(
+            TouchDamageCheck.position.x - (TouchDamageWidth / 2),
+            TouchDamageCheck.position.y - (TouchDamageHeight / 2)
+        );
+        _touchDamageTopRight.Set(
+            TouchDamageCheck.position.x + (TouchDamageWidth / 2),
+            TouchDamageCheck.position.y + (TouchDamageHeight / 2)
+        );
+        Collider2D hit = Physics2D.OverlapArea(
+            _touchDamageBotLeft,
+            _touchDamageTopRight,
+            WhatIsPlayer
+        );
+        if (hit != null)
+        {
+            IDamageable player = hit.gameObject.GetComponent<IDamageable>();
+            player?.OnTouchDamage(_aliveGO.transform, TouchDamage);
+            StartCoroutine(HandleTouchDamageCooldown());
+        }
+    }
+
+    private IEnumerator HandleTouchDamageCooldown()
+    {
+        _canDealTouchDamage = false;
+        yield return new WaitForSeconds(TouchDamageDelay);
+        _canDealTouchDamage = true;
+    }
+
     // Moving state
     private void EnterMovingState() { }
 
@@ -121,7 +167,7 @@ public class BasicEnemyController : MonoBehaviour, IDamageable
         _isGrounded =
             Physics2D
                 .Raycast(
-                    WallCheck.position,
+                    EdgeCheck.position,
                     -_aliveGO.transform.up,
                     _aliveCollider.bounds.extents.y + RayCastDistance,
                     WhatIsGround
@@ -131,7 +177,7 @@ public class BasicEnemyController : MonoBehaviour, IDamageable
         _isAgainstWall =
             Physics2D
                 .Raycast(
-                    WallCheck.position,
+                    EdgeCheck.position,
                     _aliveGO.transform.right,
                     RayCastDistance,
                     WhatIsGround
@@ -145,6 +191,7 @@ public class BasicEnemyController : MonoBehaviour, IDamageable
         {
             _aliveRb.velocity = new Vector2(_facingDirection * MovementSpeed, _aliveRb.velocity.y);
         }
+        CheckTouchDamage();
     }
 
     private void Flip()
