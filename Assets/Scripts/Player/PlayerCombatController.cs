@@ -25,12 +25,14 @@ public class PlayerCombatController : MonoBehaviour, IDamageable
     private float _lastInputTime = Mathf.NegativeInfinity;
     private Animator _animator;
     private PlayerController _playerController;
+    private PlayerStats _stats;
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
         _animator.SetBool(CombatAnimation.CanAttack.ToString(), CombatEnabled);
         _playerController = GetComponent<PlayerController>();
+        _stats = GetComponent<PlayerStats>();
     }
 
     private void Update()
@@ -105,20 +107,7 @@ public class PlayerCombatController : MonoBehaviour, IDamageable
             damage *= 2;
         }
         _playerController.KnockBack(damageDirection);
-        // _currentHealth -= damage;
-        // Instantiate(
-        //     HitParticle,
-        //     _aliveGO.transform.position,
-        //     Quaternion.Euler(0f, 0f, Random.Range(0f, 360f))
-        // );
-        // if (_currentHealth <= 0f)
-        // {
-        //     SwitchState(State.Dead);
-        // }
-        // else
-        // {
-        //     SwitchState(State.KnockBack);
-        // }
+        _stats.TakeDamage(damage);
     }
 
     public void OnTouchDamage(Transform enemy, float damage)
@@ -131,5 +120,6 @@ public class PlayerCombatController : MonoBehaviour, IDamageable
             damageDirection = -1;
         }
         _playerController.KnockBack(damageDirection);
+        _stats.TakeDamage(damage);
     }
 }
