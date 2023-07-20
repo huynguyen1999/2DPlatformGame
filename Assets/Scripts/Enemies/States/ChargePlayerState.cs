@@ -5,8 +5,9 @@ using System.Collections.Generic;
 public class ChargePlayerState : State
 {
     protected D_ChargePlayerState _stateData;
-    protected bool _isChargeTimeOver = false;
-    protected bool _isPlayerInMinAggroRange;
+    protected bool _isChargeTimeOver;
+    protected bool _isPlayerInMinAggroRange,
+        _isPlayerInMaxAggroRange;
     protected bool _isDetectingWall;
     protected bool _isDetectingLedge;
 
@@ -27,7 +28,9 @@ public class ChargePlayerState : State
         _isDetectingLedge = _entity.CheckLedge();
         _isDetectingWall = _entity.CheckWall();
         _isPlayerInMinAggroRange = _entity.CheckPlayerInMinAggroRange();
+        _isPlayerInMaxAggroRange = _entity.CheckPlayerInMaxAggroRange();
         _entity.SetVelocity(_stateData.ChargeSpeed);
+        _isChargeTimeOver = false;
     }
 
     public override void Exit()
@@ -50,6 +53,7 @@ public class ChargePlayerState : State
         _isDetectingLedge = _entity.CheckLedge();
         _isDetectingWall = _entity.CheckWall();
         _isPlayerInMinAggroRange = _entity.CheckPlayerInMinAggroRange();
+        _isPlayerInMaxAggroRange = _entity.CheckPlayerInMaxAggroRange();
         _entity.SetVelocity(_stateData.ChargeSpeed);
     }
 }

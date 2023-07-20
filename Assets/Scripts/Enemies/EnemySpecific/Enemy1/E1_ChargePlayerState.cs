@@ -33,8 +33,10 @@ public class E1_ChargePlayerState : ChargePlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        // TODO: _isChargeTimeOver => PlayerDetectedState
-        // TODO: !_isPlayerInMinAggroRange => 
+        if (_isChargeTimeOver || !_isPlayerInMaxAggroRange)
+        {
+            _stateMachine.ChangeState(_enemy.PlayerDetectedState);
+        }
     }
 
     public override void PhysicsUpdate()

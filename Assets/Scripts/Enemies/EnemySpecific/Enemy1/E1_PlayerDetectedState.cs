@@ -33,7 +33,14 @@ public class E1_PlayerDetectedState : PlayerDetectedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (!_isPlayerInMinAggroRange)
+        if (!_isPlayerDetectedMinTimeOver)
+            return;
+
+        if (_isPlayerInMaxAggroRange && !_isDetectingWall && !_isDetectingLedge)
+        {
+            _stateMachine.ChangeState(_enemy.ChargePlayerState);
+        }
+        else if (!_isPlayerInMinAggroRange)
         {
             _enemy.IdleState.SetFlipAfterIdle(false);
             _stateMachine.ChangeState(_enemy.IdleState);
