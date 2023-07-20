@@ -19,6 +19,9 @@ public class Entity : MonoBehaviour
     [SerializeField]
     private Transform _ledgeCheck;
 
+    [SerializeField]
+    private Transform _playerCheck;
+
     public virtual void Start()
     {
         AliveGO = transform.Find("Alive").gameObject;
@@ -66,6 +69,32 @@ public class Entity : MonoBehaviour
                     EntityData.WhatIsGround
                 )
                 .collider == null;
+    }
+
+    public virtual bool CheckPlayerInMinAggroRange()
+    {
+        return Physics2D
+                .Raycast(
+                    _playerCheck.position,
+                    AliveGO.transform.right,
+                    EntityData.MinAggroDistance,
+                    EntityData.WhatIsPlayer
+                )
+                .collider != null;
+        ;
+    }
+
+    public virtual bool CheckPlayerInMaxAggroRange()
+    {
+        return Physics2D
+                .Raycast(
+                    _playerCheck.position,
+                    AliveGO.transform.right,
+                    EntityData.MaxAggroDistance,
+                    EntityData.WhatIsPlayer
+                )
+                .collider != null;
+        ;
     }
 
     public virtual void Flip()

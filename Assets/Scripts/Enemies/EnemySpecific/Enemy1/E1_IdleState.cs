@@ -18,12 +18,12 @@ public class E1_IdleState : IdleState
         : base(entity, stateMachine, animBoolName, stateData)
     {
         _enemy = enemy;
+        SetFlipAfterIdle(true);
     }
 
     public override void Enter()
     {
         base.Enter();
-        SetFlipAfterIdle(true);
     }
 
     public override void Exit()
@@ -34,6 +34,10 @@ public class E1_IdleState : IdleState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (_isPlayerInMinAggroRange)
+        {
+            _stateMachine.ChangeState(_enemy.PlayerDetectedState);
+        }
         if (_isIdleTimeOver)
         {
             _stateMachine.ChangeState(_enemy.MoveState);

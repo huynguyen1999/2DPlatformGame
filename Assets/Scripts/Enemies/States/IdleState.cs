@@ -7,6 +7,7 @@ public class IdleState : State
     protected D_IdleState _stateData;
     protected bool _flipAfterIdle;
     protected bool _isIdleTimeOver;
+    protected bool _isPlayerInMinAggroRange;
     protected float _idleTime;
 
     public IdleState(
@@ -26,6 +27,7 @@ public class IdleState : State
         _entity.SetVelocity(0f);
         _isIdleTimeOver = false;
         SetRandomIdleTime();
+        _isPlayerInMinAggroRange = _entity.CheckPlayerInMaxAggroRange();
     }
 
     public override void Exit()
@@ -50,6 +52,7 @@ public class IdleState : State
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        _isPlayerInMinAggroRange = _entity.CheckPlayerInMaxAggroRange();
     }
 
     public void SetFlipAfterIdle(bool flip)

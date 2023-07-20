@@ -1,17 +1,20 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
-public class MoveState : State
+public class ChargePlayerState : State
 {
-    protected D_MoveState _stateData;
+    protected D_ChargePlayerState _stateData;
+    protected bool _isChargeTimeOver = false;
+    protected bool _isPlayerInMinAggroRange;
     protected bool _isDetectingWall;
     protected bool _isDetectingLedge;
-    protected bool _isPlayerInMinAggroRange;
 
-    public MoveState(
+    public ChargePlayerState(
         Entity entity,
         FiniteStateMachine stateMachine,
         string animBoolName,
-        D_MoveState stateData
+        D_ChargePlayerState stateData
     )
         : base(entity, stateMachine, animBoolName)
     {
@@ -21,10 +24,10 @@ public class MoveState : State
     public override void Enter()
     {
         base.Enter();
-        _entity.SetVelocity(_stateData.MovementSpeed);
         _isDetectingLedge = _entity.CheckLedge();
         _isDetectingWall = _entity.CheckWall();
-        _isPlayerInMinAggroRange = _entity.CheckPlayerInMaxAggroRange();
+        _isPlayerInMinAggroRange = _entity.CheckPlayerInMinAggroRange();
+        _entity.SetVelocity(_stateData.ChargeSpeed);
     }
 
     public override void Exit()
@@ -35,6 +38,10 @@ public class MoveState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (Time.time >= _startTime + _stateData.ChargeTime)
+        {
+            _isChargeTimeOver = true;
+        }
     }
 
     public override void PhysicsUpdate()
@@ -42,7 +49,7 @@ public class MoveState : State
         base.PhysicsUpdate();
         _isDetectingLedge = _entity.CheckLedge();
         _isDetectingWall = _entity.CheckWall();
-        _isPlayerInMinAggroRange = _entity.CheckPlayerInMaxAggroRange();
-        _entity.SetVelocity(_stateData.MovementSpeed);
+        _isPlayerInMinAggroRange = _entity.CheckPlayerInMinAggroRange();
+        _entity.SetVelocity(_stateData.ChargeSpeed);
     }
 }
