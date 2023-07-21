@@ -5,7 +5,7 @@ public class MoveState : State
     protected D_MoveState _stateData;
     protected bool _isDetectingWall;
     protected bool _isDetectingLedge;
-    protected bool _isPlayerInMinAggroRange;
+    protected bool _isTargetInMinAggroRange;
 
     public MoveState(
         Entity entity,
@@ -18,13 +18,13 @@ public class MoveState : State
         _stateData = stateData;
     }
 
-    public override void Enter()
+    public override void Enter(object data=null)
     {
-        base.Enter();
+        base.Enter(data);
         _isDetectingLedge = _entity.CheckLedge();
         _isDetectingWall = _entity.CheckWall();
-        _isPlayerInMinAggroRange = _entity.CheckPlayerInMaxAggroRange();
-        _entity.SetVelocity(_stateData.MovementSpeed);
+        _isTargetInMinAggroRange = _entity.CheckTargetInMaxAggroRange();
+        _entity.SetXVelocity(_stateData.MovementSpeed);
     }
 
     public override void Exit()
@@ -42,7 +42,7 @@ public class MoveState : State
         base.PhysicsUpdate();
         _isDetectingLedge = _entity.CheckLedge();
         _isDetectingWall = _entity.CheckWall();
-        _isPlayerInMinAggroRange = _entity.CheckPlayerInMaxAggroRange();
-        _entity.SetVelocity(_stateData.MovementSpeed);
+        _isTargetInMinAggroRange = _entity.CheckTargetInMaxAggroRange();
+        _entity.SetXVelocity(_stateData.MovementSpeed);
     }
 }

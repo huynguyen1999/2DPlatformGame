@@ -7,7 +7,7 @@ public class IdleState : State
     protected D_IdleState _stateData;
     protected bool _flipAfterIdle;
     protected bool _isIdleTimeOver;
-    protected bool _isPlayerInMinAggroRange;
+    protected bool _isTargetInMinAggroRange;
     protected float _idleTime;
 
     public IdleState(
@@ -22,13 +22,13 @@ public class IdleState : State
         _flipAfterIdle = false;
     }
 
-    public override void Enter()
+    public override void Enter(object data=null)
     {
-        base.Enter();
-        _entity.SetVelocity(0f);
+        base.Enter(data);
+        _entity.SetXVelocity(0f);
         _isIdleTimeOver = false;
         SetRandomIdleTime();
-        _isPlayerInMinAggroRange = _entity.CheckPlayerInMaxAggroRange();
+        _isTargetInMinAggroRange = _entity.CheckTargetInMaxAggroRange();
     }
 
     public override void Exit()
@@ -53,7 +53,7 @@ public class IdleState : State
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        _isPlayerInMinAggroRange = _entity.CheckPlayerInMaxAggroRange();
+        _isTargetInMinAggroRange = _entity.CheckTargetInMaxAggroRange();
     }
 
     public void SetFlipAfterIdle(bool flip)

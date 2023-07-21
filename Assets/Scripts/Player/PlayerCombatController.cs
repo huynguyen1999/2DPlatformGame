@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MyInterfaces;
 
 public enum CombatAnimation
 {
@@ -88,38 +87,26 @@ public class PlayerCombatController : MonoBehaviour, IDamageable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (!collision.isTrigger && collision.gameObject.CompareTag("Enemy"))
         {
             IDamageable enemy = collision.gameObject.GetComponentInParent<IDamageable>();
-            enemy.OnAttack(transform, Attack1Damage);
+            AttackDetails attackDetails =
+                new(attackSourceTransform: transform, damage: Attack1Damage);
+            enemy.OnHit(attackDetails);
         }
     }
 
-    public void OnAttack(Transform enemy, float damage)
+    public void OnHit(AttackDetails attackDetails)
     {
         if (_playerController.IsDashing)
             return;
-        float dotProduct = Vector2.Dot(enemy.right, transform.right);
+        float dotProduct = Vector2.Dot(attackDetails.AttackSourceTransform.right, transform.right);
         bool isFromBehind = dotProduct > 0f;
         float damageDirection = isFromBehind ? transform.right.x : -transform.right.x;
         if (isFromBehind)
         {
-            damage *= 2;
+            attackDetails.Damage *= 2;
         }
-        _playerController.KnockBack(damageDirection);
-        _stats.TakeDamage(damage);
-    }
-
-    public void OnTouchDamage(Transform enemy, float damage)
-    {
-        if (_playerController.IsDashing)
-            return;
-        float damageDirection = 1;
-        if (transform.position.x < enemy.position.x)
-        {
-            damageDirection = -1;
-        }
-        _playerController.KnockBack(damageDirection);
-        _stats.TakeDamage(damage);
+        _stats.TakeDamage(attackDetails.Damage);
     }
 }

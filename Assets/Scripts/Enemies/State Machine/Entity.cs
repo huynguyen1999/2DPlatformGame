@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entity : MonoBehaviour
+public class Entity : MonoBehaviour, IDamageable
 {
     public FiniteStateMachine StateMachine;
     public D_Entity EntityData;
     public Rigidbody2D RB { get; private set; }
+    public PolygonCollider2D AttackTriggerCollider { get; private set; }
     public Animator Anim { get; private set; }
     public GameObject AliveGO { get; private set; }
     public int FacingDirection { get; private set; }
@@ -20,14 +21,19 @@ public class Entity : MonoBehaviour
     private Transform _ledgeCheck;
 
     [SerializeField]
-    private Transform _playerCheck;
+    private Transform _targetCheck;
+
+    protected float _currentHealth;
 
     public virtual void Start()
     {
         AliveGO = transform.Find("Alive").gameObject;
         RB = AliveGO.GetComponent<Rigidbody2D>();
         Anim = AliveGO.GetComponent<Animator>();
+        AttackTriggerCollider = AliveGO.GetComponent<PolygonCollider2D>();
+        AttackTriggerCollider.enabled = false;
         StateMachine = new FiniteStateMachine();
+        _currentHealth = EntityData.MaxHealth;
         FacingDirection = 1;
     }
 
@@ -41,10 +47,15 @@ public class Entity : MonoBehaviour
         StateMachine.CurrentState.PhysicsUpdate();
     }
 
-    public virtual void SetVelocity(float velocity)
+    public virtual void SetXVelocity(float xVelocity)
     {
-        _velocityWorkspace.Set(FacingDirection * velocity, RB.velocity.y);
+        _velocityWorkspace.Set(FacingDirection * xVelocity, RB.velocity.y);
         RB.velocity = _velocityWorkspace;
+    }
+
+    public virtual void SetVelocity(Vector2 velocity)
+    {
+        RB.velocity = velocity;
     }
 
     public virtual bool CheckWall()
@@ -71,30 +82,42 @@ public class Entity : MonoBehaviour
                 .collider != null;
     }
 
-    public virtual bool CheckPlayerInMinAggroRange()
+    public virtual bool CheckTargetInMinAggroRange()
     {
         return Physics2D
                 .Raycast(
-                    _playerCheck.position,
+                    _targetCheck.position,
                     AliveGO.transform.right,
                     EntityData.MinAggroDistance,
-                    EntityData.WhatIsPlayer
+                    EntityData.WhatIsTarget
                 )
                 .collider != null;
         ;
     }
 
-    public virtual bool CheckPlayerInMaxAggroRange()
+    public virtual bool CheckTargetInMaxAggroRange()
     {
         return Physics2D
                 .Raycast(
-                    _playerCheck.position,
+                    _targetCheck.position,
                     AliveGO.transform.right,
                     EntityData.MaxAggroDistance,
-                    EntityData.WhatIsPlayer
+                    EntityData.WhatIsTarget
                 )
                 .collider != null;
         ;
+    }
+
+    public virtual bool CheckTargetInCloseRangeAction()
+    {
+        return Physics2D
+                .Raycast(
+                    _targetCheck.position,
+                    AliveGO.transform.right,
+                    EntityData.CloseRangeActionDistance,
+                    EntityData.WhatIsTarget
+                )
+                .collider != null;
     }
 
     public virtual void Flip()
@@ -114,5 +137,18 @@ public class Entity : MonoBehaviour
             _ledgeCheck.position,
             _ledgeCheck.position + (Vector3)(Vector2.down * EntityData.LedgeCheckDistance)
         );
+    }
+
+    public virtual void OnHit(AttackDetails attackDetails)
+    {
+        Vector2 attackDirection = attackDetails.AttackSourceTransform.right;
+        SetVelocity(
+            new Vector2(
+                attackDirection.x * EntityData.KnockBackForce.x,
+                EntityData.KnockBackForce.y
+            )
+        );
+        Debug.Log(RB.velocity);
+        _currentHealth -= attackDetails.Damage;
     }
 }

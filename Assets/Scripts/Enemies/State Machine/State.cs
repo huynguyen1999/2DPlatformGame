@@ -16,7 +16,7 @@ public class State
         _animBoolName = animBoolName;
     }
 
-    public virtual void Enter()
+    public virtual void Enter(object data = null)
     {
         _startTime = Time.time;
         _entity.Anim.SetBool(_animBoolName, true);

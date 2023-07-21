@@ -20,9 +20,9 @@ public class E1_MoveState : MoveState
         _enemy = enemy;
     }
 
-    public override void Enter()
+    public override void Enter(object data=null)
     {
-        base.Enter();
+        base.Enter(data);
     }
 
     public override void Exit()
@@ -33,9 +33,9 @@ public class E1_MoveState : MoveState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (_isPlayerInMinAggroRange)
+        if (_isTargetInMinAggroRange)
         {
-            _stateMachine.ChangeState(_enemy.PlayerDetectedState);
+            _stateMachine.ChangeState(_enemy.TargetDetectedState);
         }
         if (!_isDetectingLedge || _isDetectingWall)
         {

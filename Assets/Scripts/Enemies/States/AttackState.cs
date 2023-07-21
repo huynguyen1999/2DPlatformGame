@@ -1,0 +1,48 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class AttackState : State
+{
+    protected D_AttackState _stateData;
+    protected bool _isAnimationFinished;
+
+    public AttackState(
+        Entity entity,
+        FiniteStateMachine stateMachine,
+        string animBoolName,
+        D_AttackState stateData
+    )
+        : base(entity, stateMachine, animBoolName)
+    {
+        _stateData = stateData;
+    }
+
+    public override void Enter(object data = null)
+    {
+        base.Enter(data);
+        _isAnimationFinished = false;
+        _entity.SetXVelocity(0f);
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    public override void LogicUpdate()
+    {
+        base.LogicUpdate();
+        if (_entity.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        {
+            _isAnimationFinished = true;
+        }
+    }
+
+    public override void PhysicsUpdate()
+    {
+        base.PhysicsUpdate();
+    }
+
+    public virtual void TriggerAttack() { }
+}
