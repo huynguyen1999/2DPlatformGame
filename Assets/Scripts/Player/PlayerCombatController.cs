@@ -90,8 +90,13 @@ public class PlayerCombatController : MonoBehaviour, IDamageable
         if (!collision.isTrigger && collision.gameObject.CompareTag("Enemy"))
         {
             IDamageable enemy = collision.gameObject.GetComponentInParent<IDamageable>();
+            float dotProduct = Vector2.Dot(collision.transform.right, transform.right);
+            bool isFromBehind = dotProduct > 0f;
             AttackDetails attackDetails =
-                new(attackSourceTransform: transform, damage: Attack1Damage);
+                new(
+                    attackSourceTransform: transform,
+                    damage: isFromBehind ? Attack1Damage * 2 : Attack1Damage
+                );
             enemy.OnHit(attackDetails);
         }
     }
@@ -100,13 +105,8 @@ public class PlayerCombatController : MonoBehaviour, IDamageable
     {
         if (_playerController.IsDashing)
             return;
-        float dotProduct = Vector2.Dot(attackDetails.AttackSourceTransform.right, transform.right);
-        bool isFromBehind = dotProduct > 0f;
-        float damageDirection = isFromBehind ? transform.right.x : -transform.right.x;
-        if (isFromBehind)
-        {
-            attackDetails.Damage *= 2;
-        }
+        Debug.Log("transform right: " + attackDetails.AttackSourceTransform.transform.right);
         _stats.TakeDamage(attackDetails.Damage);
+        _playerController.KnockBack(attackDetails.AttackSourceTransform.transform.right.x);
     }
 }

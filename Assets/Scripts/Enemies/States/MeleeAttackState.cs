@@ -18,7 +18,7 @@ public class MeleeAttackState : AttackState
         _stateData = stateData;
     }
 
-    public override void Enter(object data=null)
+    public override void Enter(object data = null)
     {
         base.Enter(data);
         _entity.AttackTriggerCollider.enabled = true;
@@ -53,7 +53,10 @@ public class MeleeAttackState : AttackState
         {
             IDamageable targetController = collider?.GetComponent<IDamageable>();
             AttackDetails attackDetails =
-                new(attackSourceTransform: _entity.transform, damage: _stateData.AttackDamage);
+                new(
+                    attackSourceTransform: _entity.AliveGO.transform,
+                    damage: _stateData.AttackDamage
+                );
             targetController?.OnHit(attackDetails);
         }
     }

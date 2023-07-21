@@ -14,6 +14,7 @@ public class Enemy1 : Entity
     public E1_AttackState AttackState { get; private set; }
     public E1_MeleeAttackState MeleeAttackState { get; private set; }
     public E1_StunState StunState { get; private set; }
+    public E1_DeadState DeadState { get; private set; }
 
     [SerializeField]
     private D_IdleState _idleStateData;
@@ -39,6 +40,9 @@ public class Enemy1 : Entity
     [SerializeField]
     private D_StunState _stunStateData;
 
+    [SerializeField]
+    private D_DeadState _deadStateData;
+
     public override void Start()
     {
         base.Start();
@@ -62,6 +66,7 @@ public class Enemy1 : Entity
         AttackState = new(this, StateMachine, "attack", _attackStateData, this);
         MeleeAttackState = new(this, StateMachine, "meleeAttack", _meleeAttackState, this);
         StunState = new(this, StateMachine, "stun", _stunStateData, this);
+        DeadState = new(this, StateMachine, "dead", _deadStateData, this);
         StateMachine.Initialize(IdleState);
     }
 
@@ -70,7 +75,7 @@ public class Enemy1 : Entity
         base.OnHit(attackDetails);
         if (_currentHealth <= 0)
         {
-            //TODO: die
+            StateMachine.ChangeState(DeadState);
         }
         else
         {

@@ -148,7 +148,6 @@ public class Entity : MonoBehaviour, IDamageable
                 EntityData.KnockBackForce.y
             )
         );
-        Debug.Log(RB.velocity);
         _currentHealth -= attackDetails.Damage;
     }
 }
