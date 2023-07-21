@@ -4,15 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class E1_PlayerDetectedState : PlayerDetectedState
+public class E1_LookForPlayerState : LookForPlayerState
 {
     private Enemy1 _enemy;
 
-    public E1_PlayerDetectedState(
+    public E1_LookForPlayerState(
         Entity entity,
         FiniteStateMachine stateMachine,
         string animBoolName,
-        D_PlayerDetectedState stateData,
+        D_LookForPlayerState stateData,
         Enemy1 enemy
     )
         : base(entity, stateMachine, animBoolName, stateData)
@@ -33,14 +33,14 @@ public class E1_PlayerDetectedState : PlayerDetectedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
-        if (_performLongRangeAction)
+        
+        if (_isPlayerInMinAggroRange)
         {
-            _stateMachine.ChangeState(_enemy.ChargePlayerState);
+            _stateMachine.ChangeState(_enemy.PlayerDetectedState);
         }
-        else if (!_isPlayerInMaxAggroRange)
+        else if (_isAllTurnsDone)
         {
-            _stateMachine.ChangeState(_enemy.LookForPlayerState);
+            _stateMachine.ChangeState(_enemy.MoveState);
         }
     }
 

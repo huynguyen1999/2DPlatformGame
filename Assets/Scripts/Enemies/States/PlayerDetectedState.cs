@@ -10,7 +10,7 @@ public class PlayerDetectedState : State
         _isPlayerInMaxAggroRange,
         _isDetectingLedge,
         _isDetectingWall,
-        _isPlayerDetectedMinTimeOver;
+        _performLongRangeAction;
 
     public PlayerDetectedState(
         Entity entity,
@@ -31,7 +31,7 @@ public class PlayerDetectedState : State
         _isPlayerInMaxAggroRange = _entity.CheckPlayerInMaxAggroRange();
         _isDetectingLedge = _entity.CheckLedge();
         _isDetectingWall = _entity.CheckWall();
-        _isPlayerDetectedMinTimeOver = false;
+        _performLongRangeAction = false;
     }
 
     public override void Exit()
@@ -42,9 +42,9 @@ public class PlayerDetectedState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (Time.time >= _startTime + _stateData.PlayerDetectedMinTime)
+        if (Time.time >= _startTime + _stateData.LongRangeActionTime)
         {
-            _isPlayerDetectedMinTimeOver = true;
+            _performLongRangeAction = true;
         }
     }
 

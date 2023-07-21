@@ -10,5 +10,6 @@ using UnityEngine;
 )]
 public class D_PlayerDetectedState : ScriptableObject
 {
-    public float PlayerDetectedMinTime = 0.3f;
+    public float LongRangeActionTime = 0.3f,
+        CloseRangeActionTime = 0.1f;
 }

@@ -68,7 +68,7 @@ public class Entity : MonoBehaviour
                     EntityData.LedgeCheckDistance,
                     EntityData.WhatIsGround
                 )
-                .collider == null;
+                .collider != null;
     }
 
     public virtual bool CheckPlayerInMinAggroRange()

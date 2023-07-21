@@ -19,6 +19,7 @@ public class IdleState : State
         : base(entity, stateMachine, animBoolName)
     {
         _stateData = stateData;
+        _flipAfterIdle = false;
     }
 
     public override void Enter()

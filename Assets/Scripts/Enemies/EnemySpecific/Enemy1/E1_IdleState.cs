@@ -18,7 +18,6 @@ public class E1_IdleState : IdleState
         : base(entity, stateMachine, animBoolName, stateData)
     {
         _enemy = enemy;
-        SetFlipAfterIdle(true);
     }
 
     public override void Enter()

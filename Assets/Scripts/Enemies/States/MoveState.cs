@@ -21,10 +21,10 @@ public class MoveState : State
     public override void Enter()
     {
         base.Enter();
-        _entity.SetVelocity(_stateData.MovementSpeed);
         _isDetectingLedge = _entity.CheckLedge();
         _isDetectingWall = _entity.CheckWall();
         _isPlayerInMinAggroRange = _entity.CheckPlayerInMaxAggroRange();
+        _entity.SetVelocity(_stateData.MovementSpeed);
     }
 
     public override void Exit()

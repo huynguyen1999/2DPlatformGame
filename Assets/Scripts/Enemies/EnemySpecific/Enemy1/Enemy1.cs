@@ -10,6 +10,7 @@ public class Enemy1 : Entity
     public E1_MoveState MoveState { get; private set; }
     public E1_PlayerDetectedState PlayerDetectedState { get; private set; }
     public E1_ChargePlayerState ChargePlayerState { get; private set; }
+    public E1_LookForPlayerState LookForPlayerState { get; private set; }
 
     [SerializeField]
     private D_IdleState _idleStateData;
@@ -22,6 +23,9 @@ public class Enemy1 : Entity
 
     [SerializeField]
     private D_ChargePlayerState _chargePlayerStateData;
+
+    [SerializeField]
+    private D_LookForPlayerState _lookForPlayerStateData;
 
     public override void Start()
     {
@@ -40,6 +44,13 @@ public class Enemy1 : Entity
             StateMachine,
             "chargePlayer",
             _chargePlayerStateData,
+            this
+        );
+        LookForPlayerState = new E1_LookForPlayerState(
+            this,
+            StateMachine,
+            "lookForPlayer",
+            _lookForPlayerStateData,
             this
         );
         StateMachine.Initialize(IdleState);
