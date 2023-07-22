@@ -55,6 +55,7 @@ public class ArrowController : MonoBehaviour
         if (Mathf.Abs(_xStartPosition - transform.position.x) >= _travelDistance)
         {
             _rb.gravityScale = 4;
+            _rb.AddTorque(5f);
         }
         if (!_hasHitGround && !_hasHitTarget)
         {
@@ -79,7 +80,7 @@ public class ArrowController : MonoBehaviour
         _rb.angularVelocity = 0f;
         _rb.isKinematic = true;
         _hasHitGround = true;
-        _anim.StopPlayback();
+        _anim.Play("Arrow_Idle");
         StartCoroutine(RemoveArrow(_arrowDestroyTime));
     }
 
