@@ -42,11 +42,7 @@ public class StunState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        float stunDuration =
-            _attackDetails.StunDuration != 0f
-                ? _attackDetails.StunDuration
-                : _stateData.DefaultStunDuration;
-        if (Time.time >= _startTime + stunDuration)
+        if (Time.time >= _startTime + _stateData.DefaultStunDuration)
         {
             _isNoLongerStun = true;
         }

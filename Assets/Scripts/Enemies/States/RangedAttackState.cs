@@ -2,9 +2,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class RangedAttackState : State
+public class RangedAttackState : AttackState
 {
-    protected D_RangedAttackState _stateData;
+    protected new D_RangedAttackState _stateData;
+    protected bool _isTargetInMinAggroRange,
+        _isTargetInMaxAggroRange,
+        _hasShotProjectile;
 
     public RangedAttackState(
         Entity entity,
@@ -12,7 +15,7 @@ public class RangedAttackState : State
         string animName,
         D_RangedAttackState stateData
     )
-        : base(entity, stateMachine, animName)
+        : base(entity, stateMachine, animName, null)
     {
         _stateData = stateData;
     }
@@ -20,6 +23,9 @@ public class RangedAttackState : State
     public override void Enter(object data = null)
     {
         base.Enter(data);
+        _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
+        _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
+        _hasShotProjectile = false;
     }
 
     public override void Exit()
@@ -35,5 +41,33 @@ public class RangedAttackState : State
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
+        _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
+        if (
+            _entity.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f
+            && _hasShotProjectile == false
+        )
+        {
+            TriggerAttack();
+        }
+    }
+
+    public override void TriggerAttack()
+    {
+        _hasShotProjectile = true;
+        GameObject arrow = Object.Instantiate(
+            _stateData.Projectile,
+            _entity.ProjectileStart.transform.position,
+            _entity.AliveGO.transform.rotation
+        );
+        ArrowController arrowController = arrow.GetComponent<ArrowController>();
+        if (!arrowController)
+            return;
+        arrowController.FireArrow(
+            _stateData.ProjectileSpeed,
+            _stateData.ProjectileTravelDistance,
+            _stateData.ProjectileDamage,
+            _entity.EntityData.WhatIsTarget
+        );
     }
 }

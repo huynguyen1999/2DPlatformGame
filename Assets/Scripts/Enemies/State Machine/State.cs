@@ -22,7 +22,10 @@ public class State
         _entity.Anim.Play(_animName);
     }
 
-    public virtual void Exit() { }
+    public virtual void Exit()
+    {
+        _entity.Anim.StopPlayback();
+    }
 
     public virtual void LogicUpdate() { }
 

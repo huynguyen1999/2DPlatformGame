@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class E2_MoveState : MoveState
@@ -33,6 +31,15 @@ public class E2_MoveState : MoveState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (_isTargetInMinAggroRange)
+        {
+            _stateMachine.ChangeState(_enemy.TargetDetectedState);
+        }
+        if (!_isDetectingLedge || _isDetectingWall)
+        {
+            _enemy.IdleState.SetFlipAfterIdle(true);
+            _stateMachine.ChangeState(_enemy.IdleState);
+        }
     }
 
     public override void PhysicsUpdate()

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class E2_TargetDetectedState : TargetDetectedState
@@ -33,6 +31,20 @@ public class E2_TargetDetectedState : TargetDetectedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (_performCloseRangeAction)
+        {
+            _stateMachine.ChangeState(_enemy.DodgeState);
+            return;
+        }
+
+        if (_performLongRangeAction)
+        {
+            _stateMachine.ChangeState(_enemy.RangedAttackState);
+        }
+        if (!_isTargetInMaxAggroRange)
+        {
+            _stateMachine.ChangeState(_enemy.LookForTargetState);
+        }
     }
 
     public override void PhysicsUpdate()

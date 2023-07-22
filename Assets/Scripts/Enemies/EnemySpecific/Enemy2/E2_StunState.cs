@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class E2_StunState : StunState
@@ -22,7 +20,13 @@ public class E2_StunState : StunState
 
     public override void Enter(object data = null)
     {
+        if (Time.time <= _lastStunTime + _stateData.NormalAttackStunCoolDown)
+        {
+            _stateMachine.RevertState();
+            return;
+        }
         base.Enter(data);
+        _lastStunTime = Time.time;
     }
 
     public override void Exit()
@@ -33,6 +37,22 @@ public class E2_StunState : StunState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (!_isNoLongerStun)
+            return;
+
+        if (_performCloseRangeAction)
+        {
+            _stateMachine.ChangeState(_enemy.MeleeAttackState);
+        }
+        else if (_isTargetInMinAggroRange)
+        {
+            _stateMachine.ChangeState(_enemy.RangedAttackState);
+        }
+        else
+        {
+            _enemy.LookForTargetState.SetTurnImmediately(true);
+            _stateMachine.ChangeState(_enemy.LookForTargetState);
+        }
     }
 
     public override void PhysicsUpdate()

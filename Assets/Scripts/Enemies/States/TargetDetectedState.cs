@@ -31,11 +31,11 @@ public class TargetDetectedState : State
         _entity.SetXVelocity(0f);
         _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
         _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
+        _isTargetInCloseRangeAction = _entity.CheckTargetInCloseRangeAction();
         _isDetectingLedge = _entity.CheckLedge();
         _isDetectingWall = _entity.CheckWall();
         _performLongRangeAction = false;
         _performCloseRangeAction = false;
-        _isTargetInCloseRangeAction = _entity.CheckTargetInCloseRangeAction();
     }
 
     public override void Exit()

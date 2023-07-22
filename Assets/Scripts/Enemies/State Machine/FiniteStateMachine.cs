@@ -22,4 +22,9 @@ public class FiniteStateMachine
         CurrentState = newState;
         CurrentState.Enter(data);
     }
+
+    public void RevertState()
+    {
+        ChangeState(PreviousState);
+    }
 }

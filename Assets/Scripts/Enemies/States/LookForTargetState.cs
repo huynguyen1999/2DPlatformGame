@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class LookForTargetState : State
 {
     protected D_LookForTargetState _stateData;
     protected bool _turnImmediately;
-    protected bool _isTargetInMinAggroRange;
+    protected bool _isTargetInMinAggroRange,
+        _isTargetInMaxAggroRange;
     protected float _lastTurnTime;
     protected int _amountOfTurnsDone;
     protected bool _isAllTurnsDone;
@@ -24,10 +23,11 @@ public class LookForTargetState : State
         _stateData = stateData;
     }
 
-    public override void Enter(object data=null)
+    public override void Enter(object data = null)
     {
         base.Enter(data);
         _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
+        _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
         _entity.SetXVelocity(0f);
         _amountOfTurnsDone = 0;
         _isAllTurnsDone = false;
@@ -65,6 +65,7 @@ public class LookForTargetState : State
     {
         base.PhysicsUpdate();
         _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
+        _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
     }
 
     public void SetTurnImmediately(bool flip)

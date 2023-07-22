@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: E1_BaseData
   m_EditorClassIdentifier: 
   MaxHealth: 100
-  WallCheckDistance: 0.3
+  WallCheckDistance: 0.5
   LedgeCheckDistance: 0.5
   MinAggroDistance: 8
   MaxAggroDistance: 10
@@ -25,3 +25,4 @@ MonoBehaviour:
   WhatIsTarget:
     serializedVersion: 2
     m_Bits: 128
+  HitParticle: {fileID: 7791288847363565558, guid: ae4a3efcdbaa24ea5957806e7e736e75, type: 3}

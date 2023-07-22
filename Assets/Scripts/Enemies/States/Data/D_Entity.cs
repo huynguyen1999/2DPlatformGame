@@ -13,4 +13,5 @@ public class D_Entity : ScriptableObject
     public Vector2 KnockBackForce = new(5f, 5f);
     public LayerMask WhatIsGround,
         WhatIsTarget;
+    public GameObject HitParticle;
 }

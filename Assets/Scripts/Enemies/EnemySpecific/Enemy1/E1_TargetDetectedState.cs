@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class E1_TargetDetectedState : TargetDetectedState
@@ -39,7 +37,7 @@ public class E1_TargetDetectedState : TargetDetectedState
             return;
         }
 
-        if (_performLongRangeAction)
+        if (_performLongRangeAction && _isDetectingLedge && !_isDetectingWall)
         {
             _stateMachine.ChangeState(_enemy.ChargeState);
         }

@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class MeleeAttackState : AttackState
 {
     protected new D_MeleeAttackState _stateData;
-    protected bool _isTargetInMinAggroRange;
+    protected bool _isTargetInMinAggroRange,
+        _isTargetInMaxAggroRange;
 
     public MeleeAttackState(
         Entity entity,
@@ -40,11 +41,12 @@ public class MeleeAttackState : AttackState
     {
         base.PhysicsUpdate();
         _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
+        _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
     }
 
     public override void TriggerAttack()
     {
-        //base.TriggerAttack();
+        base.TriggerAttack();
         Collider2D[] hitTargets = new Collider2D[1];
         ContactFilter2D contactFilter =
             new() { useLayerMask = true, layerMask = _entity.EntityData.WhatIsTarget };
@@ -53,7 +55,6 @@ public class MeleeAttackState : AttackState
         {
             IDamageable targetController = collider.GetComponent<IDamageable>();
             AttackDetails attackDetails = new(_entity.AliveGO.transform, _stateData.AttackDamage);
-            Debug.Log(attackDetails);
             targetController?.OnHit(attackDetails);
         }
     }

@@ -5,6 +5,11 @@ using System.Collections.Generic;
 public class DodgeState : State
 {
     protected D_DodgeState _stateData;
+    protected bool _isTargetInMinAggroRange,
+        _isTargetInMaxAggroRange,
+        _isTargetInCloseRangeAction;
+    protected bool _isDodgeOver;
+    protected float _lastDodgeTime = -100f;
 
     public DodgeState(
         Entity entity,
@@ -19,21 +24,46 @@ public class DodgeState : State
 
     public override void Enter(object data = null)
     {
-        base.Enter(data);
+        _startTime = Time.time;
+        _entity.Anim.SetBool(_animName, true);
+        TriggerDodge();
+        _isDodgeOver = false;
+        _lastDodgeTime = Time.time;
+        _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
+        _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
+        _isTargetInCloseRangeAction = _entity.CheckTargetInCloseRangeAction();
     }
 
     public override void Exit()
     {
-        base.Exit();
+        _entity.Anim.SetBool(_animName, false);
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (Time.time >= _startTime + _stateData.DodgeDuration)
+        {
+            _isDodgeOver = true;
+        }
+        _entity.Anim.SetFloat("VerticalVelocity", _entity.RB.velocity.y);
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
+        _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
+        _isTargetInCloseRangeAction = _entity.CheckTargetInCloseRangeAction();
+    }
+
+    public void TriggerDodge()
+    {
+        _entity.SetVelocity(
+            new Vector2(
+                _stateData.DodgeJumpForce.x * _entity.AliveGO.transform.right.x * -1,
+                _stateData.DodgeJumpForce.y
+            )
+        );
     }
 }

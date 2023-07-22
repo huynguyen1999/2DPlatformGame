@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class Enemy2 : Entity
@@ -98,5 +96,10 @@ public class Enemy2 : Entity
         {
             StateMachine.ChangeState(StunState, attackDetails);
         }
+    }
+
+    public override void Update()
+    {
+        base.Update();
     }
 }

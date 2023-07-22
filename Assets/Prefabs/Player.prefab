@@ -284,7 +284,7 @@ MonoBehaviour:
   LedgeClimbOffset1: {x: 0.5, y: -0.8}
   LedgeClimbOffset2: {x: 0.3, y: 2}
   WallJumpDirection: {x: 1, y: 1.2}
-  KnockBackForce: {x: 10, y: 10}
+  KnockBackForce: {x: 5, y: 5}
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 256
@@ -320,7 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e4f0cb70590b4dc8a3f3637051f1211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 50
+  MaxHealth: 5000
   DeathChunkParticle: {fileID: 4932149443583106716, guid: b7f991a35ec93441eb63761a932ca02d, type: 3}
   DeathBloodParticle: {fileID: 4965261417558092261, guid: b26019bcd8fe34ed98201bdd9b89a8aa, type: 3}
 --- !u!1 &5158826656626595169

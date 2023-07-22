@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class E2_DodgeState : DodgeState
@@ -22,6 +20,11 @@ public class E2_DodgeState : DodgeState
 
     public override void Enter(object data = null)
     {
+        if (Time.time < _lastDodgeTime + _stateData.DodgeCoolDown)
+        {
+            _stateMachine.ChangeState(_enemy.MeleeAttackState);
+            return;
+        }
         base.Enter(data);
     }
 
@@ -33,6 +36,21 @@ public class E2_DodgeState : DodgeState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (!_isDodgeOver)
+            return;
+
+        if (!_isTargetInMaxAggroRange)
+        {
+            _stateMachine.ChangeState(_enemy.LookForTargetState);
+        }
+        else if (_isTargetInCloseRangeAction)
+        {
+            _stateMachine.ChangeState(_enemy.MeleeAttackState);
+        }
+        else
+        {
+            _stateMachine.ChangeState(_enemy.RangedAttackState);
+        }
     }
 
     public override void PhysicsUpdate()

@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c8811cfea3a84cbb9e0c863bfa5f2b1, type: 3}
   m_Name: E2_DodgeStateData
   m_EditorClassIdentifier: 
+  DodgeCoolDown: 5
+  DodgeDuration: 0.5
+  DodgeJumpForce: {x: 10, y: 10}

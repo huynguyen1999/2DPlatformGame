@@ -38,6 +38,7 @@ public class ChargeState : State
     public override void Exit()
     {
         base.Exit();
+        _entity.SetXVelocity(0f);
     }
 
     public override void LogicUpdate()

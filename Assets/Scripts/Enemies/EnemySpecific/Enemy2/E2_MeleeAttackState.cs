@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class E2_MeleeAttackState : MeleeAttackState
@@ -33,6 +31,17 @@ public class E2_MeleeAttackState : MeleeAttackState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (!_isAnimationFinished)
+            return;
+
+        if (_isTargetInMaxAggroRange)
+        {
+            _stateMachine.ChangeState(_enemy.TargetDetectedState);
+        }
+        else
+        {
+            _stateMachine.ChangeState(_enemy.LookForTargetState);
+        }
     }
 
     public override void PhysicsUpdate()

@@ -22,7 +22,6 @@ public class AttackState : State
     {
         base.Enter(data);
         _isAnimationFinished = false;
-        _entity.SetXVelocity(0f);
     }
 
     public override void Exit()

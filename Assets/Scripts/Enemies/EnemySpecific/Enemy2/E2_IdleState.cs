@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class E2_IdleState : IdleState
@@ -33,6 +31,14 @@ public class E2_IdleState : IdleState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (_isTargetInMinAggroRange)
+        {
+            _stateMachine.ChangeState(_enemy.TargetDetectedState);
+        }
+        if (_isIdleTimeOver)
+        {
+            _stateMachine.ChangeState(_enemy.MoveState);
+        }
     }
 
     public override void PhysicsUpdate()

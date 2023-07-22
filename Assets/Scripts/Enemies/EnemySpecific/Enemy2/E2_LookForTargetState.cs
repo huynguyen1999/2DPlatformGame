@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class E2_LookForTargetState : LookForTargetState
@@ -33,6 +31,15 @@ public class E2_LookForTargetState : LookForTargetState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
+        if (_isTargetInMaxAggroRange)
+        {
+            _stateMachine.ChangeState(_enemy.TargetDetectedState);
+        }
+        else if (_isAllTurnsDone)
+        {
+            _stateMachine.ChangeState(_enemy.MoveState);
+        }
     }
 
     public override void PhysicsUpdate()

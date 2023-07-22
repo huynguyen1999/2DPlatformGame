@@ -23,6 +23,8 @@ public class Entity : MonoBehaviour, IDamageable
     [SerializeField]
     private Transform _targetCheck;
 
+    public Transform ProjectileStart;
+
     protected float _currentHealth;
 
     public virtual void Start()
@@ -130,8 +132,7 @@ public class Entity : MonoBehaviour, IDamageable
     {
         Gizmos.DrawLine(
             _wallCheck.position,
-            _wallCheck.position
-                + (Vector3)(Vector2.right * FacingDirection * EntityData.WallCheckDistance)
+            _wallCheck.position + (Vector3)(Vector2.right * EntityData.WallCheckDistance)
         );
         Gizmos.DrawLine(
             _ledgeCheck.position,
@@ -147,6 +148,11 @@ public class Entity : MonoBehaviour, IDamageable
                 attackDirection.x * EntityData.KnockBackForce.x,
                 EntityData.KnockBackForce.y
             )
+        );
+        Instantiate(
+            EntityData.HitParticle,
+            AliveGO.transform.position,
+            Quaternion.Euler(0f, 0f, Random.Range(0f, 360f))
         );
         _currentHealth -= attackDetails.Damage;
     }

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class E1_StunState : StunState
@@ -24,7 +22,7 @@ public class E1_StunState : StunState
     {
         if (Time.time <= _lastStunTime + _stateData.NormalAttackStunCoolDown)
         {
-            _stateMachine.ChangeState(_stateMachine.PreviousState);
+            _stateMachine.RevertState();
             return;
         }
         base.Enter(data);
