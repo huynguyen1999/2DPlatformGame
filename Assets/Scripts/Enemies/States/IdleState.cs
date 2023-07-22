@@ -13,10 +13,10 @@ public class IdleState : State
     public IdleState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_IdleState stateData
     )
-        : base(entity, stateMachine, animBoolName)
+        : base(entity, stateMachine, animName)
     {
         _stateData = stateData;
         _flipAfterIdle = false;

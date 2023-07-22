@@ -11,11 +11,11 @@ public class E1_MoveState : MoveState
     public E1_MoveState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_MoveState stateData,
         Enemy1 enemy
     )
-        : base(entity, stateMachine, animBoolName, stateData)
+        : base(entity, stateMachine, animName, stateData)
     {
         _enemy = enemy;
     }

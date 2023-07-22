@@ -10,10 +10,10 @@ public class MoveState : State
     public MoveState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_MoveState stateData
     )
-        : base(entity, stateMachine, animBoolName)
+        : base(entity, stateMachine, animName)
     {
         _stateData = stateData;
     }

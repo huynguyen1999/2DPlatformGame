@@ -11,11 +11,11 @@ public class E1_AttackState : AttackState
     public E1_AttackState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_AttackState stateData,
         Enemy1 enemy
     )
-        : base(entity, stateMachine, animBoolName, stateData)
+        : base(entity, stateMachine, animName, stateData)
     {
         _enemy = enemy;
     }

@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1784bcc79dd2248e381fb5f5380fc74c, type: 3}
   m_Name: E1_StunStateData
   m_EditorClassIdentifier: 
+  DefaultStunDuration: 1
+  NormalAttackStunCoolDown: 3

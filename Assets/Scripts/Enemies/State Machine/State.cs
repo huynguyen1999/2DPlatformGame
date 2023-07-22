@@ -7,25 +7,22 @@ public class State
     protected FiniteStateMachine _stateMachine;
     protected Entity _entity;
     protected float _startTime;
-    protected string _animBoolName;
+    protected string _animName;
 
-    public State(Entity entity, FiniteStateMachine stateMachine, string animBoolName)
+    public State(Entity entity, FiniteStateMachine stateMachine, string animName)
     {
         _entity = entity;
         _stateMachine = stateMachine;
-        _animBoolName = animBoolName;
+        _animName = animName;
     }
 
     public virtual void Enter(object data = null)
     {
         _startTime = Time.time;
-        _entity.Anim.SetBool(_animBoolName, true);
+        _entity.Anim.Play(_animName);
     }
 
-    public virtual void Exit()
-    {
-        _entity.Anim.SetBool(_animBoolName, false);
-    }
+    public virtual void Exit() { }
 
     public virtual void LogicUpdate() { }
 

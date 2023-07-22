@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: E1_LookForTargetStateData
   m_EditorClassIdentifier: 
   AmountOfTurns: 2
-  TurnTransitionTime: 0.75
+  TurnTransitionTime: 0.5

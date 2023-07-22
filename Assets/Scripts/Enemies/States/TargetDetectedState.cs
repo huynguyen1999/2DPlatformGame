@@ -17,15 +17,15 @@ public class TargetDetectedState : State
     public TargetDetectedState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_TargetDetectedState stateData
     )
-        : base(entity, stateMachine, animBoolName)
+        : base(entity, stateMachine, animName)
     {
         _stateData = stateData;
     }
 
-    public override void Enter(object data=null)
+    public override void Enter(object data = null)
     {
         base.Enter(data);
         _entity.SetXVelocity(0f);

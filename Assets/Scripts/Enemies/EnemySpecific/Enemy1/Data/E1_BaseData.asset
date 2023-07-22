@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ded4323313748c796ed58e098a7a81, type: 3}
   m_Name: E1_BaseData
   m_EditorClassIdentifier: 
-  MaxHealth: 1000
+  MaxHealth: 100
   WallCheckDistance: 0.3
   LedgeCheckDistance: 0.5
-  MinAggroDistance: 5
-  MaxAggroDistance: 7
+  MinAggroDistance: 8
+  MaxAggroDistance: 10
   CloseRangeActionDistance: 1.8
+  KnockBackForce: {x: 5, y: 5}
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 256

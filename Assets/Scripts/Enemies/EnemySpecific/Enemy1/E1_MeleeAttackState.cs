@@ -11,11 +11,11 @@ public class E1_MeleeAttackState : MeleeAttackState
     public E1_MeleeAttackState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_MeleeAttackState stateData,
         Enemy1 enemy
     )
-        : base(entity, stateMachine, animBoolName, stateData)
+        : base(entity, stateMachine, animName, stateData)
     {
         _enemy = enemy;
     }

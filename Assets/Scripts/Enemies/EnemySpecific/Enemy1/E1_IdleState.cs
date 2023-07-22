@@ -11,11 +11,11 @@ public class E1_IdleState : IdleState
     public E1_IdleState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_IdleState stateData,
         Enemy1 enemy
     )
-        : base(entity, stateMachine, animBoolName, stateData)
+        : base(entity, stateMachine, animName, stateData)
     {
         _enemy = enemy;
     }

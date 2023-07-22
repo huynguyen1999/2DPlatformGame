@@ -14,10 +14,10 @@ public class StunState : State
     public StunState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_StunState stateData
     )
-        : base(entity, stateMachine, animBoolName)
+        : base(entity, stateMachine, animName)
     {
         _stateData = stateData;
     }

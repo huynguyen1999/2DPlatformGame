@@ -35,7 +35,7 @@ public class Enemy1 : Entity
     private D_AttackState _attackStateData;
 
     [SerializeField]
-    private D_MeleeAttackState _meleeAttackState;
+    private D_MeleeAttackState _meleeAttackStateData;
 
     [SerializeField]
     private D_StunState _stunStateData;
@@ -46,28 +46,28 @@ public class Enemy1 : Entity
     public override void Start()
     {
         base.Start();
-        MoveState = new(this, StateMachine, "move", _moveStateData, this);
-        IdleState = new(this, StateMachine, "idle", _idleStateData, this);
+        MoveState = new(this, StateMachine, "Enemy1_Move", _moveStateData, this);
+        IdleState = new(this, StateMachine, "Enemy1_Idle", _idleStateData, this);
         TargetDetectedState = new(
             this,
             StateMachine,
-            "targetDetected",
+            "Enemy1_TargetDetected",
             _targetDetectedStateData,
             this
         );
-        ChargeState = new(this, StateMachine, "charge", _chargeStateData, this);
+        ChargeState = new(this, StateMachine, "Enemy1_Charge", _chargeStateData, this);
         LookForTargetState = new(
             this,
             StateMachine,
-            "lookForTarget",
+            "Enemy1_LookForTarget",
             _lookForTargetStateData,
             this
         );
-        AttackState = new(this, StateMachine, "attack", _attackStateData, this);
-        MeleeAttackState = new(this, StateMachine, "meleeAttack", _meleeAttackState, this);
-        StunState = new(this, StateMachine, "stun", _stunStateData, this);
-        DeadState = new(this, StateMachine, "dead", _deadStateData, this);
-        StateMachine.Initialize(IdleState);
+        AttackState = new(this, StateMachine, "Enemy1_Attack", _attackStateData, this);
+        MeleeAttackState = new(this, StateMachine, "Enemy1_MeleeAttack", _meleeAttackStateData, this);
+        StunState = new(this, StateMachine, "Enemy1_Stun", _stunStateData, this);
+        DeadState = new(this, StateMachine, "Enemy1_Dead", _deadStateData, this);
+        StateMachine.Initialize(MoveState);
     }
 
     public override void OnHit(AttackDetails attackDetails)

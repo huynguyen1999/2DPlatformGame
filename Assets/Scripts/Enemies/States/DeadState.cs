@@ -9,10 +9,10 @@ public class DeadState : State
     public DeadState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_DeadState stateData
     )
-        : base(entity, stateMachine, animBoolName)
+        : base(entity, stateMachine, animName)
     {
         _stateData = stateData;
     }

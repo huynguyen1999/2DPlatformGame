@@ -10,10 +10,10 @@ public class MeleeAttackState : AttackState
     public MeleeAttackState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_MeleeAttackState stateData
     )
-        : base(entity, stateMachine, animBoolName, null)
+        : base(entity, stateMachine, animName, null)
     {
         _stateData = stateData;
     }
@@ -44,19 +44,16 @@ public class MeleeAttackState : AttackState
 
     public override void TriggerAttack()
     {
-        // base.TriggerAttack();
+        //base.TriggerAttack();
         Collider2D[] hitTargets = new Collider2D[1];
         ContactFilter2D contactFilter =
             new() { useLayerMask = true, layerMask = _entity.EntityData.WhatIsTarget };
         Physics2D.OverlapCollider(_entity.AttackTriggerCollider, contactFilter, hitTargets);
         foreach (Collider2D collider in hitTargets)
         {
-            IDamageable targetController = collider?.GetComponent<IDamageable>();
-            AttackDetails attackDetails =
-                new(
-                    attackSourceTransform: _entity.AliveGO.transform,
-                    damage: _stateData.AttackDamage
-                );
+            IDamageable targetController = collider.GetComponent<IDamageable>();
+            AttackDetails attackDetails = new(_entity.AliveGO.transform, _stateData.AttackDamage);
+            Debug.Log(attackDetails);
             targetController?.OnHit(attackDetails);
         }
     }

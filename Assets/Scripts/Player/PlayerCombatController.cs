@@ -105,7 +105,6 @@ public class PlayerCombatController : MonoBehaviour, IDamageable
     {
         if (_playerController.IsDashing)
             return;
-        Debug.Log("transform right: " + attackDetails.AttackSourceTransform.transform.right);
         _stats.TakeDamage(attackDetails.Damage);
         _playerController.KnockBack(attackDetails.AttackSourceTransform.transform.right.x);
     }

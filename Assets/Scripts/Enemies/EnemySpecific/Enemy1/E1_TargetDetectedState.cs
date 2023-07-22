@@ -11,16 +11,16 @@ public class E1_TargetDetectedState : TargetDetectedState
     public E1_TargetDetectedState(
         Entity entity,
         FiniteStateMachine stateMachine,
-        string animBoolName,
+        string animName,
         D_TargetDetectedState stateData,
         Enemy1 enemy
     )
-        : base(entity, stateMachine, animBoolName, stateData)
+        : base(entity, stateMachine, animName, stateData)
     {
         _enemy = enemy;
     }
 
-    public override void Enter(object data=null)
+    public override void Enter(object data = null)
     {
         base.Enter(data);
     }
@@ -43,7 +43,7 @@ public class E1_TargetDetectedState : TargetDetectedState
         {
             _stateMachine.ChangeState(_enemy.ChargeState);
         }
-        else if (!_isTargetInMaxAggroRange)
+        if (!_isTargetInMaxAggroRange)
         {
             _stateMachine.ChangeState(_enemy.LookForTargetState);
         }
