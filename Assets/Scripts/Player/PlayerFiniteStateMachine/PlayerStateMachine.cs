@@ -15,6 +15,8 @@ public class PlayerStateMachine
 
     public void ChangeState(PlayerState newState, object data = null)
     {
+        if (CurrentState == newState)
+            return;
         CurrentState.Exit();
         PreviousState = CurrentState;
         CurrentState = newState;

@@ -1,10 +1,8 @@
 using UnityEngine;
 
-public class PlayerInAirState : PlayerState
+public class PlayerWallGrabState : PlayerTouchingWallState
 {
-    private int xInput;
-
-    public PlayerInAirState(
+    public PlayerWallGrabState(
         Player player,
         PlayerStateMachine stateMachine,
         PlayerData playerData,
@@ -25,19 +23,17 @@ public class PlayerInAirState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        xInput = player.InputHandler.NormalizedInputX;
-        if (isGrounded && player.CurrentVelocity.y < 0.01f)
-        {
-            stateMachine.ChangeState(player.LandState, new LandDTO(isHardLand: true));
-        }
-        else
-        {
-            player.CheckIfShouldFlip(xInput);
-            player.SetVelocityX(playerData.movementVelocity * xInput);
-        }
+        player.SetVelocityX(0f);
+        player.SetVelocityY(0f);
 
-        player.Anim.SetFloat("yVelocity", player.CurrentVelocity.y);
-        player.Anim.SetFloat("xVelocity", Mathf.Abs(player.CurrentVelocity.x));
+        if (yInput > 0)
+        {
+            stateMachine.ChangeState(player.WallClimbState);
+        }
+        else if (xInput == 0)
+        {
+            stateMachine.ChangeState(player.WallSlideState);
+        }
     }
 
     public override void PhysicsUpdate()
@@ -48,6 +44,5 @@ public class PlayerInAirState : PlayerState
     public override void DoChecks()
     {
         base.DoChecks();
-        isGrounded = player.CheckIfGrounded();
     }
 }

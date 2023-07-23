@@ -2,38 +2,41 @@ using UnityEngine;
 
 public class PlayerJumpState : PlayerAbilityState
 {
+    private int amountOfJumpsLeft;
+
     public PlayerJumpState(
         Player player,
         PlayerStateMachine stateMachine,
         PlayerData playerData,
         string animationBoolName
     )
-        : base(player, stateMachine, playerData, animationBoolName) { }
+        : base(player, stateMachine, playerData, animationBoolName)
+    {
+        amountOfJumpsLeft = playerData.amountOfJumps;
+    }
 
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        player.SetVelocityY(playerData.jumpVelocity);
         isAbilityDone = true;
+        if (!CanJump())
+        {
+            stateMachine.RevertState();
+            return;
+        }
+        player.SetVelocityY(playerData.jumpVelocity);
+        amountOfJumpsLeft--;
     }
 
-    public override void Exit()
+    public bool CanJump()
     {
-        base.Exit();
+        return amountOfJumpsLeft > 0;
     }
 
-    public override void LogicUpdate()
+    public void ResetAmountOfJumpsLeft()
     {
-        base.LogicUpdate();
+        amountOfJumpsLeft = playerData.amountOfJumps;
     }
 
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
-    public override void DoChecks()
-    {
-        base.DoChecks();
-    }
+    public void DecreaseAmountOfJumpsLeft() => amountOfJumpsLeft--;
 }

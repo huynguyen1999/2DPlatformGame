@@ -10,16 +10,6 @@ public class PlayerMoveState : PlayerGroundedState
     )
         : base(player, stateMachine, playerData, animationBoolName) { }
 
-    public override void Enter(object data = null)
-    {
-        base.Enter(data);
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
@@ -34,10 +24,5 @@ public class PlayerMoveState : PlayerGroundedState
         {
             stateMachine.ChangeState(player.IdleState);
         }
-    }
-
-    public override void DoChecks()
-    {
-        base.DoChecks();
     }
 }

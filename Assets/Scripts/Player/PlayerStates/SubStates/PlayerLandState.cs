@@ -60,14 +60,4 @@ public class PlayerLandState : PlayerGroundedState
         }
         stateMachine.ChangeState(player.IdleState);
     }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
-    public override void DoChecks()
-    {
-        base.DoChecks();
-    }
 }

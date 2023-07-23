@@ -18,11 +18,6 @@ public class PlayerAbilityState : PlayerState
         isAbilityDone = false;
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
@@ -36,15 +31,5 @@ public class PlayerAbilityState : PlayerState
         {
             stateMachine.ChangeState(player.InAirState);
         }
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
-    public override void DoChecks()
-    {
-        base.DoChecks();
     }
 }

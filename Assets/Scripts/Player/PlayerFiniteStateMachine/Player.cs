@@ -8,7 +8,10 @@ public enum PlayerAnimation
     Move,
     Jump,
     Land,
-    InAir
+    InAir,
+    WallClimb,
+    WallGrab,
+    WallSlide
 }
 
 public class Player : MonoBehaviour
@@ -17,6 +20,7 @@ public class Player : MonoBehaviour
     public Animator Anim { get; private set; }
     public Rigidbody2D RB { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
+    public BoxCollider2D BoxCollider { get; private set; }
     #endregion
 
     #region State Variables
@@ -26,6 +30,9 @@ public class Player : MonoBehaviour
     public PlayerJumpState JumpState { get; private set; }
     public PlayerLandState LandState { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
+    public PlayerWallClimbState WallClimbState { get; private set; }
+    public PlayerWallSlideState WallSlideState { get; private set; }
+    public PlayerWallGrabState WallGrabState { get; private set; }
     #endregion
 
     #region Other Variables
@@ -89,6 +96,24 @@ public class Player : MonoBehaviour
             playerData,
             PlayerAnimation.InAir.ToString()
         );
+        WallClimbState = new PlayerWallClimbState(
+            this,
+            StateMachine,
+            playerData,
+            PlayerAnimation.WallClimb.ToString()
+        );
+        WallGrabState = new PlayerWallGrabState(
+            this,
+            StateMachine,
+            playerData,
+            PlayerAnimation.WallGrab.ToString()
+        );
+        WallSlideState = new PlayerWallSlideState(
+            this,
+            StateMachine,
+            playerData,
+            PlayerAnimation.WallSlide.ToString()
+        );
         FacingDirection = 1;
     }
 
@@ -96,6 +121,7 @@ public class Player : MonoBehaviour
     {
         Anim = GetComponent<Animator>();
         RB = GetComponent<Rigidbody2D>();
+        BoxCollider = GetComponent<BoxCollider2D>();
         InputHandler = GetComponent<PlayerInputHandler>();
         StateMachine.Initialize(IdleState);
     }
@@ -107,6 +133,11 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, playerData.groundCheckRadius);
+        Gizmos.DrawLine(
+            wallCheck.position,
+            wallCheck.position
+                + new Vector3(playerData.wallCheckDistance * transform.right.x, 0f, 0f)
+        );
     }
     #endregion
 
@@ -138,6 +169,16 @@ public class Player : MonoBehaviour
         return Physics2D.OverlapCircle(
             groundCheck.position,
             playerData.groundCheckRadius,
+            playerData.whatIsGround
+        );
+    }
+
+    public bool CheckIfTouchingWall()
+    {
+        return Physics2D.Raycast(
+            wallCheck.position,
+            transform.right,
+            playerData.wallCheckDistance,
             playerData.whatIsGround
         );
     }

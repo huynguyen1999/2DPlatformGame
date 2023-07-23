@@ -11,7 +11,8 @@ public class PlayerState
     protected float startTime;
     private string animationBoolName;
     protected bool isAnimationFinished,
-        isGrounded;
+        isGrounded,
+        isTouchingWall;
 
     public PlayerState(
         Player player,
@@ -49,6 +50,7 @@ public class PlayerState
     public virtual void DoChecks()
     {
         isGrounded = player.CheckIfGrounded();
+        isTouchingWall = player.CheckIfTouchingWall();
     }
 
     public virtual void AnimationTrigger() { }
