@@ -63,7 +63,7 @@ public class RangedAttackState : AttackState
         ArrowController arrowController = arrow.GetComponent<ArrowController>();
         if (!arrowController)
             return;
-        arrowController.FireArrow(
+        arrowController?.FireArrow(
             _stateData.ProjectileSpeed,
             _stateData.ProjectileTravelDistance,
             _stateData.ProjectileDamage,
