@@ -241,7 +241,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.37, y: -15.92, z: -10.007097}
+  m_LocalPosition: {x: 8.799999, y: -13.79, z: -10.007097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5297,12 +5297,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1139211338}
   - component: {fileID: 1139211337}
-  - component: {fileID: 1139211336}
   - component: {fileID: 1139211339}
   - component: {fileID: 1139211342}
   - component: {fileID: 1139211341}
   - component: {fileID: 1139211340}
   - component: {fileID: 1139211343}
+  - component: {fileID: 1139211344}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -5310,19 +5310,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1139211336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1139211335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96a56762eab6471481a6b573d92b5b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputHoldTime: 0.1
 --- !u!114 &1139211337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5335,7 +5322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 6aa5a4cc90f1a4e008703088a32e8031, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: a181a88fc3eff4db380f249c8d2b957b, type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -5350,7 +5337,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1139211336}
+      - m_Target: {fileID: 1139211344}
         m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
         m_MethodName: OnMoveInput
         m_Mode: 0
@@ -5366,7 +5353,7 @@ MonoBehaviour:
     m_ActionName: Gameplay/Movement[/Keyboard/w,/Keyboard/a,/Keyboard/s,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1139211336}
+      - m_Target: {fileID: 1139211344}
         m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
         m_MethodName: OnJumpInput
         m_Mode: 0
@@ -5380,22 +5367,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: cb684755-1e28-4cc1-b1a9-c6d534c10607
     m_ActionName: Gameplay/Jump[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1139211336}
-        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnGrabInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 919a4514-213e-4c25-926b-287613a6c188
-    m_ActionName: Gameplay/Grab[/Keyboard/g]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Gameplay
@@ -5409,7 +5380,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139211335}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.81, y: -6.05, z: -0.007096986}
+  m_LocalPosition: {x: 6.24, y: -3.92, z: -0.007096986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5572,13 +5543,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1139211335}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4b39c5e078fa4b1a800772d3fc7592a, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d625c4db246e4f9fb30f9b59f6f19ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 27e3740c134514b2aa37a1efd1ddc791, type: 2}
   groundCheck: {fileID: 754279245}
   wallCheck: {fileID: 483603265}
   ledgeCheck: {fileID: 0}
+  playerData: {fileID: 11400000, guid: 911f5d29c7ee94ad0af0b637da758251, type: 2}
+--- !u!114 &1139211344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139211335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b17e6885f2f304b20bd8d63ca17b8026, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputHoldTime: 0.2
 --- !u!1 &1213476711
 GameObject:
   m_ObjectHideFlags: 0
@@ -121194,7 +121178,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124966547}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.37, y: -15.92, z: -10.007097}
+  m_LocalPosition: {x: 8.799999, y: -13.79, z: -10.007097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -121401,11 +121385,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8442120731978572806, guid: 6064480c984974d5892f090130c74633, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.64
+      value: 9.33
       objectReference: {fileID: 0}
     - target: {fileID: 8442120731978572806, guid: 6064480c984974d5892f090130c74633, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.02
+      value: -3.91
       objectReference: {fileID: 0}
     - target: {fileID: 8442120731978572806, guid: 6064480c984974d5892f090130c74633, type: 3}
       propertyPath: m_LocalPosition.z
