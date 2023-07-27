@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerInAirState : PlayerBaseState
 {
+    private bool coyoteTime = false;
+
     public PlayerInAirState(
         PlayerHSM currentContext,
         PlayerStateFactory states,
@@ -16,12 +18,16 @@ public class PlayerInAirState : PlayerBaseState
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        context.StartCoroutine(StartCoyoteTime());
+        if (coyoteTime == true)
+        {
+            context.StartCoroutine(StartCoyoteTime());
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
+        coyoteTime = false;
     }
 
     public override void LogicUpdate()
@@ -69,6 +75,11 @@ public class PlayerInAirState : PlayerBaseState
             newState = states.TouchingWallState;
         }
         SwitchState(newState);
+    }
+
+    public void ActivateCoyoteTime()
+    {
+        coyoteTime = true;
     }
 
     public IEnumerator StartCoyoteTime()

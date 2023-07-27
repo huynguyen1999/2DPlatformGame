@@ -14,7 +14,11 @@ public class PlayerGroundedState : PlayerBaseState
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        states.JumpState.ResetAmountOfJumpsLeft();
+        if (isRootState)
+        {
+            Debug.Log("reset amount of jumps from " + this.GetType().Name);
+            states.JumpState.ResetAmountOfJumpsLeft();
+        }
         context.SetVelocityX(0f);
         context.SetVelocityY(0f);
     }
@@ -67,6 +71,7 @@ public class PlayerGroundedState : PlayerBaseState
         else if (!isGrounded)
         {
             newState = states.InAirState;
+            states.InAirState.ActivateCoyoteTime();
         }
         SwitchState(newState);
     }
