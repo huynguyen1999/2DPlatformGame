@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newPlayerData", menuName = "Data/Player Data/Base Data", order = 1)]
 public class PlayerData : ScriptableObject
 {
+    [Header("HSM")]
+    public float freezeMovementCoolDown = 0.5f;
+
     [Header("Move State")]
     public float movementVelocity = 10f;
 
@@ -24,6 +27,10 @@ public class PlayerData : ScriptableObject
 
     [Header("Wall Climb State")]
     public float wallClimbVelocity = 5f;
+
+    [Header("Wall Jump State")]
+    public Vector2 wallJumpForce = new Vector2(20f, 10f);
+    public float wallJumpCoolDown = 0.4f;
 
     [Header("Check Variables")]
     public float groundCheckRadius = 0.3f;

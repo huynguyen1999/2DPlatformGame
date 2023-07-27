@@ -43,6 +43,7 @@ public class PlayerHSM : MonoBehaviour
         }
     }
     public int FacingDirection { get; private set; }
+    public bool CanMoveInAir { get; private set; }
     #endregion
     //-----------------------------//
     #region Unity Callback Functions
@@ -50,6 +51,7 @@ public class PlayerHSM : MonoBehaviour
     {
         states = new PlayerStateFactory(this, playerData);
         FacingDirection = 1;
+        CanMoveInAir = true;
     }
 
     private void Start()
@@ -125,6 +127,17 @@ public class PlayerHSM : MonoBehaviour
         );
     }
 
+    #endregion
+
+    #region Coroutines
+    public void FreezeMovement() => StartCoroutine(FreezeMovementCoroutine());
+
+    private IEnumerator FreezeMovementCoroutine()
+    {
+        CanMoveInAir = false;
+        yield return new WaitForSeconds(playerData.freezeMovementCoolDown);
+        CanMoveInAir = true;
+    }
     #endregion
 
     #region Other Methods

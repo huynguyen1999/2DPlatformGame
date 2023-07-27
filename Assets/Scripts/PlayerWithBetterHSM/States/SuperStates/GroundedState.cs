@@ -16,7 +16,6 @@ public class PlayerGroundedState : PlayerBaseState
         base.Enter(data);
         if (isRootState)
         {
-            Debug.Log("reset amount of jumps from " + this.GetType().Name);
             states.JumpState.ResetAmountOfJumpsLeft();
         }
         context.SetVelocityX(0f);

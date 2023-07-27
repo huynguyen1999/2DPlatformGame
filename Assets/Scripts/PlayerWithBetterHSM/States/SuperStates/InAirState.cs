@@ -20,20 +20,19 @@ public class PlayerInAirState : PlayerBaseState
         base.Enter(data);
         if (coyoteTime == true)
         {
-            context.StartCoroutine(StartCoyoteTime());
+            context.StartCoroutine(DeactivateCoyoteTime());
         }
     }
 
     public override void Exit()
     {
         base.Exit();
-        coyoteTime = false;
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (!isGrounded || Mathf.Abs(context.CurrentVelocity.y) > 0.01f)
+        if ((!isGrounded || Mathf.Abs(context.CurrentVelocity.y) > 0.01f) && context.CanMoveInAir)
         {
             context.CheckIfShouldFlip(xInput);
             context.SetVelocityX(playerData.movementVelocity * xInput);
@@ -77,14 +76,12 @@ public class PlayerInAirState : PlayerBaseState
         SwitchState(newState);
     }
 
-    public void ActivateCoyoteTime()
-    {
-        coyoteTime = true;
-    }
+    public void ActivateCoyoteTime() => coyoteTime = true;
 
-    public IEnumerator StartCoyoteTime()
+    public IEnumerator DeactivateCoyoteTime()
     {
         yield return new WaitForSeconds(playerData.coyoteTime);
         states.JumpState.DecreaseAmountOfJumpsLeft();
+        coyoteTime = false;
     }
 }

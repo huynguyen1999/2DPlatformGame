@@ -12,13 +12,14 @@ public class PlayerMoveState : PlayerGroundedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
+        context.SetVelocityX(playerData.movementVelocity * xInput);
         context.CheckIfShouldFlip(xInput);
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        context.SetVelocityX(playerData.movementVelocity * xInput);
     }
 
     public override void InitializeSubState() { }

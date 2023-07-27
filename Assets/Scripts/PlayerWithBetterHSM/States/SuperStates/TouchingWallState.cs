@@ -65,6 +65,8 @@ public class PlayerTouchingWallState : PlayerBaseState
         {
             subState = states.WallGrabState;
         }
+        else
+            subState = states.WallSlideState;
         SetSubState(subState);
         subState?.Enter();
     }
@@ -72,13 +74,18 @@ public class PlayerTouchingWallState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         PlayerBaseState newState = null;
-        if (xInput * context.FacingDirection < 0)
+        // if (xInput * context.FacingDirection < 0)
+        if (yInput < 0)
         {
             newState = states.InAirState;
         }
         else if (isGrounded && context.CurrentVelocity.y < 0.01f)
         {
             newState = states.GroundedState;
+        }
+        else if (isTouchingWall && jumpInput && states.WallJumpState.CanWallJump())
+        {
+            newState = states.AbilityState;
         }
         else if (!isTouchingWall)
         {

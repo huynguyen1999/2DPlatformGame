@@ -16,6 +16,7 @@ public class PlayerStateFactory
     public PlayerInAirState InAirState;
     public PlayerTouchingWallState TouchingWallState;
     public PlayerLedgeClimbState LedgeClimbState;
+    public PlayerWallJumpState WallJumpState;
 
     public PlayerStateFactory(PlayerHSM currentContext, PlayerData playerData)
     {
@@ -39,5 +40,6 @@ public class PlayerStateFactory
             true
         );
         LedgeClimbState = new PlayerLedgeClimbState(context, this, playerData, "LedgeClimb", true);
+        WallJumpState = new PlayerWallJumpState(context, this, playerData, "WallJump", true);
     }
 }

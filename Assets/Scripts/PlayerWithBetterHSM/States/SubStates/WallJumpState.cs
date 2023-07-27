@@ -1,8 +1,13 @@
-public class PlayerJumpState : PlayerAbilityState
-{
-    private int amountOfJumpsLeft;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
-    public PlayerJumpState(
+public class PlayerWallJumpState : PlayerAbilityState
+{
+    // private bool coyoteTime = false;
+    private float lastWallJump = Mathf.NegativeInfinity;
+
+    public PlayerWallJumpState(
         PlayerHSM currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
@@ -11,20 +16,28 @@ public class PlayerJumpState : PlayerAbilityState
     )
         : base(currentContext, states, playerData, animBoolName, isRootState)
     {
-        amountOfJumpsLeft = playerData.amountOfJumps;
+        // if (coyoteTime == true)
+        // {
+        //     context.StartCoroutine(DeactivateCoyoteTime());
+        // }
     }
 
     public override void Enter(object data = null)
     {
         base.Enter(data);
         isAbilityDone = true;
-        context.SetVelocityY(playerData.jumpVelocity);
-        amountOfJumpsLeft--;
+        context.Flip();
+        context.RB.velocity = new Vector2(
+            playerData.wallJumpForce.x * context.FacingDirection,
+            playerData.wallJumpForce.y
+        );
+        context.FreezeMovement();
     }
 
     public override void Exit()
     {
         base.Exit();
+        lastWallJump = Time.time;
     }
 
     public override void LogicUpdate()
@@ -46,15 +59,8 @@ public class PlayerJumpState : PlayerAbilityState
 
     public override void CheckSwitchStates() { }
 
-    public bool CanJump()
+    public bool CanWallJump()
     {
-        return amountOfJumpsLeft > 0;
+        return Time.time > lastWallJump + playerData.wallJumpCoolDown;
     }
-
-    public void ResetAmountOfJumpsLeft()
-    {
-        amountOfJumpsLeft = playerData.amountOfJumps;
-    }
-
-    public void DecreaseAmountOfJumpsLeft() => amountOfJumpsLeft--;
 }
