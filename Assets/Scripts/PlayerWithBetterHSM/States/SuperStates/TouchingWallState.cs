@@ -6,6 +6,7 @@ public class PlayerTouchingWallState : PlayerBaseState
 {
     private float previousGravityScale;
     private float lastTouchWallTime = Mathf.NegativeInfinity;
+    private bool canUseSkill;
 
     public PlayerTouchingWallState(
         PlayerHSM currentContext,
@@ -26,6 +27,14 @@ public class PlayerTouchingWallState : PlayerBaseState
         }
 
         context.SetVelocityX(0f);
+        context.StartCoroutine(ActivateSkillCoroutine());
+    }
+
+    private IEnumerator ActivateSkillCoroutine()
+    {
+        canUseSkill = false;
+        yield return new WaitForSeconds(playerData.skillDelay);
+        canUseSkill = true;
     }
 
     public override void Exit()
@@ -83,7 +92,7 @@ public class PlayerTouchingWallState : PlayerBaseState
         {
             newState = states.GroundedState;
         }
-        else if (isTouchingWall && jumpInput && states.WallJumpState.CanWallJump())
+        else if (isTouchingWall && jumpInput && states.WallJumpState.CanWallJump() && canUseSkill)
         {
             newState = states.AbilityState;
         }

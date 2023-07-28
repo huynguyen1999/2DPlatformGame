@@ -15,8 +15,11 @@ public class PlayerStateFactory
     public PlayerGroundedState GroundedState;
     public PlayerInAirState InAirState;
     public PlayerTouchingWallState TouchingWallState;
-    public PlayerLedgeClimbState LedgeClimbState;
     public PlayerWallJumpState WallJumpState;
+    public PlayerTouchingLedgeState TouchingLedgeState;
+    public PlayerLedgeClimbState LedgeClimbState;
+    public PlayerLedgeGrabState LedgeGrabState;
+    public PlayerLedgeHoldState LedgeHoldState;
 
     public PlayerStateFactory(PlayerHSM currentContext, PlayerData playerData)
     {
@@ -30,6 +33,7 @@ public class PlayerStateFactory
         WallGrabState = new PlayerWallGrabState(context, this, playerData, "WallGrab");
         WallSlideState = new PlayerWallSlideState(context, this, playerData, "WallSlide");
         AbilityState = new PlayerAbilityState(context, this, playerData, "Ability", true);
+        WallJumpState = new PlayerWallJumpState(context, this, playerData, "WallJump", true);
         GroundedState = new PlayerGroundedState(context, this, playerData, "Grounded", true);
         InAirState = new PlayerInAirState(context, this, playerData, "InAir", true);
         TouchingWallState = new PlayerTouchingWallState(
@@ -39,7 +43,15 @@ public class PlayerStateFactory
             "TouchingWall",
             true
         );
-        LedgeClimbState = new PlayerLedgeClimbState(context, this, playerData, "LedgeClimb", true);
-        WallJumpState = new PlayerWallJumpState(context, this, playerData, "WallJump", true);
+        TouchingLedgeState = new PlayerTouchingLedgeState(
+            context,
+            this,
+            playerData,
+            "TouchingLedge",
+            true
+        );
+        LedgeGrabState = new PlayerLedgeGrabState(context, this, playerData, "LedgeGrab");
+        LedgeHoldState = new PlayerLedgeHoldState(context, this, playerData, "LedgeHold");
+        LedgeClimbState = new PlayerLedgeClimbState(context, this, playerData, "LedgeClimb");
     }
 }

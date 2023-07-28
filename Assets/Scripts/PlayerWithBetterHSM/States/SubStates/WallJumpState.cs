@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class PlayerWallJumpState : PlayerAbilityState
 {
-    // private bool coyoteTime = false;
     private float lastWallJump = Mathf.NegativeInfinity;
 
     public PlayerWallJumpState(
@@ -14,13 +13,7 @@ public class PlayerWallJumpState : PlayerAbilityState
         string animBoolName,
         bool isRootState = false
     )
-        : base(currentContext, states, playerData, animBoolName, isRootState)
-    {
-        // if (coyoteTime == true)
-        // {
-        //     context.StartCoroutine(DeactivateCoyoteTime());
-        // }
-    }
+        : base(currentContext, states, playerData, animBoolName, isRootState) { }
 
     public override void Enter(object data = null)
     {
@@ -31,7 +24,7 @@ public class PlayerWallJumpState : PlayerAbilityState
             playerData.wallJumpForce.x * context.FacingDirection,
             playerData.wallJumpForce.y
         );
-        context.FreezeMovement();
+        states.InAirState.FreezeAction();
     }
 
     public override void Exit()

@@ -43,7 +43,6 @@ public class PlayerHSM : MonoBehaviour
         }
     }
     public int FacingDirection { get; private set; }
-    public bool CanMoveInAir { get; private set; }
     #endregion
     //-----------------------------//
     #region Unity Callback Functions
@@ -51,7 +50,6 @@ public class PlayerHSM : MonoBehaviour
     {
         states = new PlayerStateFactory(this, playerData);
         FacingDirection = 1;
-        CanMoveInAir = true;
     }
 
     private void Start()
@@ -81,6 +79,11 @@ public class PlayerHSM : MonoBehaviour
             wallCheck.position
                 + new Vector3(playerData.wallCheckDistance * transform.right.x, 0f, 0f)
         );
+        Gizmos.DrawLine(
+            ledgeCheck.position,
+            ledgeCheck.position
+                + new Vector3(playerData.wallCheckDistance * transform.right.x, 0f, 0f)
+        );
     }
     #endregion
 
@@ -96,6 +99,11 @@ public class PlayerHSM : MonoBehaviour
     {
         workspace.Set(CurrentVelocity.x, velocity);
         RB.velocity = workspace;
+    }
+
+    public void SetVelocity(Vector2 velocity2D)
+    {
+        RB.velocity = velocity2D;
     }
     #endregion
 
@@ -127,24 +135,58 @@ public class PlayerHSM : MonoBehaviour
         );
     }
 
-    #endregion
-
-    #region Coroutines
-    public void FreezeMovement() => StartCoroutine(FreezeMovementCoroutine());
-
-    private IEnumerator FreezeMovementCoroutine()
+    public bool CheckIfTouchingLedge()
     {
-        CanMoveInAir = false;
-        yield return new WaitForSeconds(playerData.freezeMovementCoolDown);
-        CanMoveInAir = true;
+        return Physics2D.Raycast(
+            ledgeCheck.position,
+            transform.right,
+            playerData.wallCheckDistance,
+            playerData.whatIsGround
+        );
     }
+
     #endregion
+
+    // #region Coroutines
+    // public void FreezeAction() => StartCoroutine(FreezeActionCoroutine());
+
+    // private IEnumerator FreezeActionCoroutine()
+    // {
+    //     CanDoAction = false;
+    //     yield return new WaitForSeconds(playerData.freezeMovementCoolDown);
+    //     CanDoAction = true;
+    // }
+    // #endregion
 
     #region Other Methods
     private void Initialize(PlayerBaseState initState)
     {
         currentState = initState;
         currentState.Enter();
+    }
+
+    public Vector2 DetermineCornerPosition()
+    {
+        RaycastHit2D xHit = Physics2D.Raycast(
+            wallCheck.position,
+            transform.right,
+            playerData.wallCheckDistance,
+            playerData.whatIsGround
+        );
+        float xDist = xHit.distance;
+        workspace.Set(xDist * FacingDirection, 0f);
+        RaycastHit2D yHit = Physics2D.Raycast(
+            ledgeCheck.position + (Vector3)(workspace),
+            -transform.up,
+            ledgeCheck.position.y - wallCheck.position.y,
+            playerData.whatIsGround
+        );
+        float yDist = yHit.distance;
+        workspace.Set(
+            wallCheck.position.x + (xDist * FacingDirection),
+            ledgeCheck.position.y - yDist
+        );
+        return workspace;
     }
 
     public void Flip()

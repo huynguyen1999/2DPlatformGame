@@ -21,7 +21,8 @@ public abstract class PlayerBaseState
         yInput;
     protected bool jumpInput;
     protected bool isGrounded,
-        isTouchingWall;
+        isTouchingWall,
+        isTouchingLedge;
 
     public PlayerBaseState(
         PlayerHSM currentContext,
@@ -80,6 +81,7 @@ public abstract class PlayerBaseState
     {
         isGrounded = context.CheckIfGrounded();
         isTouchingWall = context.CheckIfTouchingWall();
+        isTouchingLedge = context.CheckIfTouchingLedge();
     }
 
     /// <summary>

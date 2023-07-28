@@ -12,14 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907c9a25f1eca4b948bb31dd107ce678, type: 3}
   m_Name: playerData
   m_EditorClassIdentifier: 
+  freezeMovementCoolDown: 0.3
   movementVelocity: 10
   jumpVelocity: 15
   amountOfJumps: 2
   coyoteTime: 0.2
   wallStickTime: 2
-  wallTouchCoolDown: 0.5
+  wallTouchCoolDown: 0.2
   wallSlideVelocity: 2
   wallClimbVelocity: 5
+  wallJumpForce: {x: 13, y: 13}
+  wallJumpCoolDown: 0.2
   groundCheckRadius: 0.3
   wallCheckDistance: 0.5
   whatIsGround:

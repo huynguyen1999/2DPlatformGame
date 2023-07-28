@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerInAirState : PlayerBaseState
 {
     private bool coyoteTime = false;
+    private bool canDoAction = true;
 
     public PlayerInAirState(
         PlayerHSM currentContext,
@@ -32,10 +33,14 @@ public class PlayerInAirState : PlayerBaseState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if ((!isGrounded || Mathf.Abs(context.CurrentVelocity.y) > 0.01f) && context.CanMoveInAir)
+        if (canDoAction && (!isGrounded || Mathf.Abs(context.CurrentVelocity.y) > 0.01f))
         {
             context.CheckIfShouldFlip(xInput);
             context.SetVelocityX(playerData.movementVelocity * xInput);
+        }
+        if (isTouchingWall && !isTouchingLedge)
+        {
+            states.TouchingLedgeState.SetDetectedPosition(context.transform.position);
         }
         context.Anim.SetFloat("yVelocity", context.CurrentVelocity.y);
         context.Anim.SetFloat("xVelocity", Mathf.Abs(context.CurrentVelocity.x));
@@ -44,6 +49,10 @@ public class PlayerInAirState : PlayerBaseState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        if (Mathf.Abs(context.CurrentVelocity.y) > playerData.maxFallingSpeed)
+        {
+            context.SetVelocityY(-playerData.maxFallingSpeed);
+        }
     }
 
     public override void DoPhysicsCheck()
@@ -56,7 +65,7 @@ public class PlayerInAirState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         PlayerBaseState newState = null;
-        if (jumpInput && states.JumpState.CanJump())
+        if (canDoAction && jumpInput && states.JumpState.CanJump())
         {
             newState = states.AbilityState;
         }
@@ -73,6 +82,10 @@ public class PlayerInAirState : PlayerBaseState
         {
             newState = states.TouchingWallState;
         }
+        else if (isTouchingWall && !isTouchingLedge)
+        {
+            newState = states.TouchingLedgeState;
+        }
         SwitchState(newState);
     }
 
@@ -83,5 +96,14 @@ public class PlayerInAirState : PlayerBaseState
         yield return new WaitForSeconds(playerData.coyoteTime);
         states.JumpState.DecreaseAmountOfJumpsLeft();
         coyoteTime = false;
+    }
+
+    public void FreezeAction() => context.StartCoroutine(FreezeActionCoroutine());
+
+    private IEnumerator FreezeActionCoroutine()
+    {
+        canDoAction = false;
+        yield return new WaitForSeconds(playerData.freezeMovementCoolDown);
+        canDoAction = true;
     }
 }
