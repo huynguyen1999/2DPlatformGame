@@ -83,7 +83,6 @@ public class PlayerTouchingWallState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         PlayerBaseState newState = null;
-        // if (xInput * context.FacingDirection < 0)
         if (yInput < 0)
         {
             newState = states.InAirState;

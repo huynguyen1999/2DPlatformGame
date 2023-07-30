@@ -48,7 +48,10 @@ public class PlayerAbilityState : PlayerBaseState
         if (jumpInput)
         {
             context.InputHandler.UseJumpInput();
-            if (context.previousState == states.TouchingWallState)
+            if (
+                context.previousState == states.TouchingWallState
+                || context.previousState == states.TouchingLedgeState
+            )
             {
                 subState = states.WallJumpState;
             }

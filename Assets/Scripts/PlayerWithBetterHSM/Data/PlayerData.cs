@@ -19,7 +19,7 @@ public class PlayerData : ScriptableObject
     public float coyoteTime = 0.2f; // Time before player can jump again after leaving the ground
     public float maxFallingSpeed = 20f;
 
-    [Header("Wall Touching State")]
+    [Header("Touching Wall State")]
     public float wallStickTime = 5f;
     public float wallTouchCoolDown = 0.3f;
     public float skillDelay = 0.1f;
@@ -33,6 +33,9 @@ public class PlayerData : ScriptableObject
     [Header("Wall Jump State")]
     public Vector2 wallJumpForce = new Vector2(20f, 10f);
     public float wallJumpCoolDown = 0.4f;
+
+    [Header("Touching Ledge State")]
+    public float ledgeTouchCoolDown = 0.3f;
 
     [Header("Ledge Climb State")]
     public Vector2 startOffset;

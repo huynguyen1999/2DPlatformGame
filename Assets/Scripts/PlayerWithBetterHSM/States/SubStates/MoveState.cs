@@ -17,11 +17,6 @@ public class PlayerMoveState : PlayerGroundedState
         context.CheckIfShouldFlip(xInput);
     }
 
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
     public override void InitializeSubState() { }
 
     public override void CheckSwitchStates()

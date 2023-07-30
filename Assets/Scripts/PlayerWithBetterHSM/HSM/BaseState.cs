@@ -42,11 +42,11 @@ public abstract class PlayerBaseState
     public virtual void Enter(object data = null)
     {
         CheckInput();
-        InitializeSubState();
         DoPhysicsCheck();
-        context.Anim.SetBool(animBoolName, true);
         startTime = Time.time;
         isAnimationFinished = false;
+        context.Anim.SetBool(animBoolName, true);
+        InitializeSubState();
     }
 
     public virtual void Exit()
@@ -81,7 +81,7 @@ public abstract class PlayerBaseState
     {
         isGrounded = context.CheckIfGrounded();
         isTouchingWall = context.CheckIfTouchingWall();
-        isTouchingLedge = context.CheckIfTouchingLedge();
+        isTouchingLedge = context.CheckIfTouchingLedge() == false && isTouchingWall == true;
     }
 
     /// <summary>

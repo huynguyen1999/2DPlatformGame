@@ -9,24 +9,10 @@ public class PlayerLedgeGrabState : PlayerTouchingLedgeState
     )
         : base(currentContext, states, playerData, animBoolName, isRootState) { }
 
-    public override void Enter(object data = null)
-    {
-        base.Enter(data);
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
+        isAnimationFinished = context.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
     }
 
     public override void InitializeSubState() { }
@@ -34,6 +20,10 @@ public class PlayerLedgeGrabState : PlayerTouchingLedgeState
     public override void CheckSwitchStates()
     {
         PlayerBaseState newState = null;
+        if (isAnimationFinished)
+        {
+            newState = states.LedgeHoldState;
+        }
         SwitchState(newState);
     }
 }

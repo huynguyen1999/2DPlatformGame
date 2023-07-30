@@ -241,7 +241,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.32, y: -15.83, z: -10.007097}
+  m_LocalPosition: {x: 8.190001, y: -15.91, z: -10.007097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -302,50 +302,6 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
---- !u!1 &543360499
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 543360501}
-  - component: {fileID: 543360500}
-  m_Layer: 0
-  m_Name: PlayerAfterImagePool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &543360500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 543360499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0acc5f746f9b4ab78a4c7b60f5f6f42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &543360501
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 543360499}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.708406, y: 15.750908, z: -0.044065073}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &594418783
 GameObject:
   m_ObjectHideFlags: 0
@@ -5378,7 +5334,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139211335}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.76, y: -5.96, z: -0.007096986}
+  m_LocalPosition: {x: 5.63, y: -6.04, z: -0.007096986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5386,7 +5342,7 @@ Transform:
   - {fileID: 483603265}
   - {fileID: 2098178626}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1139211339
 SpriteRenderer:
@@ -120939,7 +120895,7 @@ Transform:
   m_Children:
   - {fileID: 1779130634}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1841692047
 MonoBehaviour:
@@ -121014,7 +120970,7 @@ Transform:
   m_Children:
   - {fileID: 993809330}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1922766017
 GameObject:
@@ -121208,7 +121164,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124966547}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.32, y: -15.83, z: -10.007097}
+  m_LocalPosition: {x: 8.190001, y: -15.91, z: -10.007097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -121273,7 +121229,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 5c4f97bc5dc024f0796c2d7e5bb68303, type: 2}
     - target: {fileID: 7379697232745613047, guid: c162b9c8057f34d9baefbde93c7a87a2, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7379697232745613047, guid: c162b9c8057f34d9baefbde93c7a87a2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -121346,7 +121302,7 @@ PrefabInstance:
       objectReference: {fileID: 7791288847363565558, guid: 1e956c6fcb3c2494abc8a8404cf18b1a, type: 3}
     - target: {fileID: 8442120731978572806, guid: 6064480c984974d5892f090130c74633, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8442120731978572806, guid: 6064480c984974d5892f090130c74633, type: 3}
       propertyPath: m_LocalPosition.x

@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class PlayerTouchingLedgeState : PlayerBaseState
 {
-    private Vector2 detectedPosition,
+    protected Vector2 detectedPosition,
         cornerPosition,
         startPosition,
         stopPosition;
-    private float previousGravityScale;
+    protected float previousGravityScale;
+    protected float lastTouchLedgeTime;
 
     public PlayerTouchingLedgeState(
         PlayerHSM currentContext,
@@ -20,17 +21,20 @@ public class PlayerTouchingLedgeState : PlayerBaseState
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        context.transform.position = detectedPosition;
+        if (!isRootState)
+            return;
         context.SetVelocity(Vector2.zero);
+        SetDetectedPosition(context.transform.position);
+        context.transform.position = detectedPosition;
         cornerPosition = context.DetermineCornerPosition();
         startPosition.Set(
             cornerPosition.x - (context.FacingDirection * playerData.startOffset.x),
             cornerPosition.y - playerData.startOffset.y
         );
-        stopPosition.Set(
-            cornerPosition.x + (context.FacingDirection * playerData.stopOffset.x),
-            cornerPosition.y + playerData.stopOffset.y
-        );
+        // stopPosition.Set(
+        //     cornerPosition.x + (context.FacingDirection * playerData.stopOffset.x),
+        //     cornerPosition.y + playerData.stopOffset.y
+        // );
         context.transform.position = startPosition;
         previousGravityScale = context.RB.gravityScale;
         context.RB.gravityScale = 0f;
@@ -39,7 +43,11 @@ public class PlayerTouchingLedgeState : PlayerBaseState
     public override void Exit()
     {
         base.Exit();
-        context.RB.gravityScale = previousGravityScale;
+        if (isRootState)
+        {
+            context.RB.gravityScale = previousGravityScale;
+            lastTouchLedgeTime = Time.time;
+        }
     }
 
     public override void LogicUpdate()
@@ -50,8 +58,11 @@ public class PlayerTouchingLedgeState : PlayerBaseState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        context.SetVelocity(Vector2.zero);
-        context.transform.position = startPosition;
+        if (isRootState)
+        {
+            context.SetVelocity(Vector2.zero);
+            context.transform.position = startPosition;
+        }
     }
 
     public override void DoPhysicsCheck()
@@ -59,9 +70,43 @@ public class PlayerTouchingLedgeState : PlayerBaseState
         base.DoPhysicsCheck();
     }
 
-    public override void InitializeSubState() { }
+    public override void InitializeSubState()
+    {
+        PlayerTouchingLedgeState subState = states.LedgeGrabState;
+        SetSubState(subState);
+        subState.Enter();
+    }
 
-    public override void CheckSwitchStates() { }
+    public override void CheckSwitchStates()
+    {
+        PlayerBaseState newState = null;
+
+        // done with climbing
+        if (
+            currentSubState == states.LedgeClimbState && currentSubState.isAnimationFinished == true
+        )
+        {
+            newState = states.GroundedState;
+        }
+        else if (currentSubState != states.LedgeClimbState)
+        {
+            if (yInput < 0)
+            {
+                newState = states.InAirState;
+            }
+            else if (isTouchingWall && jumpInput && states.WallJumpState.CanWallJump())
+            {
+                newState = states.AbilityState;
+            }
+        }
+
+        SwitchState(newState);
+    }
 
     public void SetDetectedPosition(Vector2 position) => detectedPosition = position;
+
+    public bool CanTouchLedge()
+    {
+        return Time.time > lastTouchLedgeTime + playerData.ledgeTouchCoolDown;
+    }
 }

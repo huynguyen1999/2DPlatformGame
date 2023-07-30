@@ -12,16 +12,23 @@ public class PlayerLedgeClimbState : PlayerTouchingLedgeState
     public override void Enter(object data = null)
     {
         base.Enter(data);
+        cornerPosition = context.DetermineCornerPosition();
+        stopPosition.Set(
+            cornerPosition.x + (context.FacingDirection * playerData.stopOffset.x),
+            cornerPosition.y + playerData.stopOffset.y
+        );
     }
 
     public override void Exit()
     {
         base.Exit();
+        context.transform.position = stopPosition;
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        isAnimationFinished = context.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
     }
 
     public override void PhysicsUpdate()

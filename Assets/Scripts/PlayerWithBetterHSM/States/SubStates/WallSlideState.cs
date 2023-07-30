@@ -17,26 +17,6 @@ public class PlayerWallSlideState : PlayerTouchingWallState
         context.SetVelocityY(-playerData.wallSlideVelocity);
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
-    public override void DoPhysicsCheck()
-    {
-        base.DoPhysicsCheck();
-    }
-
     public override void InitializeSubState() { }
 
     public override void CheckSwitchStates()

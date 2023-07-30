@@ -38,10 +38,6 @@ public class PlayerInAirState : PlayerBaseState
             context.CheckIfShouldFlip(xInput);
             context.SetVelocityX(playerData.movementVelocity * xInput);
         }
-        if (isTouchingWall && !isTouchingLedge)
-        {
-            states.TouchingLedgeState.SetDetectedPosition(context.transform.position);
-        }
         context.Anim.SetFloat("yVelocity", context.CurrentVelocity.y);
         context.Anim.SetFloat("xVelocity", Mathf.Abs(context.CurrentVelocity.x));
     }
@@ -82,7 +78,7 @@ public class PlayerInAirState : PlayerBaseState
         {
             newState = states.TouchingWallState;
         }
-        else if (isTouchingWall && !isTouchingLedge)
+        else if (isTouchingLedge && states.TouchingLedgeState.CanTouchLedge())
         {
             newState = states.TouchingLedgeState;
         }

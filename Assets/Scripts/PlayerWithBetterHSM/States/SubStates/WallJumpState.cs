@@ -33,21 +33,6 @@ public class PlayerWallJumpState : PlayerAbilityState
         lastWallJump = Time.time;
     }
 
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
-    public override void DoPhysicsCheck()
-    {
-        base.DoPhysicsCheck();
-    }
-
     public override void InitializeSubState() { }
 
     public override void CheckSwitchStates() { }

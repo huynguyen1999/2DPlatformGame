@@ -147,17 +147,6 @@ public class PlayerHSM : MonoBehaviour
 
     #endregion
 
-    // #region Coroutines
-    // public void FreezeAction() => StartCoroutine(FreezeActionCoroutine());
-
-    // private IEnumerator FreezeActionCoroutine()
-    // {
-    //     CanDoAction = false;
-    //     yield return new WaitForSeconds(playerData.freezeMovementCoolDown);
-    //     CanDoAction = true;
-    // }
-    // #endregion
-
     #region Other Methods
     private void Initialize(PlayerBaseState initState)
     {

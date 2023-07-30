@@ -9,11 +9,6 @@ public class PlayerIdleState : PlayerGroundedState
     )
         : base(currentContext, states, playerData, animBoolName, isRootState) { }
 
-    public override void Enter(object data = null)
-    {
-        base.Enter(data);
-    }
-
     public override void InitializeSubState() { }
 
     public override void CheckSwitchStates()
