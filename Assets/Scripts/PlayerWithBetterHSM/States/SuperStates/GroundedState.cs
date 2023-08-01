@@ -44,9 +44,17 @@ public class PlayerGroundedState : PlayerBaseState
     public override void InitializeSubState()
     {
         PlayerGroundedState subState = null;
+        bool isHardLand = false;
         if (context.previousState == states.InAirState)
         {
             subState = states.LandState;
+            if (
+                (context.previousState as PlayerInAirState).FallingDistance
+                > playerData.HardLandDistance
+            )
+            {
+                isHardLand = true;
+            }
         }
         else if (isTouchingCeiling)
         {
@@ -57,16 +65,22 @@ public class PlayerGroundedState : PlayerBaseState
             subState = states.IdleState;
         }
         SetSubState(subState);
-        subState.Enter();
+        subState.Enter(isHardLand);
     }
 
     public override void CheckSwitchStates()
     {
         // in the middle of land animation, can't do nothing
-        // if (currentSubState == states.LandState && !currentSubState.isAnimationFinished)
-        //     return;
-        PlayerBaseState newState = null;
+        if (
+            currentSubState == states.LandState
+            && (currentSubState as PlayerLandState).IsHardLand == true
+            && !currentSubState.isAnimationFinished
+        )
+        {
+            return;
+        }
 
+        PlayerBaseState newState = null;
         if (!isGrounded)
         {
             newState = states.InAirState;
@@ -79,6 +93,10 @@ public class PlayerGroundedState : PlayerBaseState
                 newState = states.AbilityState;
             }
             else if (dashInput && states.DashState.CanDash())
+            {
+                newState = states.AbilityState;
+            }
+            else if (rollInput && states.RollState.CanRoll())
             {
                 newState = states.AbilityState;
             }

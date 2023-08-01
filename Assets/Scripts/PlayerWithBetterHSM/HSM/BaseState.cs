@@ -20,7 +20,8 @@ public abstract class PlayerBaseState
     protected int xInput,
         yInput;
     protected bool jumpInput,
-        dashInput;
+        dashInput,
+        rollInput;
     protected bool isGrounded,
         isTouchingWall,
         isTouchingLedge,
@@ -74,6 +75,7 @@ public abstract class PlayerBaseState
         yInput = context.InputHandler.NormalizedInputY;
         jumpInput = context.InputHandler.JumpInput;
         dashInput = context.InputHandler.DashInput;
+        rollInput = context.InputHandler.RollInput;
     }
 
     public virtual void PhysicsUpdate()

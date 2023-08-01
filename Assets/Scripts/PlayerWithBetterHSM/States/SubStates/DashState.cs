@@ -75,7 +75,7 @@ public class PlayerDashState : PlayerAbilityState
             );
             if (
                 dashedDistance >= playerData.dashDistance
-                || Time.time >= startTime + playerData.dashTime
+                || Time.time >= startTime + playerData.dashDuration
             )
             {
                 isAbilityDone = true;

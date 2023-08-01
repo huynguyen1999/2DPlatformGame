@@ -15,11 +15,15 @@ public class PlayerData : ScriptableObject
     public float jumpVelocity = 15f;
     public int amountOfJumps = 2;
 
+    [Header("Land State")]
+    public float HardLandDistance = 10f;
+
     [Header("Crouch States")]
     public float crouchVelocity = 5f;
 
     [Header("Roll State")]
     public float rollVelocity = 15f;
+    public float rollCoolDown = 1f;
 
     [Header("Dash State")]
     public float directionSelectTimeScale = 0.1f;
@@ -28,7 +32,7 @@ public class PlayerData : ScriptableObject
     public float dashVelocity = 30f;
     public float afterImageDistance = 0.5f;
     public float directionSelectionTime = 0.5f;
-    public float dashTime = 0.5f;
+    public float dashDuration = 0.5f;
 
     [Header("In Air State")]
     public float coyoteTime = 0.2f; // Time before player can jump again after leaving the ground

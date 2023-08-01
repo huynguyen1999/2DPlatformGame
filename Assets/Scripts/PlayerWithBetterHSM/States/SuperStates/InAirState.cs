@@ -6,6 +6,12 @@ public class PlayerInAirState : PlayerBaseState
 {
     private bool coyoteTime = false;
     private bool canDoAction = true;
+    private float fallingDistance = 0f,
+        midAirYPosition = 0f;
+    public float FallingDistance
+    {
+        get { return fallingDistance; }
+    }
 
     public PlayerInAirState(
         PlayerHSM currentContext,
@@ -28,11 +34,23 @@ public class PlayerInAirState : PlayerBaseState
     public override void Exit()
     {
         base.Exit();
+        Debug.Log("Falling distance: " + fallingDistance);
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        // calculate falling distance
+        if (context.CurrentVelocity.y > -0.001f)
+        {
+            midAirYPosition = context.transform.position.y;
+        }
+        else if (context.CurrentVelocity.y <= -0.01f)
+        {
+            fallingDistance = Mathf.Abs(midAirYPosition - context.transform.position.y);
+            Debug.Log(fallingDistance);
+        }
+        // check if player can move
         if (canDoAction && (!isGrounded || Mathf.Abs(context.CurrentVelocity.y) > 0.01f))
         {
             context.CheckIfShouldFlip(xInput);
@@ -86,6 +104,10 @@ public class PlayerInAirState : PlayerBaseState
                 newState = states.AbilityState;
             }
             else if (dashInput && states.DashState.CanDash())
+            {
+                newState = states.AbilityState;
+            }
+            else if (rollInput && states.RollState.CanRoll())
             {
                 newState = states.AbilityState;
             }

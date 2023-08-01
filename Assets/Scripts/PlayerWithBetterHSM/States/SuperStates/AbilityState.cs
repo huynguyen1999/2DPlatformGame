@@ -65,6 +65,11 @@ public class PlayerAbilityState : PlayerBaseState
             context.InputHandler.UseDashInput();
             subState = states.DashState;
         }
+        else if (rollInput)
+        {
+            context.InputHandler.UseRollInput();
+            subState = states.RollState;
+        }
         SetSubState(subState);
         subState?.Enter();
     }

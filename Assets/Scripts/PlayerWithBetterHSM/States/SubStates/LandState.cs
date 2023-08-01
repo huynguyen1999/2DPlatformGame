@@ -1,5 +1,7 @@
 public class PlayerLandState : PlayerGroundedState
 {
+    public bool IsHardLand = false;
+
     public PlayerLandState(
         PlayerHSM currentContext,
         PlayerStateFactory states,
@@ -8,6 +10,15 @@ public class PlayerLandState : PlayerGroundedState
         bool isRootState = false
     )
         : base(currentContext, states, playerData, animBoolName, isRootState) { }
+
+    public override void Enter(object data = null)
+    {
+        base.Enter(data);
+        if (data != null)
+        {
+            IsHardLand = (bool)data;
+        }
+    }
 
     public override void InitializeSubState() { }
 
@@ -18,7 +29,7 @@ public class PlayerLandState : PlayerGroundedState
         {
             newState = states.IdleState;
         }
-        else if (xInput != 0)
+        else if (xInput != 0 && !IsHardLand)
         {
             newState = states.MoveState;
         }

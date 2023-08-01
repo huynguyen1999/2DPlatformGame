@@ -13,6 +13,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool JumpInput { get; private set; }
     public bool DashInput { get; private set; }
     public bool DashInputStop { get; private set; }
+    public bool RollInput { get; private set; }
 
     [SerializeField]
     private float inputHoldTime = 0.1f;
@@ -56,6 +57,14 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
+    public void OnRollInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            RollInput = true;
+        }
+    }
+
     private void Update()
     {
         if (Time.time > jumpInputStartTime + inputHoldTime)
@@ -71,4 +80,6 @@ public class PlayerInputHandler : MonoBehaviour
     public void UseJumpInput() => JumpInput = false;
 
     public void UseDashInput() => DashInput = false;
+
+    public void UseRollInput() => RollInput = false;
 }
