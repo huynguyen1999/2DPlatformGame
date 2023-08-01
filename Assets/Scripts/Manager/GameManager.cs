@@ -12,6 +12,12 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
+    private void Awake()
+    {
+        QualitySettings.vSyncCount = 0; // VSync must be disabled
+        Application.targetFrameRate = 60;
+    }
+
     private void Start()
     {
         Instance = this;

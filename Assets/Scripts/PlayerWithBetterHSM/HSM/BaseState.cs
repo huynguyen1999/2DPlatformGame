@@ -109,9 +109,6 @@ public abstract class PlayerBaseState
         {
             currentSubState.LogicUpdate();
         }
-        // Debug.Log(
-        //     $"Super state: {this.GetType().Name} - Sub state: {currentSubState?.GetType().Name}"
-        // );
     }
 
     public void PhysicsUpdateStates()

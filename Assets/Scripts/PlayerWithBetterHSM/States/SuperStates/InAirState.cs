@@ -34,7 +34,6 @@ public class PlayerInAirState : PlayerBaseState
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("Falling distance: " + fallingDistance);
     }
 
     public override void LogicUpdate()
@@ -48,7 +47,6 @@ public class PlayerInAirState : PlayerBaseState
         else if (context.CurrentVelocity.y <= -0.01f)
         {
             fallingDistance = Mathf.Abs(midAirYPosition - context.transform.position.y);
-            Debug.Log(fallingDistance);
         }
         // check if player can move
         if (canDoAction && (!isGrounded || Mathf.Abs(context.CurrentVelocity.y) > 0.01f))
@@ -93,7 +91,11 @@ public class PlayerInAirState : PlayerBaseState
         {
             newState = states.TouchingWallState;
         }
-        else if (isTouchingLedge && states.TouchingLedgeState.CanTouchLedge())
+        else if (
+            isTouchingLedge
+            && xInput * context.FacingDirection > 0
+            && states.TouchingLedgeState.CanTouchLedge()
+        )
         {
             newState = states.TouchingLedgeState;
         }
