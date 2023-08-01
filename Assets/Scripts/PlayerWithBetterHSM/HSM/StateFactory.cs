@@ -20,6 +20,10 @@ public class PlayerStateFactory
     public PlayerLedgeClimbState LedgeClimbState;
     public PlayerLedgeGrabState LedgeGrabState;
     public PlayerLedgeHoldState LedgeHoldState;
+    public PlayerDashState DashState;
+    public PlayerCrouchIdleState CrouchIdleState;
+    public PlayerCrouchMoveState CrouchMoveState;
+    public PlayerRollState RollState;
 
     public PlayerStateFactory(PlayerHSM currentContext, PlayerData playerData)
     {
@@ -34,6 +38,7 @@ public class PlayerStateFactory
         WallSlideState = new PlayerWallSlideState(context, this, playerData, "WallSlide");
         AbilityState = new PlayerAbilityState(context, this, playerData, "Ability", true);
         WallJumpState = new PlayerWallJumpState(context, this, playerData, "WallJump", true);
+        DashState = new PlayerDashState(context, this, playerData, "Dash");
         GroundedState = new PlayerGroundedState(context, this, playerData, "Grounded", true);
         InAirState = new PlayerInAirState(context, this, playerData, "InAir", true);
         TouchingWallState = new PlayerTouchingWallState(
@@ -53,5 +58,8 @@ public class PlayerStateFactory
         LedgeGrabState = new PlayerLedgeGrabState(context, this, playerData, "LedgeGrab");
         LedgeHoldState = new PlayerLedgeHoldState(context, this, playerData, "LedgeHold");
         LedgeClimbState = new PlayerLedgeClimbState(context, this, playerData, "LedgeClimb");
+        CrouchIdleState = new PlayerCrouchIdleState(context, this, playerData, "CrouchIdle");
+        CrouchMoveState = new PlayerCrouchMoveState(context, this, playerData, "CrouchMove");
+        RollState = new PlayerRollState(context, this, playerData, "Roll");
     }
 }

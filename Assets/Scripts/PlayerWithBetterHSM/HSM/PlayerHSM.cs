@@ -21,12 +21,16 @@ public class PlayerHSM : MonoBehaviour
 
     [SerializeField]
     private Transform ledgeCheck;
+
+    [SerializeField]
+    private Transform ceilingCheck;
     #endregion
 
     #region State Variables
     public PlayerBaseState currentState;
     public PlayerBaseState previousState;
     public PlayerStateFactory states;
+    public Transform DashDirectionIndicator;
     #endregion
 
     #region Other Variables
@@ -58,6 +62,7 @@ public class PlayerHSM : MonoBehaviour
         RB = GetComponent<Rigidbody2D>();
         PlayerCollier = GetComponent<BoxCollider2D>();
         InputHandler = GetComponent<PlayerInputHandler>();
+        DashDirectionIndicator.gameObject.SetActive(false);
         Initialize(states.GroundedState);
     }
 
@@ -74,6 +79,7 @@ public class PlayerHSM : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, playerData.groundCheckRadius);
+        Gizmos.DrawWireSphere(ceilingCheck.position, playerData.groundCheckRadius);
         Gizmos.DrawLine(
             wallCheck.position,
             wallCheck.position
@@ -104,6 +110,12 @@ public class PlayerHSM : MonoBehaviour
     public void SetVelocity(Vector2 velocity2D)
     {
         RB.velocity = velocity2D;
+    }
+
+    public void SetVelocity(float velocity, Vector2 direction)
+    {
+        workspace = direction * velocity;
+        RB.velocity = workspace;
     }
     #endregion
 
@@ -145,6 +157,15 @@ public class PlayerHSM : MonoBehaviour
         );
     }
 
+    public bool CheckIfTouchingCeiling()
+    {
+        return Physics2D.OverlapCircle(
+            ceilingCheck.position,
+            playerData.groundCheckRadius,
+            playerData.whatIsGround
+        );
+    }
+
     #endregion
 
     #region Other Methods
@@ -167,7 +188,7 @@ public class PlayerHSM : MonoBehaviour
         RaycastHit2D yHit = Physics2D.Raycast(
             ledgeCheck.position + (Vector3)(workspace),
             -transform.up,
-            ledgeCheck.position.y - wallCheck.position.y,
+            1f,
             playerData.whatIsGround
         );
         float yDist = yHit.distance;

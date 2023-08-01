@@ -60,6 +60,11 @@ public class PlayerAbilityState : PlayerBaseState
                 subState = states.JumpState;
             }
         }
+        else if (dashInput)
+        {
+            context.InputHandler.UseDashInput();
+            subState = states.DashState;
+        }
         SetSubState(subState);
         subState?.Enter();
     }

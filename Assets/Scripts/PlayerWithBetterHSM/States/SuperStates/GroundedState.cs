@@ -48,6 +48,10 @@ public class PlayerGroundedState : PlayerBaseState
         {
             subState = states.LandState;
         }
+        else if (isTouchingCeiling)
+        {
+            subState = states.CrouchIdleState;
+        }
         else
         {
             subState = states.IdleState;
@@ -62,14 +66,22 @@ public class PlayerGroundedState : PlayerBaseState
         // if (currentSubState == states.LandState && !currentSubState.isAnimationFinished)
         //     return;
         PlayerBaseState newState = null;
-        if (jumpInput && states.JumpState.CanJump())
-        {
-            newState = states.AbilityState;
-        }
-        else if (!isGrounded)
+
+        if (!isGrounded)
         {
             newState = states.InAirState;
             states.InAirState.ActivateCoyoteTime();
+        }
+        else if (!isTouchingCeiling)
+        {
+            if (jumpInput && states.JumpState.CanJump())
+            {
+                newState = states.AbilityState;
+            }
+            else if (dashInput && states.DashState.CanDash())
+            {
+                newState = states.AbilityState;
+            }
         }
         SwitchState(newState);
     }

@@ -83,6 +83,7 @@ public class PlayerTouchingWallState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         PlayerBaseState newState = null;
+
         if (yInput < 0)
         {
             newState = states.InAirState;
@@ -91,13 +92,20 @@ public class PlayerTouchingWallState : PlayerBaseState
         {
             newState = states.GroundedState;
         }
-        else if (isTouchingWall && jumpInput && states.WallJumpState.CanWallJump() && canUseSkill)
-        {
-            newState = states.AbilityState;
-        }
         else if (!isTouchingWall)
         {
             newState = states.InAirState;
+        }
+        else if (canUseSkill && isTouchingWall)
+        {
+            if (jumpInput && states.WallJumpState.CanWallJump())
+            {
+                newState = states.AbilityState;
+            }
+            else if (dashInput && states.DashState.CanDash())
+            {
+                newState = states.AbilityState;
+            }
         }
         SwitchState(newState);
     }

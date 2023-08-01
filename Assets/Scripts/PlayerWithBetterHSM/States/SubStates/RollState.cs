@@ -1,6 +1,8 @@
-public class PlayerIdleState : PlayerGroundedState
+using UnityEngine;
+
+public class PlayerRollState : PlayerGroundedState
 {
-    public PlayerIdleState(
+    public PlayerRollState(
         PlayerHSM currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
@@ -9,19 +11,16 @@ public class PlayerIdleState : PlayerGroundedState
     )
         : base(currentContext, states, playerData, animBoolName, isRootState) { }
 
+    public override void LogicUpdate()
+    {
+        base.LogicUpdate();
+    }
+
     public override void InitializeSubState() { }
 
     public override void CheckSwitchStates()
     {
         PlayerBaseState newState = null;
-        if (xInput != 0)
-        {
-            newState = states.MoveState;
-        }
-        else if (yInput < 0)
-        {
-            newState = states.CrouchIdleState;
-        }
 
         SwitchState(newState);
     }

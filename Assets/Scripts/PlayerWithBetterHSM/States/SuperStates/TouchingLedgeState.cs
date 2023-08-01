@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class PlayerTouchingLedgeState : PlayerBaseState
 {
-    protected Vector2 detectedPosition,
-        cornerPosition,
+    protected Vector2 cornerPosition,
         startPosition,
         stopPosition;
     protected float previousGravityScale;
@@ -24,17 +23,11 @@ public class PlayerTouchingLedgeState : PlayerBaseState
         if (!isRootState)
             return;
         context.SetVelocity(Vector2.zero);
-        SetDetectedPosition(context.transform.position);
-        context.transform.position = detectedPosition;
         cornerPosition = context.DetermineCornerPosition();
         startPosition.Set(
             cornerPosition.x - (context.FacingDirection * playerData.startOffset.x),
             cornerPosition.y - playerData.startOffset.y
         );
-        // stopPosition.Set(
-        //     cornerPosition.x + (context.FacingDirection * playerData.stopOffset.x),
-        //     cornerPosition.y + playerData.stopOffset.y
-        // );
         context.transform.position = startPosition;
         previousGravityScale = context.RB.gravityScale;
         context.RB.gravityScale = 0f;
@@ -103,10 +96,9 @@ public class PlayerTouchingLedgeState : PlayerBaseState
         SwitchState(newState);
     }
 
-    public void SetDetectedPosition(Vector2 position) => detectedPosition = position;
-
     public bool CanTouchLedge()
     {
-        return Time.time > lastTouchLedgeTime + playerData.ledgeTouchCoolDown;
+        bool isCoolDownOver = Time.time > lastTouchLedgeTime + playerData.ledgeTouchCoolDown;
+        return isCoolDownOver;
     }
 }

@@ -1,6 +1,8 @@
-public class PlayerIdleState : PlayerGroundedState
+using UnityEngine;
+
+public class PlayerCrouchIdleState : PlayerGroundedState
 {
-    public PlayerIdleState(
+    public PlayerCrouchIdleState(
         PlayerHSM currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
@@ -9,20 +11,24 @@ public class PlayerIdleState : PlayerGroundedState
     )
         : base(currentContext, states, playerData, animBoolName, isRootState) { }
 
+    public override void LogicUpdate()
+    {
+        base.LogicUpdate();
+    }
+
     public override void InitializeSubState() { }
 
     public override void CheckSwitchStates()
     {
         PlayerBaseState newState = null;
-        if (xInput != 0)
+        if (yInput >= 0 && !isTouchingCeiling)
         {
-            newState = states.MoveState;
+            newState = states.IdleState;
         }
-        else if (yInput < 0)
+        else if (xInput != 0)
         {
-            newState = states.CrouchIdleState;
+            newState = states.CrouchMoveState;
         }
-
         SwitchState(newState);
     }
 }

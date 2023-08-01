@@ -26,6 +26,10 @@ public class PlayerMoveState : PlayerGroundedState
         {
             newState = states.IdleState;
         }
+        else if (yInput < 0)
+        {
+            newState = states.CrouchMoveState;
+        }
 
         SwitchState(newState);
     }

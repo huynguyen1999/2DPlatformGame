@@ -19,10 +19,12 @@ public abstract class PlayerBaseState
 
     protected int xInput,
         yInput;
-    protected bool jumpInput;
+    protected bool jumpInput,
+        dashInput;
     protected bool isGrounded,
         isTouchingWall,
-        isTouchingLedge;
+        isTouchingLedge,
+        isTouchingCeiling;
 
     public PlayerBaseState(
         PlayerHSM currentContext,
@@ -63,6 +65,7 @@ public abstract class PlayerBaseState
     {
         CheckSwitchStates();
         CheckInput();
+        isAnimationFinished = context.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
     }
 
     public void CheckInput()
@@ -70,6 +73,7 @@ public abstract class PlayerBaseState
         xInput = context.InputHandler.NormalizedInputX;
         yInput = context.InputHandler.NormalizedInputY;
         jumpInput = context.InputHandler.JumpInput;
+        dashInput = context.InputHandler.DashInput;
     }
 
     public virtual void PhysicsUpdate()
@@ -82,6 +86,7 @@ public abstract class PlayerBaseState
         isGrounded = context.CheckIfGrounded();
         isTouchingWall = context.CheckIfTouchingWall();
         isTouchingLedge = context.CheckIfTouchingLedge() == false && isTouchingWall == true;
+        isTouchingCeiling = context.CheckIfTouchingCeiling();
     }
 
     /// <summary>

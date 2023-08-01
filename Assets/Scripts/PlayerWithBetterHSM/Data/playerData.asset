@@ -16,18 +16,25 @@ MonoBehaviour:
   movementVelocity: 10
   jumpVelocity: 15
   amountOfJumps: 2
+  directionSelectTimeScale: 0.1
+  dashCoolDown: 1
+  dashDistance: 10
+  dashVelocity: 30
+  afterImageDistance: 0.5
+  directionSelectionTime: 1
+  dashTime: 0.5
   coyoteTime: 0.2
   maxFallingSpeed: 20
   wallStickTime: 2
-  wallTouchCoolDown: 0.2
-  skillDelay: 0.1
+  wallTouchCoolDown: 0.3
+  skillDelay: 0.2
   wallSlideVelocity: 2
   wallClimbVelocity: 5
   wallJumpForce: {x: 13, y: 13}
   wallJumpCoolDown: 0.2
   ledgeTouchCoolDown: 0.3
   startOffset: {x: 0.2, y: 1}
-  stopOffset: {x: 0.5, y: 1.45}
+  stopOffset: {x: 0.5, y: 2}
   groundCheckRadius: 0.3
   wallCheckDistance: 0.4
   whatIsGround:

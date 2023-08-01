@@ -61,11 +61,8 @@ public class PlayerInAirState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         PlayerBaseState newState = null;
-        if (canDoAction && jumpInput && states.JumpState.CanJump())
-        {
-            newState = states.AbilityState;
-        }
-        else if (isGrounded && context.CurrentVelocity.y < 0.01f)
+
+        if (isGrounded && context.CurrentVelocity.y < 0.01f)
         {
             newState = states.GroundedState;
         }
@@ -81,6 +78,17 @@ public class PlayerInAirState : PlayerBaseState
         else if (isTouchingLedge && states.TouchingLedgeState.CanTouchLedge())
         {
             newState = states.TouchingLedgeState;
+        }
+        else if (canDoAction)
+        {
+            if (jumpInput && states.JumpState.CanJump())
+            {
+                newState = states.AbilityState;
+            }
+            else if (dashInput && states.DashState.CanDash())
+            {
+                newState = states.AbilityState;
+            }
         }
         SwitchState(newState);
     }

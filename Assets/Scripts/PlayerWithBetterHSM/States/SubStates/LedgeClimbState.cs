@@ -25,12 +25,6 @@ public class PlayerLedgeClimbState : PlayerTouchingLedgeState
         context.transform.position = stopPosition;
     }
 
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-        isAnimationFinished = context.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
-    }
-
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
