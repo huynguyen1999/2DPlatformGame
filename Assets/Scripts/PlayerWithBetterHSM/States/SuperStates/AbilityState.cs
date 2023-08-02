@@ -48,16 +48,24 @@ public class PlayerAbilityState : PlayerBaseState
         if (jumpInput)
         {
             context.InputHandler.UseJumpInput();
-            if (
-                context.previousState == states.TouchingWallState
-                || context.previousState == states.TouchingLedgeState
-            )
+            if (context.previousState == states.TouchingWallState)
             {
                 subState = states.WallJumpState;
             }
             else
             {
                 subState = states.JumpState;
+            }
+        }
+        else if (attackInputs != null)
+        {
+            if (attackInputs[(int)CombatInputs.Primary])
+            {
+                subState = states.PrimaryAttackState;
+            }
+            else if (attackInputs[(int)CombatInputs.Secondary])
+            {
+                subState = states.SecondaryAttackState;
             }
         }
         else if (dashInput)
@@ -70,6 +78,7 @@ public class PlayerAbilityState : PlayerBaseState
             context.InputHandler.UseRollInput();
             subState = states.RollState;
         }
+
         SetSubState(subState);
         subState?.Enter();
     }

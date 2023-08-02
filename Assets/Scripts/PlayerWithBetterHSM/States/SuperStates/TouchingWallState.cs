@@ -50,11 +50,6 @@ public class PlayerTouchingWallState : PlayerBaseState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        // Unstick wall
-        if (Time.time > startTime + playerData.wallStickTime)
-        {
-            SwitchState(states.InAirState);
-        }
     }
 
     public override void PhysicsUpdate()
@@ -75,7 +70,9 @@ public class PlayerTouchingWallState : PlayerBaseState
             subState = states.WallGrabState;
         }
         else
+        {
             subState = states.WallSlideState;
+        }
         SetSubState(subState);
         subState?.Enter();
     }
@@ -84,17 +81,13 @@ public class PlayerTouchingWallState : PlayerBaseState
     {
         PlayerBaseState newState = null;
 
-        if (yInput < 0)
+        if (yInput < 0 || !isTouchingWall || Time.time > startTime + playerData.wallStickTime)
         {
             newState = states.InAirState;
         }
         else if (isGrounded && context.CurrentVelocity.y < 0.01f)
         {
             newState = states.GroundedState;
-        }
-        else if (!isTouchingWall)
-        {
-            newState = states.InAirState;
         }
         else if (canUseSkill && isTouchingWall)
         {

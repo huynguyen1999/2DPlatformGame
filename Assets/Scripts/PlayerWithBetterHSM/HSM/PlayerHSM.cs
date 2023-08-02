@@ -10,6 +10,7 @@ public class PlayerHSM : MonoBehaviour
     public Rigidbody2D RB { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
     public BoxCollider2D PlayerCollier { get; private set; }
+    public PlayerInventory Inventory { get; private set; }
     #endregion
 
     #region Check Transforms
@@ -62,8 +63,11 @@ public class PlayerHSM : MonoBehaviour
         RB = GetComponent<Rigidbody2D>();
         PlayerCollier = GetComponent<BoxCollider2D>();
         InputHandler = GetComponent<PlayerInputHandler>();
+        Inventory = GetComponent<PlayerInventory>();
         DashDirectionIndicator.gameObject.SetActive(false);
         Initialize(states.GroundedState);
+        states.PrimaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.Primary]);
+        states.SecondaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.Primary]);
     }
 
     private void Update()

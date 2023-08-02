@@ -87,10 +87,6 @@ public class PlayerTouchingLedgeState : PlayerBaseState
             {
                 newState = states.InAirState;
             }
-            else if (isTouchingWall && jumpInput && states.WallJumpState.CanWallJump())
-            {
-                newState = states.AbilityState;
-            }
         }
 
         SwitchState(newState);

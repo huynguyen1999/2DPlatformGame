@@ -82,22 +82,16 @@ public class PlayerInAirState : PlayerBaseState
         {
             newState = states.GroundedState;
         }
-        else if (
-            isTouchingWall
-            && xInput * context.FacingDirection > 0
-            && context.CurrentVelocity.y < 0f
-            && states.TouchingWallState.CanTouchWall()
-        )
+        else if (xInput * context.FacingDirection > 0 && context.CurrentVelocity.y < 0f)
         {
-            newState = states.TouchingWallState;
-        }
-        else if (
-            isTouchingLedge
-            && xInput * context.FacingDirection > 0
-            && states.TouchingLedgeState.CanTouchLedge()
-        )
-        {
-            newState = states.TouchingLedgeState;
+            if (isTouchingWall && states.TouchingWallState.CanTouchWall())
+            {
+                newState = states.TouchingWallState;
+            }
+            else if (isTouchingLedge && states.TouchingLedgeState.CanTouchLedge())
+            {
+                newState = states.TouchingLedgeState;
+            }
         }
         else if (canDoAction)
         {
@@ -110,6 +104,16 @@ public class PlayerInAirState : PlayerBaseState
                 newState = states.AbilityState;
             }
             else if (rollInput && states.RollState.CanRoll())
+            {
+                newState = states.AbilityState;
+            }
+            else if (
+                attackInputs != null
+                && (
+                    attackInputs[(int)CombatInputs.Primary]
+                    || attackInputs[(int)CombatInputs.Secondary]
+                )
+            )
             {
                 newState = states.AbilityState;
             }

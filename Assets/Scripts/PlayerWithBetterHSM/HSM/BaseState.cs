@@ -26,6 +26,7 @@ public abstract class PlayerBaseState
         isTouchingWall,
         isTouchingLedge,
         isTouchingCeiling;
+    protected bool[] attackInputs;
 
     public PlayerBaseState(
         PlayerHSM currentContext,
@@ -76,6 +77,7 @@ public abstract class PlayerBaseState
         jumpInput = context.InputHandler.JumpInput;
         dashInput = context.InputHandler.DashInput;
         rollInput = context.InputHandler.RollInput;
+        attackInputs = context.InputHandler.AttackInputs?.Clone() as bool[];
     }
 
     public virtual void PhysicsUpdate()

@@ -1,7 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine.InputSystem;
 using UnityEngine;
+
+public enum CombatInputs
+{
+    Primary,
+    Secondary
+}
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -14,17 +21,21 @@ public class PlayerInputHandler : MonoBehaviour
     public bool DashInput { get; private set; }
     public bool DashInputStop { get; private set; }
     public bool RollInput { get; private set; }
+    public bool[] AttackInputs { get; private set; }
 
     [SerializeField]
     private float inputHoldTime = 0.1f;
     private float jumpInputStartTime,
-        dashInputStartTime;
+        dashInputStartTime,
+        rollInputStartTime;
 
     private void Start()
     {
         RawMovementInput = Vector2.zero;
         playerInput = GetComponent<PlayerInput>();
         cam = Camera.main;
+        int count = Enum.GetNames(typeof(CombatInputs)).Length;
+        AttackInputs = new bool[count];
     }
 
     public void OnMoveInput(InputAction.CallbackContext context)
@@ -62,6 +73,31 @@ public class PlayerInputHandler : MonoBehaviour
         if (context.started)
         {
             RollInput = true;
+            rollInputStartTime = Time.time;
+        }
+    }
+
+    public void OnPrimaryAttackInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AttackInputs[(int)CombatInputs.Primary] = true;
+        }
+        else if (context.canceled)
+        {
+            AttackInputs[(int)CombatInputs.Primary] = false;
+        }
+    }
+
+    public void OnSecondaryAttackInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AttackInputs[(int)CombatInputs.Secondary] = true;
+        }
+        else if (context.canceled)
+        {
+            AttackInputs[(int)CombatInputs.Secondary] = false;
         }
     }
 
@@ -74,6 +110,10 @@ public class PlayerInputHandler : MonoBehaviour
         if (Time.time > dashInputStartTime + inputHoldTime)
         {
             UseDashInput();
+        }
+        if (Time.time > rollInputStartTime + inputHoldTime)
+        {
+            UseRollInput();
         }
     }
 

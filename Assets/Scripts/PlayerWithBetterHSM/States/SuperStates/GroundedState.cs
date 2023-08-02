@@ -100,7 +100,18 @@ public class PlayerGroundedState : PlayerBaseState
             {
                 newState = states.AbilityState;
             }
+            else if (
+                attackInputs != null
+                && (
+                    attackInputs[(int)CombatInputs.Primary]
+                    || attackInputs[(int)CombatInputs.Secondary]
+                )
+            )
+            {
+                newState = states.AbilityState;
+            }
         }
+
         SwitchState(newState);
     }
 }

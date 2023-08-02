@@ -24,6 +24,8 @@ public class PlayerStateFactory
     public PlayerCrouchIdleState CrouchIdleState;
     public PlayerCrouchMoveState CrouchMoveState;
     public PlayerRollState RollState;
+    public PlayerAttackState PrimaryAttackState,
+        SecondaryAttackState;
 
     public PlayerStateFactory(PlayerHSM currentContext, PlayerData playerData)
     {
@@ -61,5 +63,7 @@ public class PlayerStateFactory
         CrouchIdleState = new PlayerCrouchIdleState(context, this, playerData, "CrouchIdle");
         CrouchMoveState = new PlayerCrouchMoveState(context, this, playerData, "CrouchMove");
         RollState = new PlayerRollState(context, this, playerData, "Roll");
+        PrimaryAttackState = new PlayerAttackState(context, this, playerData, "Attack");
+        SecondaryAttackState = new PlayerAttackState(context, this, playerData, "Attack");
     }
 }
