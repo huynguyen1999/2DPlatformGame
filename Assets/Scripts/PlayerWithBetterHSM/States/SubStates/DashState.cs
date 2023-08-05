@@ -12,7 +12,7 @@ public class PlayerDashState : PlayerAbilityState
     public float previousGravityScale;
 
     public PlayerDashState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

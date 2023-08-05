@@ -14,13 +14,16 @@ public class PlayerInAirState : PlayerBaseState
     }
 
     public PlayerInAirState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,
         bool isRootState = false
     )
-        : base(currentContext, states, playerData, animBoolName, isRootState) { }
+        : base(currentContext, states, playerData, animBoolName, isRootState)
+    {
+
+    }
 
     public override void Enter(object data = null)
     {
@@ -82,18 +85,18 @@ public class PlayerInAirState : PlayerBaseState
         {
             newState = states.GroundedState;
         }
-        else if (xInput * context.FacingDirection > 0 && context.CurrentVelocity.y < 0f)
+        if (newState == null && xInput * context.FacingDirection > 0 && context.CurrentVelocity.y < 0f)
         {
-            if (isTouchingWall && states.TouchingWallState.CanTouchWall())
-            {
-                newState = states.TouchingWallState;
-            }
-            else if (isTouchingLedge && states.TouchingLedgeState.CanTouchLedge())
+            if (isTouchingLedge && states.TouchingLedgeState.CanTouchLedge())
             {
                 newState = states.TouchingLedgeState;
             }
+            else if (isTouchingWall && states.TouchingWallState.CanTouchWall())
+            {
+                newState = states.TouchingWallState;
+            }
         }
-        else if (canDoAction)
+        if (newState == null && canDoAction)
         {
             if (jumpInput && states.JumpState.CanJump())
             {

@@ -7,7 +7,7 @@ public class PlayerWallJumpState : PlayerAbilityState
     private float lastWallJump = Mathf.NegativeInfinity;
 
     public PlayerWallJumpState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

@@ -4,6 +4,8 @@
         "**/**.meta": true
     },
     "cSpell.words": [
-        "Mathf"
-    ]
+        "Mathf",
+        "Unuse"
+    ],
+    "dotnet.defaultSolution": "2D Platformer Tutorial.sln"
 }

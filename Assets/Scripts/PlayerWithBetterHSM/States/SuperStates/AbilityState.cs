@@ -3,9 +3,14 @@ using UnityEngine;
 public class PlayerAbilityState : PlayerBaseState
 {
     protected bool isAbilityDone;
+    public bool IsAbilityDone
+    {
+        get { return isAbilityDone; }
+        set { isAbilityDone = value; }
+    }
 
     public PlayerAbilityState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,
@@ -57,6 +62,16 @@ public class PlayerAbilityState : PlayerBaseState
                 subState = states.JumpState;
             }
         }
+        else if (dashInput)
+        {
+            context.InputHandler.UseDashInput();
+            subState = states.DashState;
+        }
+        else if (rollInput)
+        {
+            context.InputHandler.UseRollInput();
+            subState = states.RollState;
+        }
         else if (attackInputs != null)
         {
             if (attackInputs[(int)CombatInputs.Primary])
@@ -67,16 +82,6 @@ public class PlayerAbilityState : PlayerBaseState
             {
                 subState = states.SecondaryAttackState;
             }
-        }
-        else if (dashInput)
-        {
-            context.InputHandler.UseDashInput();
-            subState = states.DashState;
-        }
-        else if (rollInput)
-        {
-            context.InputHandler.UseRollInput();
-            subState = states.RollState;
         }
 
         SetSubState(subState);

@@ -1,7 +1,7 @@
 public class PlayerWallClimbState : PlayerTouchingWallState
 {
     public PlayerWallClimbState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

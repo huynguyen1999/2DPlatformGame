@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerGroundedState : PlayerBaseState
 {
     public PlayerGroundedState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

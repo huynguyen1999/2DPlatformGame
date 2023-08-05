@@ -16,13 +16,17 @@ MonoBehaviour:
   movementVelocity: 10
   jumpVelocity: 15
   amountOfJumps: 2
+  HardLandDistance: 10
+  crouchVelocity: 5
+  rollVelocity: 15
+  rollCoolDown: 1
   directionSelectTimeScale: 0.1
   dashCoolDown: 1
   dashDistance: 10
   dashVelocity: 30
   afterImageDistance: 0.5
   directionSelectionTime: 1
-  dashTime: 0.5
+  dashDuration: 0.5
   coyoteTime: 0.2
   maxFallingSpeed: 20
   wallStickTime: 2

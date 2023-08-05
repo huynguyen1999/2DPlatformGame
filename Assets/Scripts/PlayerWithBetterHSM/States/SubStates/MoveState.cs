@@ -1,7 +1,7 @@
 public class PlayerMoveState : PlayerGroundedState
 {
     public PlayerMoveState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

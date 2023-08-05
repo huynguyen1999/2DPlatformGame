@@ -9,7 +9,7 @@ public class PlayerTouchingLedgeState : PlayerBaseState
     protected float lastTouchLedgeTime;
 
     public PlayerTouchingLedgeState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

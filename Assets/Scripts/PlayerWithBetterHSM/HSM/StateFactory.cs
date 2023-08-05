@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerStateFactory
 {
-    PlayerHSM context;
+    Player context;
     PlayerData playerData;
     public PlayerIdleState IdleState;
     public PlayerJumpState JumpState;
@@ -27,7 +27,7 @@ public class PlayerStateFactory
     public PlayerAttackState PrimaryAttackState,
         SecondaryAttackState;
 
-    public PlayerStateFactory(PlayerHSM currentContext, PlayerData playerData)
+    public PlayerStateFactory(Player currentContext, PlayerData playerData)
     {
         this.context = currentContext;
         this.playerData = playerData;

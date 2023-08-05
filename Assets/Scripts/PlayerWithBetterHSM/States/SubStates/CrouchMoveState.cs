@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerCrouchMoveState : PlayerGroundedState
 {
     public PlayerCrouchMoveState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

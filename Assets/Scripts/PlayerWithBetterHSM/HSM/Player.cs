@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerHSM : MonoBehaviour
+public class Player : MonoBehaviour
 {
     #region Components
     public Animator Anim { get; private set; }
@@ -67,7 +67,7 @@ public class PlayerHSM : MonoBehaviour
         DashDirectionIndicator.gameObject.SetActive(false);
         Initialize(states.GroundedState);
         states.PrimaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.Primary]);
-        states.SecondaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.Primary]);
+        states.SecondaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.Secondary]);
     }
 
     private void Update()

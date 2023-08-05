@@ -9,7 +9,7 @@ public class PlayerTouchingWallState : PlayerBaseState
     private bool canUseSkill;
 
     public PlayerTouchingWallState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

@@ -1,9 +1,10 @@
+using UnityEngine;
 public class PlayerJumpState : PlayerAbilityState
 {
     private int amountOfJumpsLeft;
 
     public PlayerJumpState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

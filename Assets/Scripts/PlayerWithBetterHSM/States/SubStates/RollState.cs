@@ -5,7 +5,7 @@ public class PlayerRollState : PlayerAbilityState
     private float lastRollTime = Mathf.NegativeInfinity;
 
     public PlayerRollState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

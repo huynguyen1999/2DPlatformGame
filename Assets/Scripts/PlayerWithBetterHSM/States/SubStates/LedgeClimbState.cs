@@ -1,7 +1,7 @@
 public class PlayerLedgeClimbState : PlayerTouchingLedgeState
 {
     public PlayerLedgeClimbState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

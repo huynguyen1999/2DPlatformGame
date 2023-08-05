@@ -3,7 +3,7 @@ public class PlayerLandState : PlayerGroundedState
     public bool IsHardLand = false;
 
     public PlayerLandState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,

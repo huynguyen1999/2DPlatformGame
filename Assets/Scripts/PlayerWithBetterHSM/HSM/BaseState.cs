@@ -6,7 +6,7 @@ using UnityEngine;
 
 public abstract class PlayerBaseState
 {
-    protected PlayerHSM context;
+    protected Player context;
     protected PlayerStateFactory states;
     private string animBoolName;
     protected PlayerData playerData;
@@ -29,7 +29,7 @@ public abstract class PlayerBaseState
     protected bool[] attackInputs;
 
     public PlayerBaseState(
-        PlayerHSM currentContext,
+        Player currentContext,
         PlayerStateFactory states,
         PlayerData playerData,
         string animBoolName,
@@ -55,18 +55,13 @@ public abstract class PlayerBaseState
 
     public virtual void Exit()
     {
-        if (currentSubState != null)
-        {
-            currentSubState.Exit();
-            currentSubState = null;
-        }
         context.Anim.SetBool(animBoolName, false);
     }
 
     public virtual void LogicUpdate()
     {
-        CheckSwitchStates();
         CheckInput();
+        CheckSwitchStates();
         isAnimationFinished = context.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
     }
 
@@ -124,18 +119,19 @@ public abstract class PlayerBaseState
 
     public void ExitStates()
     {
-        ExitStates();
         if (currentSubState != null)
         {
             currentSubState.Exit();
+            currentSubState = null;
         }
+        Exit();
     }
 
     protected void SwitchState(PlayerBaseState newState)
     {
         if (newState == null)
             return;
-        Exit();
+        ExitStates();
         if (isRootState)
         {
             // root scope state
