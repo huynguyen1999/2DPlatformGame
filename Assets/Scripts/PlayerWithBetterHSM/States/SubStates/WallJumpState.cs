@@ -19,9 +19,9 @@ public class PlayerWallJumpState : PlayerAbilityState
     {
         base.Enter(data);
         isAbilityDone = true;
-        context.Flip();
+        core.Movement.Flip();
         context.RB.velocity = new Vector2(
-            playerData.wallJumpForce.x * context.FacingDirection,
+            playerData.wallJumpForce.x * core.Movement.FacingDirection,
             playerData.wallJumpForce.y
         );
         states.InAirState.FreezeAction();

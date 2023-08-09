@@ -35,7 +35,7 @@ public class E2_MoveState : MoveState
         {
             _stateMachine.ChangeState(_enemy.TargetDetectedState);
         }
-        if (!_isDetectingLedge || _isDetectingWall)
+        if (!_isTouchingLedge || _isTouchingWall)
         {
             _enemy.IdleState.SetFlipAfterIdle(true);
             _stateMachine.ChangeState(_enemy.IdleState);

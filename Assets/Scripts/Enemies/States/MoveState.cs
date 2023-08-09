@@ -3,8 +3,6 @@ using UnityEngine;
 public class MoveState : State
 {
     protected D_MoveState _stateData;
-    protected bool _isDetectingWall;
-    protected bool _isDetectingLedge;
     protected bool _isTargetInMinAggroRange;
 
     public MoveState(
@@ -18,13 +16,10 @@ public class MoveState : State
         _stateData = stateData;
     }
 
-    public override void Enter(object data=null)
+    public override void Enter(object data = null)
     {
         base.Enter(data);
-        _isDetectingLedge = _entity.CheckLedge();
-        _isDetectingWall = _entity.CheckWall();
         _isTargetInMinAggroRange = _entity.CheckTargetInMaxAggroRange();
-        _entity.SetXVelocity(_stateData.MovementSpeed);
     }
 
     public override void Exit()
@@ -40,9 +35,7 @@ public class MoveState : State
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        _isDetectingLedge = _entity.CheckLedge();
-        _isDetectingWall = _entity.CheckWall();
         _isTargetInMinAggroRange = _entity.CheckTargetInMaxAggroRange();
-        _entity.SetXVelocity(_stateData.MovementSpeed);
+        _core.Movement.SetVelocityX(_stateData.MovementSpeed * _core.Movement.FacingDirection);
     }
 }

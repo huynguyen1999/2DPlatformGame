@@ -43,30 +43,30 @@ public class PlayerInAirState : PlayerBaseState
     {
         base.LogicUpdate();
         // calculate falling distance
-        if (context.CurrentVelocity.y > -0.001f)
+        if (core.Movement.CurrentVelocity.y > -0.001f)
         {
             midAirYPosition = context.transform.position.y;
         }
-        else if (context.CurrentVelocity.y <= -0.01f)
+        else if (core.Movement.CurrentVelocity.y <= -0.01f)
         {
             fallingDistance = Mathf.Abs(midAirYPosition - context.transform.position.y);
         }
         // check if player can move
-        if (canDoAction && (!isGrounded || Mathf.Abs(context.CurrentVelocity.y) > 0.01f))
+        if (canDoAction && (!isGrounded || Mathf.Abs(core.Movement.CurrentVelocity.y) > 0.01f))
         {
-            context.CheckIfShouldFlip(xInput);
-            context.SetVelocityX(playerData.movementVelocity * xInput);
+            core.Movement.CheckIfShouldFlip(xInput);
+            core.Movement.SetVelocityX(playerData.movementVelocity * xInput);
         }
-        context.Anim.SetFloat("yVelocity", context.CurrentVelocity.y);
-        context.Anim.SetFloat("xVelocity", Mathf.Abs(context.CurrentVelocity.x));
+        context.Anim.SetFloat("yVelocity", core.Movement.CurrentVelocity.y);
+        context.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurrentVelocity.x));
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        if (Mathf.Abs(context.CurrentVelocity.y) > playerData.maxFallingSpeed)
+        if (Mathf.Abs(core.Movement.CurrentVelocity.y) > playerData.maxFallingSpeed)
         {
-            context.SetVelocityY(-playerData.maxFallingSpeed);
+            core.Movement.SetVelocityY(-playerData.maxFallingSpeed);
         }
     }
 
@@ -81,11 +81,11 @@ public class PlayerInAirState : PlayerBaseState
     {
         PlayerBaseState newState = null;
 
-        if (isGrounded && context.CurrentVelocity.y < 0.01f)
+        if (isGrounded && core.Movement.CurrentVelocity.y < 0.01f)
         {
             newState = states.GroundedState;
         }
-        if (newState == null && xInput * context.FacingDirection > 0 && context.CurrentVelocity.y < 0f)
+        if (newState == null && xInput * core.Movement.FacingDirection > 0 && core.Movement.CurrentVelocity.y < 0f)
         {
             if (isTouchingLedge && states.TouchingLedgeState.CanTouchLedge())
             {

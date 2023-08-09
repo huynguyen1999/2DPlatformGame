@@ -22,10 +22,10 @@ public class PlayerTouchingLedgeState : PlayerBaseState
         base.Enter(data);
         if (!isRootState)
             return;
-        context.SetVelocity(Vector2.zero);
+        core.Movement.SetVelocity(Vector2.zero);
         cornerPosition = context.DetermineCornerPosition();
         startPosition.Set(
-            cornerPosition.x - (context.FacingDirection * playerData.startOffset.x),
+            cornerPosition.x - (core.Movement.FacingDirection * playerData.startOffset.x),
             cornerPosition.y - playerData.startOffset.y
         );
         context.transform.position = startPosition;
@@ -53,7 +53,7 @@ public class PlayerTouchingLedgeState : PlayerBaseState
         base.PhysicsUpdate();
         if (isRootState)
         {
-            context.SetVelocity(Vector2.zero);
+            core.Movement.SetVelocity(Vector2.zero);
             context.transform.position = startPosition;
         }
     }

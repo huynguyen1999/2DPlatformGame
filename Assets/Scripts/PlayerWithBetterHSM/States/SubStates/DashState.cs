@@ -23,7 +23,7 @@ public class PlayerDashState : PlayerAbilityState
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        context.SetVelocity(Vector2.zero);
+        core.Movement.SetVelocity(Vector2.zero);
         isWaitingDirectionInput = true;
         startPosition = context.transform.position;
         dashDirection = context.transform.right;
@@ -39,7 +39,7 @@ public class PlayerDashState : PlayerAbilityState
         base.Exit();
         lastDashTime = Time.time;
         context.RB.gravityScale = previousGravityScale;
-        context.SetVelocity(Vector2.zero);
+        core.Movement.SetVelocity(Vector2.zero);
     }
 
     public override void LogicUpdate()
@@ -47,7 +47,7 @@ public class PlayerDashState : PlayerAbilityState
         base.LogicUpdate();
         if (isWaitingDirectionInput) // select dash direction
         {
-            context.SetVelocity(Vector2.zero);
+            core.Movement.SetVelocity(Vector2.zero);
             dashDirectionInput = context.InputHandler.RawMovementInput;
             dashInputStop = context.InputHandler.DashInputStop;
             if (dashDirectionInput != Vector2.zero)
@@ -62,12 +62,12 @@ public class PlayerDashState : PlayerAbilityState
                 context.DashDirectionIndicator.gameObject.SetActive(false);
                 Time.timeScale = 1f;
                 startTime = Time.time;
-                context.CheckIfShouldFlip(Mathf.RoundToInt(dashDirection.x));
+                core.Movement.CheckIfShouldFlip(Mathf.RoundToInt(dashDirection.x));
             }
         }
         else // while dashing
         {
-            context.SetVelocity(playerData.dashVelocity, dashDirection);
+            core.Movement.SetVelocity(playerData.dashVelocity, dashDirection);
             CheckIfPlaceAfterImage();
             float dashedDistance = Vector2.Distance(
                 startPosition,
@@ -80,8 +80,8 @@ public class PlayerDashState : PlayerAbilityState
             {
                 isAbilityDone = true;
             }
-            context.Anim.SetFloat("yVelocity", context.CurrentVelocity.y);
-            context.Anim.SetFloat("xVelocity", Mathf.Abs(context.CurrentVelocity.x));
+            context.Anim.SetFloat("yVelocity", core.Movement.CurrentVelocity.y);
+            context.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurrentVelocity.x));
         }
     }
 

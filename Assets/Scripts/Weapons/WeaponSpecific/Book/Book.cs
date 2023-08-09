@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WeaponBook : Weapon
+public class WeaponBook : AggressiveWeapon
 {
     public BookChargeState chargeState;
     public BookHoldState holdState;
@@ -27,6 +27,6 @@ public class WeaponBook : Weapon
     public override void Update()
     {
         base.Update();
-        player.SetVelocity(Vector2.zero);
+        player.Core.Movement.SetVelocityX(0f);
     }
 }

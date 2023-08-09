@@ -46,7 +46,7 @@ public class DodgeState : State
         {
             _isDodgeOver = true;
         }
-        _entity.Anim.SetFloat("VerticalVelocity", _entity.RB.velocity.y);
+        _entity.Anim.SetFloat("VerticalVelocity", _core.Movement.CurrentVelocity.y);
     }
 
     public override void PhysicsUpdate()
@@ -59,9 +59,9 @@ public class DodgeState : State
 
     public void TriggerDodge()
     {
-        _entity.SetVelocity(
+        _core.Movement.SetVelocity(
             new Vector2(
-                _stateData.DodgeJumpForce.x * _entity.AliveGO.transform.right.x * -1,
+                _stateData.DodgeJumpForce.x * _core.Movement.FacingDirection * -1,
                 _stateData.DodgeJumpForce.y
             )
         );

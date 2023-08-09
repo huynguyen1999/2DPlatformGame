@@ -22,10 +22,10 @@ public class IdleState : State
         _flipAfterIdle = false;
     }
 
-    public override void Enter(object data=null)
+    public override void Enter(object data = null)
     {
         base.Enter(data);
-        _entity.SetXVelocity(0f);
+        _core.Movement.SetVelocityX(0f);
         _isIdleTimeOver = false;
         SetRandomIdleTime();
         _isTargetInMinAggroRange = _entity.CheckTargetInMaxAggroRange();
@@ -37,7 +37,7 @@ public class IdleState : State
 
         if (_flipAfterIdle)
         {
-            _entity.Flip();
+            _core.Movement.Flip();
         }
     }
 

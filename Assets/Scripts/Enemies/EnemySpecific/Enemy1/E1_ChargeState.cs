@@ -31,7 +31,7 @@ public class E1_ChargeState : ChargeState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (!_isDetectingLedge || _isDetectingWall)
+        if (!_isTouchingLedge || _isTouchingWall)
         {
             _stateMachine.ChangeState(_enemy.LookForTargetState);
         }

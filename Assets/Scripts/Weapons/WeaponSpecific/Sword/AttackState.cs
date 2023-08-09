@@ -35,11 +35,12 @@ public class SwordAttackState : WeaponBaseState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        (context as AggressiveWeapon).CheckIfDealDamage();
         if (CanFlip())
         {
             playerAttackState.CheckIfShouldFlip();
         }
-        player.SetVelocityX(attackMovementSpeed * player.FacingDirection);
+        player.Core.Movement.SetVelocityX(attackMovementSpeed * player.Core.Movement.FacingDirection);
     }
     public override void CheckSwitchStates()
     {

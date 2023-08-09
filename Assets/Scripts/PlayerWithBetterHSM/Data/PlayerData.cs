@@ -59,9 +59,4 @@ public class PlayerData : ScriptableObject
     [Header("Ledge Climb State")]
     public Vector2 startOffset = new Vector2(0.2f, 1f);
     public Vector2 stopOffset = new Vector2(0.5f, 2f);
-
-    [Header("Check Variables")]
-    public float groundCheckRadius = 0.3f;
-    public float wallCheckDistance = 0.4f;
-    public LayerMask whatIsGround;
 }

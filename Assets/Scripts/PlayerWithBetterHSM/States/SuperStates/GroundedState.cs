@@ -18,7 +18,7 @@ public class PlayerGroundedState : PlayerBaseState
         {
             states.JumpState.ResetAmountOfJumpsLeft();
         }
-        context.SetVelocity(Vector2.zero);
+        core.Movement.SetVelocity(Vector2.zero);
     }
 
     public override void Exit()

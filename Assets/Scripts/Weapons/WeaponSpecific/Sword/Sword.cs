@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WeaponSword : Weapon
+public class WeaponSword : AggressiveWeapon
 {
     private SwordAttackState attackState;
     public override void InitializeWeapon(Player player, PlayerData playerData, PlayerAttackState playerAttackState)

@@ -12,7 +12,7 @@ public class PlayerWallGrabState : PlayerTouchingWallState
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        context.SetVelocityY(0f);
+        core.Movement.SetVelocityY(0f);
     }
 
     public override void InitializeSubState() { }

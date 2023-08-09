@@ -37,10 +37,5 @@ MonoBehaviour:
   wallJumpForce: {x: 13, y: 13}
   wallJumpCoolDown: 0.2
   ledgeTouchCoolDown: 0.3
-  startOffset: {x: 0.2, y: 1}
+  startOffset: {x: 0.3, y: 1}
   stopOffset: {x: 0.5, y: 2}
-  groundCheckRadius: 0.3
-  wallCheckDistance: 0.4
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 256

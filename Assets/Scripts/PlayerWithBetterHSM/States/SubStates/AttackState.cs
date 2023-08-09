@@ -18,24 +18,18 @@ public class PlayerAttackState : PlayerAbilityState
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        context.SetVelocity(Vector2.zero);
+        core.Movement.SetVelocity(Vector2.zero);
         previousGravityScale = context.RB.gravityScale;
-        context.RB.gravityScale = 0f;
+        context.RB.gravityScale = 1f;
         weapon.UseWeapon();
     }
 
     public override void Exit()
     {
         base.Exit();
-        context.SetVelocity(Vector2.zero);
+        core.Movement.SetVelocity(Vector2.zero);
         context.RB.gravityScale = previousGravityScale;
         lastAttackTime = Time.time;
-    }
-    public override void LogicUpdate()
-    {
-    }
-    public override void PhysicsUpdate()
-    {
     }
     public override void InitializeSubState() { }
 
@@ -53,12 +47,7 @@ public class PlayerAttackState : PlayerAbilityState
     {
         if (xInput != 0)
         {
-            context.CheckIfShouldFlip(xInput);
+            core.Movement.CheckIfShouldFlip(xInput);
         }
-    }
-
-    public void SetVelocity(float velocity)
-    {
-        context.SetVelocityX(velocity);
     }
 }

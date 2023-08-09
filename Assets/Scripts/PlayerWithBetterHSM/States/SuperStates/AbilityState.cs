@@ -95,7 +95,7 @@ public class PlayerAbilityState : PlayerBaseState
             return;
         }
         PlayerBaseState newState = null;
-        if (isGrounded && context.CurrentVelocity.y < 0.01f)
+        if (isGrounded && core.Movement.CurrentVelocity.y < 0.01f)
         {
             newState = states.GroundedState;
         }

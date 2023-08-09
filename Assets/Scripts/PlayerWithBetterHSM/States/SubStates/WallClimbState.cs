@@ -12,13 +12,13 @@ public class PlayerWallClimbState : PlayerTouchingWallState
     public override void Exit()
     {
         base.Exit();
-        context.SetVelocityY(0f);
+        core.Movement.SetVelocityY(0f);
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        context.SetVelocityY(playerData.wallClimbVelocity * yInput);
+        core.Movement.SetVelocityY(playerData.wallClimbVelocity * yInput);
     }
 
     public override void InitializeSubState() { }

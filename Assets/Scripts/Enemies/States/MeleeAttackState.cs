@@ -7,6 +7,7 @@ public class MeleeAttackState : AttackState
     protected new D_MeleeAttackState _stateData;
     protected bool _isTargetInMinAggroRange,
         _isTargetInMaxAggroRange;
+    private List<int> detectedDamageableInstanceIDs = new();
 
     public MeleeAttackState(
         Entity entity,
@@ -23,6 +24,7 @@ public class MeleeAttackState : AttackState
     {
         base.Enter(data);
         _entity.AttackTriggerCollider.enabled = true;
+        detectedDamageableInstanceIDs = new();
         TriggerAttack();
     }
 
@@ -47,15 +49,23 @@ public class MeleeAttackState : AttackState
     public override void TriggerAttack()
     {
         base.TriggerAttack();
-        Collider2D[] hitTargets = new Collider2D[1];
+        List<Collider2D> hitTargets = new();
         ContactFilter2D contactFilter =
             new() { useLayerMask = true, layerMask = _entity.EntityData.WhatIsTarget };
         Physics2D.OverlapCollider(_entity.AttackTriggerCollider, contactFilter, hitTargets);
         foreach (Collider2D collider in hitTargets)
         {
-            IDamageable targetController = collider.GetComponent<IDamageable>();
-            AttackDetails attackDetails = new(_entity.AliveGO.transform, _stateData.AttackDamage);
-            targetController?.OnHit(attackDetails);
+            IDamageable damageable = collider.GetComponent<IDamageable>();
+            if (damageable == null || detectedDamageableInstanceIDs.Contains(collider.GetInstanceID()))
+            {
+                continue;
+            }
+            detectedDamageableInstanceIDs.Add(collider.GetInstanceID());
+            AttackDetails attackDetails = new(_entity.transform, _core.Movement.FacingDirection, _stateData.AttackDamage);
+            damageable?.OnHit(attackDetails);
+            // knockback
+            IKnockbackable knockbackable = collider.GetComponent<IKnockbackable>();
+            knockbackable?.Knockback(_stateData.KnockbackAngle, _stateData.KnockbackForce, _core.Movement.FacingDirection);
         }
     }
 }

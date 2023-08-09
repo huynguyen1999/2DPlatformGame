@@ -28,7 +28,7 @@ public class LookForTargetState : State
         base.Enter(data);
         _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
         _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
-        _entity.SetXVelocity(0f);
+        _core.Movement.SetVelocityX(0f);
         _amountOfTurnsDone = 0;
         _isAllTurnsDone = false;
         _lastTurnTime = Time.time;
@@ -45,7 +45,7 @@ public class LookForTargetState : State
         base.LogicUpdate();
         if (_turnImmediately)
         {
-            _entity.Flip();
+            _core.Movement.Flip();
             _lastTurnTime = Time.time;
             _amountOfTurnsDone++;
             _turnImmediately = false;

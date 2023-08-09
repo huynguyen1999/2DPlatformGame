@@ -14,7 +14,7 @@ public class PlayerWallSlideState : PlayerTouchingWallState
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        context.SetVelocityY(-playerData.wallSlideVelocity);
+        core.Movement.SetVelocityY(-playerData.wallSlideVelocity);
     }
 
     public override void InitializeSubState() { }
@@ -22,7 +22,7 @@ public class PlayerWallSlideState : PlayerTouchingWallState
     public override void CheckSwitchStates()
     {
         PlayerTouchingWallState newState = null;
-        if (xInput * context.FacingDirection > 0)
+        if (xInput * core.Movement.FacingDirection > 0)
         {
             newState = states.WallGrabState;
         }

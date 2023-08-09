@@ -26,7 +26,7 @@ public class PlayerTouchingWallState : PlayerBaseState
             context.RB.gravityScale = 0f;
         }
 
-        context.SetVelocityX(0f);
+        core.Movement.SetVelocityX(0f);
         context.StartCoroutine(ActivateSkillCoroutine());
     }
 
@@ -65,7 +65,7 @@ public class PlayerTouchingWallState : PlayerBaseState
     public override void InitializeSubState()
     {
         PlayerTouchingWallState subState = null;
-        if (xInput * context.FacingDirection > 0)
+        if (xInput * core.Movement.FacingDirection > 0)
         {
             subState = states.WallGrabState;
         }
@@ -85,7 +85,7 @@ public class PlayerTouchingWallState : PlayerBaseState
         {
             newState = states.InAirState;
         }
-        else if (isGrounded && context.CurrentVelocity.y < 0.01f)
+        else if (isGrounded && core.Movement.CurrentVelocity.y < 0.01f)
         {
             newState = states.GroundedState;
         }

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public abstract class PlayerBaseState
 {
+    protected Core core;
     protected Player context;
     protected PlayerStateFactory states;
     private string animBoolName;
@@ -41,6 +42,7 @@ public abstract class PlayerBaseState
         this.playerData = playerData;
         this.animBoolName = animBoolName;
         this.isRootState = isRootState;
+        core = currentContext.Core;
     }
 
     public virtual void Enter(object data = null)
@@ -82,10 +84,10 @@ public abstract class PlayerBaseState
 
     public virtual void DoPhysicsCheck()
     {
-        isGrounded = context.CheckIfGrounded();
-        isTouchingWall = context.CheckIfTouchingWall();
-        isTouchingLedge = context.CheckIfTouchingLedge() == false && isTouchingWall == true;
-        isTouchingCeiling = context.CheckIfTouchingCeiling();
+        isGrounded = core.CollisionDetection.CheckIfGrounded();
+        isTouchingWall = core.CollisionDetection.CheckIfTouchingWall();
+        isTouchingLedge = core.CollisionDetection.CheckIfTouchingHorizontalLedge() == false && isTouchingWall == true;
+        isTouchingCeiling = core.CollisionDetection.CheckIfTouchingCeiling();
     }
 
     /// <summary>

@@ -20,16 +20,16 @@ public class DeadState : State
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        _entity.SetXVelocity(0f);
+        _core.Movement.SetVelocityX(0f);
         Object.Instantiate(
             _stateData.DeathBloodParticle,
-            _entity.AliveGO.transform.position,
-            _entity.AliveGO.transform.rotation
+            _entity.transform.position,
+            _entity.transform.rotation
         );
         Object.Instantiate(
             _stateData.DeathChunkParticle,
-            _entity.AliveGO.transform.position,
-            _entity.AliveGO.transform.rotation
+            _entity.transform.position,
+            _entity.transform.rotation
         );
         Object.Destroy(_entity.gameObject);
     }

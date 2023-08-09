@@ -37,7 +37,7 @@ public class E1_TargetDetectedState : TargetDetectedState
             return;
         }
 
-        if (_performLongRangeAction && _isDetectingLedge && !_isDetectingWall)
+        if (_performLongRangeAction && _isTouchingLedge && !_isTouchingWall)
         {
             _stateMachine.ChangeState(_enemy.ChargeState);
         }

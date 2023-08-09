@@ -97,7 +97,7 @@ public class ArrowController : MonoBehaviour
             return;
         KnockBack();
         IDamageable target = targetHit.GetComponent<IDamageable>();
-        AttackDetails attackDetails = new(transform, _damage);
+        AttackDetails attackDetails = new(transform, (int)transform.localScale.x, _damage);
         target?.OnHit(attackDetails);
         _hasHitTarget = true;
     }

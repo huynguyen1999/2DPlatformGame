@@ -19,7 +19,7 @@ public class PlayerJumpState : PlayerAbilityState
     {
         base.Enter(data);
         isAbilityDone = true;
-        context.SetVelocityY(playerData.jumpVelocity);
+        core.Movement.SetVelocityY(playerData.jumpVelocity);
         amountOfJumpsLeft--;
     }
 

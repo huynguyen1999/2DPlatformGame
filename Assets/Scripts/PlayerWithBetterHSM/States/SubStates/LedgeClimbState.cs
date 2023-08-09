@@ -14,7 +14,7 @@ public class PlayerLedgeClimbState : PlayerTouchingLedgeState
         base.Enter(data);
         cornerPosition = context.DetermineCornerPosition();
         stopPosition.Set(
-            cornerPosition.x + (context.FacingDirection * playerData.stopOffset.x),
+            cornerPosition.x + (core.Movement.FacingDirection * playerData.stopOffset.x),
             cornerPosition.y + playerData.stopOffset.y
         );
     }

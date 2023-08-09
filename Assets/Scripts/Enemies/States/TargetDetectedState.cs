@@ -8,8 +8,6 @@ public class TargetDetectedState : State
 
     protected bool _isTargetInMinAggroRange,
         _isTargetInMaxAggroRange,
-        _isDetectingLedge,
-        _isDetectingWall,
         _performLongRangeAction,
         _isTargetInCloseRangeAction,
         _performCloseRangeAction;
@@ -28,12 +26,10 @@ public class TargetDetectedState : State
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        _entity.SetXVelocity(0f);
+        _core.Movement.SetVelocityX(0f);
         _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
         _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
         _isTargetInCloseRangeAction = _entity.CheckTargetInCloseRangeAction();
-        _isDetectingLedge = _entity.CheckLedge();
-        _isDetectingWall = _entity.CheckWall();
         _performLongRangeAction = false;
         _performCloseRangeAction = false;
     }
@@ -61,8 +57,6 @@ public class TargetDetectedState : State
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
-        _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
         _isTargetInCloseRangeAction = _entity.CheckTargetInCloseRangeAction();
     }
 }

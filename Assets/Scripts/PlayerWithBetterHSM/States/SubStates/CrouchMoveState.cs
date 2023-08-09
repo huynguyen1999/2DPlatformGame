@@ -14,8 +14,8 @@ public class PlayerCrouchMoveState : PlayerGroundedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        context.SetVelocityX(playerData.crouchVelocity * xInput);
-        context.CheckIfShouldFlip(xInput);
+        core.Movement.SetVelocityX(playerData.crouchVelocity * xInput);
+        core.Movement.CheckIfShouldFlip(xInput);
     }
 
     public override void InitializeSubState() { }

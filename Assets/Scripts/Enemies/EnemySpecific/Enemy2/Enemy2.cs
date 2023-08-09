@@ -85,18 +85,18 @@ public class Enemy2 : Entity
         StateMachine.Initialize(MoveState);
     }
 
-    public override void OnHit(AttackDetails attackDetails)
-    {
-        base.OnHit(attackDetails);
-        if (_currentHealth <= 0)
-        {
-            StateMachine.ChangeState(DeadState);
-        }
-        else
-        {
-            StateMachine.ChangeState(StunState, attackDetails);
-        }
-    }
+    // public override void OnHit(AttackDetails attackDetails)
+    // {
+    //     base.OnHit(attackDetails);
+    //     if (_currentHealth <= 0)
+    //     {
+    //         StateMachine.ChangeState(DeadState);
+    //     }
+    //     else
+    //     {
+    //         StateMachine.ChangeState(StunState, attackDetails);
+    //     }
+    // }
 
     public override void Update()
     {

@@ -58,7 +58,7 @@ public class RangedAttackState : AttackState
         GameObject arrow = Object.Instantiate(
             _stateData.Projectile,
             _entity.ProjectileStart.transform.position,
-            _entity.AliveGO.transform.rotation
+            _entity.transform.rotation
         );
         ArrowController arrowController = arrow.GetComponent<ArrowController>();
         if (!arrowController)

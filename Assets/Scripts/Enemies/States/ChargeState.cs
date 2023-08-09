@@ -8,8 +8,6 @@ public class ChargeState : State
     protected bool _isChargeTimeOver;
     protected bool _isTargetInMinAggroRange,
         _isTargetInMaxAggroRange;
-    protected bool _isDetectingWall;
-    protected bool _isDetectingLedge;
     protected bool _performCloseRangeAction;
 
     public ChargeState(
@@ -27,9 +25,7 @@ public class ChargeState : State
     {
         base.Enter(data);
         _isChargeTimeOver = false;
-        _entity.SetXVelocity(_stateData.ChargeSpeed);
-        _isDetectingLedge = _entity.CheckLedge();
-        _isDetectingWall = _entity.CheckWall();
+        _core.Movement.SetVelocityX(_stateData.ChargeSpeed * _core.Movement.FacingDirection);
         _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
         _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
         _performCloseRangeAction = _entity.CheckTargetInCloseRangeAction();
@@ -38,7 +34,7 @@ public class ChargeState : State
     public override void Exit()
     {
         base.Exit();
-        _entity.SetXVelocity(0f);
+        _core.Movement.SetVelocityX(0f);
     }
 
     public override void LogicUpdate()
@@ -53,9 +49,7 @@ public class ChargeState : State
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        _entity.SetXVelocity(_stateData.ChargeSpeed);
-        _isDetectingLedge = _entity.CheckLedge();
-        _isDetectingWall = _entity.CheckWall();
+        _core.Movement.SetVelocityX(_stateData.ChargeSpeed * _core.Movement.FacingDirection);
         _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
         _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
         _performCloseRangeAction = _entity.CheckTargetInCloseRangeAction();
