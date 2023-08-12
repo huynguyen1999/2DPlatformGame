@@ -67,16 +67,4 @@ public class Enemy1 : Entity
         DeadState = new(this, StateMachine, "Enemy1_Dead", _deadStateData, this);
         StateMachine.Initialize(MoveState);
     }
-    // public override void OnHit(AttackDetails attackDetails)
-    // {
-    //     base.OnHit(attackDetails);
-    //     if (_currentHealth <= 0)
-    //     {
-    //         StateMachine.ChangeState(DeadState);
-    //     }
-    //     else
-    //     {
-    //         StateMachine.ChangeState(StunState, attackDetails);
-    //     }
-    // }
 }

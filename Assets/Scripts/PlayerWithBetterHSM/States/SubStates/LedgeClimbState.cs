@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class PlayerLedgeClimbState : PlayerTouchingLedgeState
 {
     public PlayerLedgeClimbState(
@@ -12,10 +14,9 @@ public class PlayerLedgeClimbState : PlayerTouchingLedgeState
     public override void Enter(object data = null)
     {
         base.Enter(data);
-        cornerPosition = context.DetermineCornerPosition();
         stopPosition.Set(
-            cornerPosition.x + (core.Movement.FacingDirection * playerData.stopOffset.x),
-            cornerPosition.y + playerData.stopOffset.y
+            context.transform.position.x + (core.Movement.FacingDirection * playerData.stopOffset.x),
+            context.transform.position.y + playerData.stopOffset.y
         );
     }
 

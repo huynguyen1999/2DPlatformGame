@@ -75,16 +75,17 @@ public class Player : MonoBehaviour
             Core.CollisionDetection.WhatIsGround
         );
         float xDist = xHit.distance;
-        Vector2 workspace = new(xDist * transform.root.localScale.x, 0f);
+        // add some offset to make sure it collides with the ground
+        Vector2 workspace = new((xDist + 0.01f) * Core.Movement.FacingDirection, 0f);
         RaycastHit2D yHit = Physics2D.Raycast(
             Core.CollisionDetection.LedgeCheckHorizontal.position + (Vector3)(workspace),
             -transform.up,
-            1f,
+            Core.CollisionDetection.WallCheckDistance,
             Core.CollisionDetection.WhatIsGround
         );
         float yDist = yHit.distance;
         workspace.Set(
-            Core.CollisionDetection.WallCheck.position.x + (xDist * transform.root.localScale.x),
+            Core.CollisionDetection.WallCheck.position.x + xDist * Core.Movement.FacingDirection,
             Core.CollisionDetection.LedgeCheckHorizontal.position.y - yDist
         );
         return workspace;

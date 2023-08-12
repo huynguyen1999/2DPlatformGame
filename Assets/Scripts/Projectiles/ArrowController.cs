@@ -28,12 +28,13 @@ public class ArrowController : MonoBehaviour
     [SerializeField]
     private LayerMask _whatIsGround;
 
-    private float _travelDistance = 0f,
-        _speed = 0f,
+    private float _travelDistance = 5f,
+        _speed = 5f,
         _damage = 0f,
         _xStartPosition = 0f;
     private bool _hasHitGround,
-        _hasHitTarget;
+        _hasHitTarget,
+        _isGravityOn;
     private Rigidbody2D _rb;
     private PolygonCollider2D _collider;
     private Animator _anim;
@@ -45,17 +46,20 @@ public class ArrowController : MonoBehaviour
         _anim = GetComponent<Animator>();
         _hasHitGround = false;
         _hasHitTarget = false;
+        _isGravityOn = false;
         StartCoroutine(RemoveArrow(_arrowLifeSpan));
     }
 
-    public void Update() { }
+    public void Update()
+    {
+    }
 
     public void FixedUpdate()
     {
         if (Mathf.Abs(_xStartPosition - transform.position.x) >= _travelDistance)
         {
-            _rb.gravityScale = 4;
-            _rb.AddTorque(5f);
+            _rb.gravityScale = 4f;
+            _isGravityOn = true;
         }
         if (!_hasHitGround && !_hasHitTarget)
         {
@@ -78,8 +82,8 @@ public class ArrowController : MonoBehaviour
             return;
         _rb.velocity = new Vector2(0, 0);
         _rb.angularVelocity = 0f;
-        _rb.isKinematic = true;
         _hasHitGround = true;
+        _rb.isKinematic = true;
         _anim.Play("Arrow_Idle");
         StartCoroutine(RemoveArrow(_arrowDestroyTime));
     }
@@ -88,18 +92,25 @@ public class ArrowController : MonoBehaviour
     {
         if (_hasHitTarget)
             return;
-        Collider2D targetHit = Physics2D.OverlapCircle(
+        Collider2D[] targetsHit = Physics2D.OverlapCircleAll(
             _damagePosition.position,
             _damageRadius,
             _whatIsTarget
         );
-        if (targetHit == null)
+        if (targetsHit == null || targetsHit.Length == 0)
             return;
         KnockBack();
-        IDamageable target = targetHit.GetComponent<IDamageable>();
-        AttackDetails attackDetails = new(transform, (int)transform.localScale.x, _damage);
-        target?.OnHit(attackDetails);
-        _hasHitTarget = true;
+        foreach (Collider2D targetHit in targetsHit)
+        {
+            IDamageable target = targetHit.GetComponent<IDamageable>();
+            if (target == null) continue;
+            AttackDetails attackDetails = new(transform, (int)transform.localScale.x, _damage);
+            target?.OnHit(attackDetails);
+            _hasHitTarget = true;
+            _rb.gravityScale = 4f;
+            _isGravityOn = true;
+            return;
+        }
     }
 
     private void KnockBack()

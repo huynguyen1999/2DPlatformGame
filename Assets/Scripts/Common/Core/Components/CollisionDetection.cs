@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[System.Serializable]
 public class CollisionDetection : CoreComponent
 {
     public Transform GroundCheck { get => GenericNotImplementedError<Transform>.TryGet(groundCheck, transform.root.name); }

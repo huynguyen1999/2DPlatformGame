@@ -1,12 +1,15 @@
 using UnityEngine;
 
+[System.Serializable]
 public class Combat : CoreComponent, IDamageable, IKnockbackable
 {
+    [SerializeField] private GameObject damageParticles;
     public bool IsHit { get; set; } = false;
     public bool IsKnockedBack { get; set; } = false;
     public void OnHit(AttackDetails attackDetails)
     {
-        Debug.Log($"{transform.root.name} is dealt {attackDetails.Damage} damage!");
+        core.Stats.DecreaseHealth(attackDetails.Damage);
+        core.ParticleManager.StartParticlesWithRandomRotation(damageParticles);
     }
     public void Knockback(Vector2 angle, float force, int direction)
     {

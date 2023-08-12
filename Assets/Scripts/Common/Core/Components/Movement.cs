@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[System.Serializable]
 public class Movement : CoreComponent
 {
     public Rigidbody2D RB { get; private set; }
