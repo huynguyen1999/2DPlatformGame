@@ -84,10 +84,22 @@ public class Player : MonoBehaviour
             Core.CollisionDetection.WhatIsGround
         );
         float yDist = yHit.distance;
+        if (!yHit) // somehow, the yHit sometimes return false, the possible cause could be ledgecheck is under the corner
+        {
+            yHit = Physics2D.Raycast(
+                        Core.CollisionDetection.LedgeCheckHorizontal.position + (Vector3)(workspace),
+                        transform.up,
+                        Core.CollisionDetection.WallCheckDistance,
+                        Core.CollisionDetection.WhatIsGround
+                    );
+            yDist = -yHit.distance;
+        }
+
         workspace.Set(
             Core.CollisionDetection.WallCheck.position.x + xDist * Core.Movement.FacingDirection,
             Core.CollisionDetection.LedgeCheckHorizontal.position.y - yDist
         );
+        Debug.Log("workspace: " + workspace);
         return workspace;
     }
     #endregion
