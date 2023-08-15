@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     public Rigidbody2D RB { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
     public BoxCollider2D PlayerCollier { get; private set; }
-    public PlayerInventory Inventory { get; private set; }
     #endregion
 
     #region State Variables
@@ -24,6 +23,8 @@ public class Player : MonoBehaviour
     #region Other Variables
     [SerializeField]
     private PlayerData playerData;
+    private Weapon primaryWeapon,
+        secondaryWeapon;
 
 
     #endregion
@@ -33,6 +34,8 @@ public class Player : MonoBehaviour
     {
         Core = GetComponentInChildren<Core>();
         states = new PlayerStateFactory(this, playerData);
+        primaryWeapon = transform.Find("PrimaryWeapon").GetComponent<Weapon>();
+        secondaryWeapon = transform.Find("SecondaryWeapon").GetComponent<Weapon>();
     }
 
     private void Start()
@@ -41,11 +44,10 @@ public class Player : MonoBehaviour
         RB = GetComponent<Rigidbody2D>();
         PlayerCollier = GetComponent<BoxCollider2D>();
         InputHandler = GetComponent<PlayerInputHandler>();
-        Inventory = GetComponent<PlayerInventory>();
         DashDirectionIndicator.gameObject.SetActive(false);
         Initialize(states.GroundedState);
-        states.PrimaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.Primary]);
-        states.SecondaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.Secondary]);
+        states.PrimaryAttackState.SetWeapon(primaryWeapon);
+        states.SecondaryAttackState.SetWeapon(secondaryWeapon);
     }
 
     private void Update()

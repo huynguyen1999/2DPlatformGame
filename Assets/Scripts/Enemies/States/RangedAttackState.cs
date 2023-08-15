@@ -36,6 +36,13 @@ public class RangedAttackState : AttackState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (
+          _entity.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f
+          && _hasShotProjectile == false
+      )
+        {
+            TriggerAttack();
+        }
     }
 
     public override void PhysicsUpdate()
@@ -43,13 +50,6 @@ public class RangedAttackState : AttackState
         base.PhysicsUpdate();
         _isTargetInMinAggroRange = _entity.CheckTargetInMinAggroRange();
         _isTargetInMaxAggroRange = _entity.CheckTargetInMaxAggroRange();
-        if (
-            _entity.Anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f
-            && _hasShotProjectile == false
-        )
-        {
-            TriggerAttack();
-        }
     }
 
     public override void TriggerAttack()
@@ -61,9 +61,9 @@ public class RangedAttackState : AttackState
             _entity.transform.rotation
         );
         ArrowController arrowController = arrow.GetComponent<ArrowController>();
-        if (!arrowController)
+        if (arrowController == null)
             return;
-        arrowController?.FireArrow(
+        arrowController.FireArrow(
             _stateData.ProjectileSpeed,
             _stateData.ProjectileTravelDistance,
             _stateData.ProjectileDamage,

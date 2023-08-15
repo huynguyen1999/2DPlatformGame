@@ -10,6 +10,7 @@ public class PlayerDashState : PlayerAbilityState
     public Vector2 lastAfterImagePosition;
     public bool dashInputStop;
     public float previousGravityScale;
+    public float previousDrag;
 
     public PlayerDashState(
         Player currentContext,
@@ -32,6 +33,8 @@ public class PlayerDashState : PlayerAbilityState
         context.DashDirectionIndicator.gameObject.SetActive(true);
         previousGravityScale = context.RB.gravityScale;
         context.RB.gravityScale = 0f;
+        previousDrag = context.RB.drag;
+        context.RB.drag = playerData.drag;
     }
 
     public override void Exit()
@@ -39,6 +42,7 @@ public class PlayerDashState : PlayerAbilityState
         base.Exit();
         lastDashTime = Time.time;
         context.RB.gravityScale = previousGravityScale;
+        context.RB.drag = previousDrag;
         core.Movement.SetVelocity(Vector2.zero);
     }
 
@@ -65,7 +69,7 @@ public class PlayerDashState : PlayerAbilityState
                 core.Movement.CheckIfShouldFlip(Mathf.RoundToInt(dashDirection.x));
             }
         }
-        else // while dashing
+        else // while dashinga
         {
             core.Movement.SetVelocity(playerData.dashVelocity, dashDirection);
             CheckIfPlaceAfterImage();

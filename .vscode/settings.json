@@ -5,6 +5,7 @@
         "**/**.csproj": true
     },
     "cSpell.words": [
+        "Cooldown",
         "Mathf",
         "Unuse"
     ],

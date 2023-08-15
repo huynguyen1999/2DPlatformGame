@@ -33,7 +33,7 @@ public class PlayerData : ScriptableObject
     public float afterImageDistance = 0.5f;
     public float directionSelectionTime = 0.5f;
     public float dashDuration = 0.5f;
-
+    public float drag = 100f;
     [Header("In Air State")]
     public float coyoteTime = 0.2f; // Time before player can jump again after leaving the ground
     public float maxFallingSpeed = 20f;

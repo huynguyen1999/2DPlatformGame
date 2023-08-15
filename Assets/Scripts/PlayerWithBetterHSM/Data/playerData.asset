@@ -27,6 +27,7 @@ MonoBehaviour:
   afterImageDistance: 0.5
   directionSelectionTime: 1
   dashDuration: 0.5
+  drag: 20
   coyoteTime: 0.2
   maxFallingSpeed: 20
   wallStickTime: 2
@@ -38,4 +39,4 @@ MonoBehaviour:
   wallJumpCoolDown: 0.2
   ledgeTouchCoolDown: 0.3
   startOffset: {x: 0.3, y: 1}
-  stopOffset: {x: 0.5, y: 2}
+  stopOffset: {x: 0.7, y: 2}
