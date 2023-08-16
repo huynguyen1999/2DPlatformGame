@@ -35,7 +35,6 @@ public class PlayerAttackState : PlayerAbilityState
     }
     public override void LogicUpdate()
     {
-        core.Movement.SetVelocityX(0f);
     }
     public override void InitializeSubState() { }
 
@@ -50,6 +49,7 @@ public class PlayerAttackState : PlayerAbilityState
     public void SetWeapon(Weapon weapon)
     {
         this.weapon = weapon;
+        this.weapon.SetCore(core);
         weapon.OnExit += HandleExitWeapon;
     }
 

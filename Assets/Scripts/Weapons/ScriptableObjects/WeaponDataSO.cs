@@ -18,4 +18,6 @@ public class WeaponDataSO : ScriptableObject
 
     [ContextMenu("Add Sprite Data")]
     private void AddSpriteData() => ComponentData.Add(new WeaponSpriteData());
+    [ContextMenu("Add Movement Data")]
+    private void AddMovementDataData() => ComponentData.Add(new WeaponMovementData());
 }

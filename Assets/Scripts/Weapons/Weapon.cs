@@ -17,11 +17,11 @@ public class Weapon : MonoBehaviour
 
     public event Action OnEnter;
     public event Action OnExit;
-
+    public Core Core { get; private set; }
     private Animator anim;
     public GameObject BaseGameObject { get; private set; }
     public GameObject WeaponSpriteGameObject { get; private set; }
-    private AnimationEventHandler eventHandler;
+    public AnimationEventHandler EventHandler { get; private set; }
 
     private int currentAttackCounter;
 
@@ -32,10 +32,10 @@ public class Weapon : MonoBehaviour
         BaseGameObject = transform.Find("Base").gameObject;
         WeaponSpriteGameObject = transform.Find("WeaponSprite").gameObject;
         anim = BaseGameObject.GetComponent<Animator>();
-        eventHandler = BaseGameObject.GetComponent<AnimationEventHandler>();
+        EventHandler = BaseGameObject.GetComponent<AnimationEventHandler>();
         attackCounterResetTimer = new Timer(attackCounterResetCooldown);
     }
-
+    public void SetCore(Core core) { this.Core = core; }
     public void Enter()
     {
         print($"{transform.name} enter");
@@ -69,13 +69,13 @@ public class Weapon : MonoBehaviour
 
     private void OnEnable()
     {
-        eventHandler.OnFinish += Exit;
+        EventHandler.OnFinish += Exit;
         attackCounterResetTimer.OnTimerFinished += ResetAttackCounter;
     }
 
     private void OnDisable()
     {
-        eventHandler.OnFinish -= Exit;
+        EventHandler.OnFinish -= Exit;
         attackCounterResetTimer.OnTimerFinished -= ResetAttackCounter;
     }
 }
