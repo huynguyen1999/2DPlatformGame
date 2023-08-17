@@ -27,12 +27,12 @@ public class Core : MonoBehaviour
         get => GenericNotImplementedError<Death>.TryGet(death, transform.root.name);
     }
 
-    [SerializeField] private Movement movement;
-    [SerializeField] private CollisionDetection collisionDetection;
-    [SerializeField] private Combat combat;
-    [SerializeField] private Stats stats;
-    [SerializeField] private ParticleManager particleManager;
-    [SerializeField] private Death death;
+    private Movement movement;
+    private CollisionDetection collisionDetection;
+    private Combat combat;
+    private Stats stats;
+    private ParticleManager particleManager;
+    private Death death;
     private void Awake()
     {
         movement = GetComponentInChildren<Movement>();

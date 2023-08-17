@@ -38,7 +38,6 @@ public class Weapon : MonoBehaviour
     public void SetCore(Core core) { this.Core = core; }
     public void Enter()
     {
-        print($"{transform.name} enter");
         attackCounterResetTimer.StopTimer();
 
         anim.SetBool("Active", true);
@@ -49,7 +48,6 @@ public class Weapon : MonoBehaviour
 
     private void Exit()
     {
-        Debug.Log("weapon exit");
         anim.SetBool("Active", false);
         CurrentAttackCounter++;
         attackCounterResetTimer.StartTimer();
@@ -63,7 +61,6 @@ public class Weapon : MonoBehaviour
 
     private void ResetAttackCounter()
     {
-        print("Reset Attack Counter");
         CurrentAttackCounter = 0;
     }
 

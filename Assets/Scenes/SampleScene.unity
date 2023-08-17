@@ -361,6 +361,8 @@ GameObject:
   - component: {fileID: 239561786}
   - component: {fileID: 239561789}
   - component: {fileID: 239561790}
+  - component: {fileID: 239561791}
+  - component: {fileID: 239561792}
   m_Layer: 7
   m_Name: PrimaryWeapon
   m_TagString: Untagged
@@ -397,7 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c3d7b58abcb4e47ab6622b64f063fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Data>k__BackingField: {fileID: 11400000, guid: dcba82f1ee14a49e88518958b2299b53, type: 2}
+  <Data>k__BackingField: {fileID: 11400000, guid: a15219a7fc41d4e339b464a219c55212, type: 2}
   attackCounterResetCooldown: 3
 --- !u!114 &239561790
 MonoBehaviour:
@@ -409,6 +411,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 863474146f12445ffae980af1e6a3a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &239561791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 239561785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d71c8020033a40a48f342c54c6d8a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &239561792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 239561785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce4b1b4fbddb049039482882f2152a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &318018795
@@ -461,12 +487,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511a88213f2b2474f8e7ba25fd961246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 0}
-  collisionDetection: {fileID: 0}
-  combat: {fileID: 0}
-  stats: {fileID: 0}
-  particleManager: {fileID: 0}
-  death: {fileID: 0}
 --- !u!1 &331611149
 GameObject:
   m_ObjectHideFlags: 0
@@ -6741,12 +6761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511a88213f2b2474f8e7ba25fd961246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 0}
-  collisionDetection: {fileID: 0}
-  combat: {fileID: 0}
-  stats: {fileID: 0}
-  particleManager: {fileID: 0}
-  death: {fileID: 0}
 --- !u!1 &754279244
 GameObject:
   m_ObjectHideFlags: 0
@@ -7152,6 +7166,8 @@ GameObject:
   - component: {fileID: 1087900502}
   - component: {fileID: 1087900503}
   - component: {fileID: 1087900504}
+  - component: {fileID: 1087900505}
+  - component: {fileID: 1087900506}
   m_Layer: 7
   m_Name: SecondaryWeapon
   m_TagString: Untagged
@@ -7200,6 +7216,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 863474146f12445ffae980af1e6a3a6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1087900505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087900501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d71c8020033a40a48f342c54c6d8a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1087900506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087900501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce4b1b4fbddb049039482882f2152a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1139211335
@@ -122223,12 +122263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511a88213f2b2474f8e7ba25fd961246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 0}
-  collisionDetection: {fileID: 0}
-  combat: {fileID: 0}
-  stats: {fileID: 0}
-  particleManager: {fileID: 0}
-  death: {fileID: 0}
 --- !u!1 &1413335873
 GameObject:
   m_ObjectHideFlags: 0

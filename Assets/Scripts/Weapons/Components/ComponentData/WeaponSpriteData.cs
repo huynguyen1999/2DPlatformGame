@@ -1,8 +1,6 @@
 using UnityEngine;
-using System;
 
-// [Serializable]
-public class WeaponSpriteData : ComponentData
+
+public class WeaponSpriteData : ComponentData<AttackSprites>
 {
-    [field: SerializeField] public AttackSprites[] AttackData { get; private set; }
 }

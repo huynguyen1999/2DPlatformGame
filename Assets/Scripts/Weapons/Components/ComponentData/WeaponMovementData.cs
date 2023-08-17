@@ -1,7 +1,5 @@
 using UnityEngine;
 
-public class WeaponMovementData : ComponentData
+public class WeaponMovementData : ComponentData<AttackMovement>
 {
-    [field: SerializeField]
-    public AttackMovement[] AttackData { get; private set; }
 }

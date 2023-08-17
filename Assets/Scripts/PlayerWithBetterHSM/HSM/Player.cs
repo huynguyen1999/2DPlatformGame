@@ -101,7 +101,6 @@ public class Player : MonoBehaviour
             Core.CollisionDetection.WallCheck.position.x + xDist * Core.Movement.FacingDirection,
             Core.CollisionDetection.LedgeCheckHorizontal.position.y - yDist
         );
-        Debug.Log("workspace: " + workspace);
         return workspace;
     }
     #endregion

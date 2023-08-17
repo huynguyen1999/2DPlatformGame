@@ -1,11 +1,9 @@
 using UnityEngine;
 
-public class WeaponMovement : WeaponComponent
+public class WeaponMovement : WeaponComponent<WeaponMovementData, AttackMovement>
 {
-    private WeaponMovementData data;
     private void HandleStartMovement()
     {
-        var currentAttackData = data.AttackData[weapon.CurrentAttackCounter];
         weapon.Core.Movement.SetVelocity(currentAttackData.Velocity, currentAttackData.Direction, weapon.Core.Movement.FacingDirection);
     }
     private void HandleStopMovement()

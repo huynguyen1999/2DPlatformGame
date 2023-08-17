@@ -1,8 +1,7 @@
-using UnityEngine;
-using System;
+using UnityEngine;using System;
 
 [Serializable]
-public class AttackMovement
+public class AttackMovement : AttackData
 {
     [field: SerializeField]
     public Vector2 Direction { get; private set; }

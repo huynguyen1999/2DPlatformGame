@@ -43,7 +43,6 @@ public class PlayerAttackState : PlayerAbilityState
     }
     private void HandleExitWeapon()
     {
-        Debug.Log("handle exit weapon");
         isAbilityDone = true;
     }
     public void SetWeapon(Weapon weapon)

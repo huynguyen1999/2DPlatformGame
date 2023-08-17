@@ -1,6 +1,5 @@
 {
     "files.exclude": {
-        "**/**.asset": true,
         "**/**.meta": true,
         "**/**.csproj": true
     },
