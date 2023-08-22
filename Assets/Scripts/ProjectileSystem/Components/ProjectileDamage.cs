@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Damage : ProjectileComponent
+public class ProjectileDamage : ProjectileComponent
 {
     [field: SerializeField] public LayerMask LayerMask { get; private set; }
     private bool hasHit = false;

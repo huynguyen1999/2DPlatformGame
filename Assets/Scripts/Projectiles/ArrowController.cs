@@ -28,8 +28,8 @@ public class ArrowController : MonoBehaviour
     [SerializeField]
     private LayerMask _whatIsGround;
 
-    private float _travelDistance = 5f,
-        _speed = 5f,
+    private float _travelDistance = 3f,
+        _speed = 8f,
         _damage = 0f,
         _xStartPosition = 0f;
     private bool _hasHitGround,
@@ -58,7 +58,7 @@ public class ArrowController : MonoBehaviour
     {
         if (Mathf.Abs(_xStartPosition - transform.position.x) >= _travelDistance)
         {
-            _rb.gravityScale = 4f;
+            _rb.gravityScale = 5f;
             _isGravityOn = true;
         }
         if (!_hasHitGround && !_hasHitTarget)
@@ -138,7 +138,6 @@ public class ArrowController : MonoBehaviour
         _damage = damage;
         _whatIsTarget = whatIsTarget;
         _speed = speed;
-        _rb.gravityScale = 0;
         _xStartPosition = transform.position.x;
         _anim.Play("Arrow_Flying");
     }

@@ -19,7 +19,6 @@ public class WeaponProjectileSpawner : WeaponComponent<WeaponProjectileSpawnerDa
     private void InitializeProjectile()
     {
         var angle = Mathf.Atan2(spawnDir.y, spawnDir.x) * Mathf.Rad2Deg;
-        Debug.Log($"Direction: {weapon.Core.Movement.FacingDirection}; Angle: {angle}; Spawn rotation: {Quaternion.AngleAxis(angle, Vector3.forward)}");
         currentProjectile = Instantiate(currentAttackData.ProjectilePrefab, spawnPos, Quaternion.AngleAxis(angle, Vector3.forward));
         currentProjectile.SendDataPackage(currentAttackData.DamageData);
         OnSpawnProjectile?.Invoke(currentProjectile);

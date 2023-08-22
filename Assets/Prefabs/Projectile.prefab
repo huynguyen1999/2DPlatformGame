@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 8912942893194387058}
   - component: {fileID: 4545043311344913743}
   - component: {fileID: 1364191234345867408}
+  - component: {fileID: 8476670501581666233}
+  - component: {fileID: 7662250682639902269}
   m_Layer: 7
   m_Name: Projectile
   m_TagString: Untagged
@@ -35,7 +37,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1934402400241606302
 SpriteRenderer:
@@ -176,5 +178,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 692d3b18168974c3fb91ac66c8a74b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ApplyContinuously>k__BackingField: 1
-  <Speed>k__BackingField: 5
+  <ApplyContinuously>k__BackingField: 0
+  <Speed>k__BackingField: 15
+  <MaxTraveledDistance>k__BackingField: 6
+--- !u!114 &8476670501581666233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4236806834490456341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7616d98dc491840d3b19ec6b48da8cd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7662250682639902269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4236806834490456341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208142c8aafc848b88c442393dfd3cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnProjectileStuck:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1364191234345867408}
+        m_TargetAssemblyTypeName: ProjectileComponent, Assembly-CSharp
+        m_MethodName: HandleStuck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8476670501581666233}
+        m_TargetAssemblyTypeName: ProjectileComponent, Assembly-CSharp
+        m_MethodName: HandleStuck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4545043311344913743}
+        m_TargetAssemblyTypeName: ProjectileComponent, Assembly-CSharp
+        m_MethodName: HandleStuck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8912942893194387058}
+        m_TargetAssemblyTypeName: ProjectileComponent, Assembly-CSharp
+        m_MethodName: HandleStuck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  <LayerMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 320
+  <CheckDistance>k__BackingField: 0.01

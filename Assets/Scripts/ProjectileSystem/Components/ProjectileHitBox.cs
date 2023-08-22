@@ -12,7 +12,6 @@ public class ProjectileHitBox : ProjectileComponent
 
     private RaycastHit2D[] hits;
     private float checkDistance;
-
     private void CheckHitBox()
     {
         hits = Physics2D.BoxCastAll(transform.TransformPoint(HitBoxRect.center), HitBoxRect.size,
@@ -23,22 +22,13 @@ public class ProjectileHitBox : ProjectileComponent
     }
 
     #region Plumbing
-
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-
         // Used to compensate for projectile velocity to help stop clipping
         checkDistance = rb.velocity.magnitude * Time.deltaTime;
-
         CheckHitBox();
     }
-
     private void OnDrawGizmosSelected()
     {
         // The following is some code that ChatGPT Generated for me to visualize the HitBoxRect based on the rotation.

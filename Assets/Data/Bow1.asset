@@ -61,8 +61,8 @@ MonoBehaviour:
         name: WeaponProjectileSpawnerData
         attackData:
         - name: 
-          <Offset>k__BackingField: {x: 0, y: 0}
-          <Direction>k__BackingField: {x: 0, y: 0}
+          <Offset>k__BackingField: {x: 0.6, y: 0.07}
+          <Direction>k__BackingField: {x: 1, y: 0}
           <ProjectilePrefab>k__BackingField: {fileID: 5656301708465557552, guid: d5e2b2b0645bb417e8059de4d902fb65, type: 3}
           <DamageData>k__BackingField:
-            <Amount>k__BackingField: 0
+            <Amount>k__BackingField: 20

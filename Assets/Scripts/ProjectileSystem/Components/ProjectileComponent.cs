@@ -9,7 +9,6 @@ public class ProjectileComponent : MonoBehaviour
     // This function is called whenever the projectile is fired, indicating the start of it's journey
     protected virtual void Init()
     {
-
     }
 
     /* Handles receiving specific data from the weapon. Implemented in any component that needs to use it. Automatically subscribed for all projectile
@@ -17,8 +16,10 @@ public class ProjectileComponent : MonoBehaviour
     protected virtual void HandleReceiveDataPackage(ProjectileDataPackage dataPackage)
     {
     }
-
-
+    public virtual void HandleStuck()
+    {
+        this.enabled = false;
+    }
     protected virtual void Awake()
     {
         projectile = GetComponent<Projectile>();
