@@ -1,22 +1,33 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 
 public class WeaponSprite : WeaponComponent<WeaponSpriteData, AttackSprites>
 {
     protected SpriteRenderer baseSpriteRenderer;
     protected SpriteRenderer weaponSpriteRenderer;
     private int currentWeaponSpriteIndex;
-    protected override void Awake()
+    private Sprite[] currentPhaseSprites;
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         baseSpriteRenderer = weapon.BaseGameObject.GetComponent<SpriteRenderer>();
         weaponSpriteRenderer = weapon.WeaponSpriteGameObject.GetComponent<SpriteRenderer>();
-        data = weapon.Data.GetData<WeaponSpriteData>();
+        baseSpriteRenderer.RegisterSpriteChangeCallback(HandleSpriteChange);
+        weapon.EventHandler.OnEnterAttackPhase += HandleEnterAttackPhase;
     }
     protected override void HandleEnter()
     {
         base.HandleEnter();
         currentWeaponSpriteIndex = 0;
+    }
+
+    private void HandleEnterAttackPhase(AttackPhases phase)
+    {
+        currentWeaponSpriteIndex = 0;
+        currentPhaseSprites = currentAttackData.PhaseSprites.FirstOrDefault(data => data.Phase == phase).Sprites;
     }
     private void HandleSpriteChange(SpriteRenderer sr)
     {
@@ -26,25 +37,20 @@ public class WeaponSprite : WeaponComponent<WeaponSpriteData, AttackSprites>
             return;
         }
 
-        var currentAttackSprites = currentAttackData.Sprites;
-
-        if (currentWeaponSpriteIndex >= currentAttackSprites.Length)
+        if (currentWeaponSpriteIndex >= currentPhaseSprites.Length)
         {
             Debug.LogWarning($"{weapon.name} weapon sprites length mismatch");
             return;
         }
-
-        weaponSpriteRenderer.sprite = currentAttackSprites[currentWeaponSpriteIndex];
+ 
+        weaponSpriteRenderer.sprite = currentPhaseSprites[currentWeaponSpriteIndex];
         currentWeaponSpriteIndex++;
     }
-    protected override void OnEnable()
+
+    protected override void OnDestroy()
     {
-        base.OnEnable();
-        baseSpriteRenderer.RegisterSpriteChangeCallback(HandleSpriteChange);
-    }
-    protected override void OnDisable()
-    {
-        base.OnDisable();
+        base.OnDestroy();
         baseSpriteRenderer.UnregisterSpriteChangeCallback(HandleSpriteChange);
+        weapon.EventHandler.OnEnterAttackPhase -= HandleEnterAttackPhase;
     }
 }

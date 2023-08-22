@@ -9,5 +9,7 @@ public class CoreComponent : MonoBehaviour
     {
         core = transform.parent.GetComponent<Core>();
     }
+    public virtual void Update() { }
+    public virtual void FixedUpdate(){}
     protected virtual void OnDrawGizmos() { }
 }

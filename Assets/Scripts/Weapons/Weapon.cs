@@ -6,15 +6,25 @@ using System.Collections.Generic;
 [Serializable]
 public class Weapon : MonoBehaviour
 {
-    [field: SerializeField] public WeaponDataSO Data { get; private set; }
-    [SerializeField] private float attackCounterResetCooldown;
-
+    public event Action<bool> OnCurrentInputChange;
+    public WeaponDataSO Data { get; private set; }
     public int CurrentAttackCounter
     {
         get => currentAttackCounter;
         private set => currentAttackCounter = value >= Data.NumberOfAttacks ? 0 : value;
     }
-
+    public bool CurrentInput
+    {
+        get => currentInput;
+        set
+        {
+            if (currentInput != value)
+            {
+                currentInput = value;
+                OnCurrentInputChange?.Invoke(currentInput);
+            }
+        }
+    }
     public event Action OnEnter;
     public event Action OnExit;
     public Core Core { get; private set; }
@@ -26,23 +36,31 @@ public class Weapon : MonoBehaviour
     private int currentAttackCounter;
 
     private Timer attackCounterResetTimer;
-
+    private bool currentInput;
     private void Awake()
     {
         BaseGameObject = transform.Find("Base").gameObject;
         WeaponSpriteGameObject = transform.Find("WeaponSprite").gameObject;
         anim = BaseGameObject.GetComponent<Animator>();
         EventHandler = BaseGameObject.GetComponent<AnimationEventHandler>();
-        attackCounterResetTimer = new Timer(attackCounterResetCooldown);
     }
-    public void SetCore(Core core) { this.Core = core; }
+    public void SetCore(Core core)
+    {
+        this.Core = core;
+    }
+    public void SetData(WeaponDataSO data)
+    {
+        this.Data = data;
+        attackCounterResetTimer = new Timer(Data.AttackCounterResetCooldown);
+
+    }
     public void Enter()
     {
         attackCounterResetTimer.StopTimer();
-
         anim.SetBool("Active", true);
         anim.SetInteger("AttackCounter", currentAttackCounter);
-
+        EventHandler.OnFinish += Exit;
+        attackCounterResetTimer.OnTimerFinished += ResetAttackCounter;
         OnEnter?.Invoke();
     }
 
@@ -51,6 +69,8 @@ public class Weapon : MonoBehaviour
         anim.SetBool("Active", false);
         CurrentAttackCounter++;
         attackCounterResetTimer.StartTimer();
+        EventHandler.OnFinish -= Exit;
+        attackCounterResetTimer.OnTimerFinished -= ResetAttackCounter;
         OnExit?.Invoke();
     }
 
@@ -62,17 +82,5 @@ public class Weapon : MonoBehaviour
     private void ResetAttackCounter()
     {
         CurrentAttackCounter = 0;
-    }
-
-    private void OnEnable()
-    {
-        EventHandler.OnFinish += Exit;
-        attackCounterResetTimer.OnTimerFinished += ResetAttackCounter;
-    }
-
-    private void OnDisable()
-    {
-        EventHandler.OnFinish -= Exit;
-        attackCounterResetTimer.OnTimerFinished -= ResetAttackCounter;
     }
 }

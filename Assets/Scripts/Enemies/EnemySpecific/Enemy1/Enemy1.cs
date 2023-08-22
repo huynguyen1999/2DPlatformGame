@@ -67,4 +67,9 @@ public class Enemy1 : Entity
         DeadState = new(this, StateMachine, "Enemy1_Dead", _deadStateData, this);
         StateMachine.Initialize(MoveState);
     }
+    protected override void HandlePoiseZero()
+    {
+        base.HandlePoiseZero();
+        StateMachine.ChangeState(StunState);
+    }
 }

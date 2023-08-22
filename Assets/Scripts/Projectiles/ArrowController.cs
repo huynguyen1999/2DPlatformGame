@@ -90,7 +90,7 @@ public class ArrowController : MonoBehaviour
 
     private void CheckTargetHit()
     {
-        if (_hasHitTarget)
+        if (_hasHitTarget || _hasHitGround)
             return;
         Collider2D[] targetsHit = Physics2D.OverlapCircleAll(
             _damagePosition.position,

@@ -10,10 +10,6 @@ public class Core : MonoBehaviour
     {
         get => GenericNotImplementedError<CollisionDetection>.TryGet(collisionDetection, transform.root.name);
     }
-    public Combat Combat
-    {
-        get => GenericNotImplementedError<Combat>.TryGet(combat, transform.root.name);
-    }
     public Stats Stats
     {
         get => GenericNotImplementedError<Stats>.TryGet(stats, transform.root.name);
@@ -26,10 +22,19 @@ public class Core : MonoBehaviour
     {
         get => GenericNotImplementedError<Death>.TryGet(death, transform.root.name);
     }
+    public DamageReceiver DamageReceiver
+    {
+        get => GenericNotImplementedError<DamageReceiver>.TryGet(damageReceiver, transform.root.name);
+    }
+    public KnockBackReceiver KnockBackReceiver
+    {
+        get => GenericNotImplementedError<KnockBackReceiver>.TryGet(knockBackReceiver, transform.root.name);
+    }
 
     private Movement movement;
     private CollisionDetection collisionDetection;
-    private Combat combat;
+    private DamageReceiver damageReceiver;
+    private KnockBackReceiver knockBackReceiver;
     private Stats stats;
     private ParticleManager particleManager;
     private Death death;
@@ -37,9 +42,31 @@ public class Core : MonoBehaviour
     {
         movement = GetComponentInChildren<Movement>();
         collisionDetection = GetComponentInChildren<CollisionDetection>();
-        combat = GetComponentInChildren<Combat>();
+        damageReceiver = GetComponentInChildren<DamageReceiver>();
+        knockBackReceiver = GetComponentInChildren<KnockBackReceiver>();
         stats = GetComponentInChildren<Stats>();
         particleManager = GetComponentInChildren<ParticleManager>();
         death = GetComponentInChildren<Death>();
+    }
+
+    private void Update()
+    {
+        movement.Update();
+        collisionDetection.Update();
+        damageReceiver.Update();
+        knockBackReceiver.Update();
+        stats.Update();
+        particleManager.Update();
+        death.Update();
+    }
+    private void FixedUpdate()
+    {
+        movement.FixedUpdate();
+        collisionDetection.FixedUpdate();
+        damageReceiver.FixedUpdate();
+        knockBackReceiver.FixedUpdate();
+        stats.FixedUpdate();
+        particleManager.FixedUpdate();
+        death.FixedUpdate();
     }
 }

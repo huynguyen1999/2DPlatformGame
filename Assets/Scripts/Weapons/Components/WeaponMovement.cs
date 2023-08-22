@@ -11,20 +11,15 @@ public class WeaponMovement : WeaponComponent<WeaponMovementData, AttackMovement
         weapon.Core.Movement.SetVelocity(Vector2.zero);
     }
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
-        data = weapon.Data.GetData<WeaponMovementData>();
-    }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
+        base.Start();
         weapon.EventHandler.OnStartMovement += HandleStartMovement;
         weapon.EventHandler.OnStopMovement += HandleStopMovement;
     }
-    protected override void OnDisable()
+    protected override void OnDestroy()
     {
-        base.OnEnable();
+        base.OnDestroy();
         weapon.EventHandler.OnStartMovement -= HandleStartMovement;
         weapon.EventHandler.OnStopMovement -= HandleStopMovement;
     }

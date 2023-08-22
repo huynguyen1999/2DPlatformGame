@@ -3,7 +3,7 @@ using System;
 
 public class WeaponActionHitBox : WeaponComponent<WeaponActionHitBoxData, AttackActionHitBox>
 {
-    private event Action<Collider2D[]> OnTargetsDetected;
+    public event Action<Collider2D[]> OnTargetsDetected;
     private Vector2 offset;
     private Collider2D[] detected;
     private void HandleAttackAction()
@@ -21,14 +21,14 @@ public class WeaponActionHitBox : WeaponComponent<WeaponActionHitBoxData, Attack
     {
         base.Awake();
     }
-    protected override void OnEnable()
+    protected override void Start()
     {
-        base.OnEnable();
+        base.Start();
         weapon.EventHandler.OnAttackAction += HandleAttackAction;
     }
-    protected override void OnDisable()
+    protected override void OnDestroy()
     {
-        base.OnEnable();
+        base.OnDestroy();
         weapon.EventHandler.OnAttackAction -= HandleAttackAction;
     }
 

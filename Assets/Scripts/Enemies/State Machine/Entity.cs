@@ -15,8 +15,6 @@ public class Entity : MonoBehaviour
 
     public Transform ProjectileStart;
 
-    protected float _currentHealth;
-
     public virtual void Awake()
     {
         Core = GetComponentInChildren<Core>();
@@ -27,9 +25,13 @@ public class Entity : MonoBehaviour
         AttackTriggerCollider = GetComponent<PolygonCollider2D>();
         AttackTriggerCollider.enabled = false;
         StateMachine = new FiniteStateMachine();
-        _currentHealth = EntityData.MaxHealth;
+        Core.Stats.Poise.OnCurrentValueZero += HandlePoiseZero;
     }
-
+    public virtual void OnDestroy()
+    {
+        Core.Stats.Poise.OnCurrentValueZero -= HandlePoiseZero;
+    }
+    protected virtual void HandlePoiseZero() { }
     public virtual void Update()
     {
         StateMachine.CurrentState.LogicUpdate();
@@ -39,7 +41,7 @@ public class Entity : MonoBehaviour
     {
         StateMachine.CurrentState.PhysicsUpdate();
     }
-    
+
     public virtual bool CheckTargetInMinAggroRange()
     {
         return Physics2D

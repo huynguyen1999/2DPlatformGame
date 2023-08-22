@@ -6,7 +6,6 @@ public class ParticleManager : CoreComponent
     protected override void Awake()
     {
         base.Awake();
-        // particleContainer = GameObject.FindGameObjectWithTag("ParticleContainer").transform;
     }
     public GameObject StartParticles(GameObject particlePrefab, Vector2 position, Quaternion rotation)
     {

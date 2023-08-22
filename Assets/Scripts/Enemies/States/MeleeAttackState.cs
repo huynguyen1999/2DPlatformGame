@@ -53,19 +53,22 @@ public class MeleeAttackState : AttackState
         ContactFilter2D contactFilter =
             new() { useLayerMask = true, layerMask = _entity.EntityData.WhatIsTarget };
         Physics2D.OverlapCollider(_entity.AttackTriggerCollider, contactFilter, hitTargets);
-        foreach (Collider2D collider in hitTargets)
+        foreach (Collider2D item in hitTargets)
         {
-            IDamageable damageable = collider.GetComponent<IDamageable>();
-            if (damageable == null || detectedDamageableInstanceIDs.Contains(collider.GetInstanceID()))
+            if (item.TryGetComponent(out IDamageable damageable))
             {
-                continue;
+                if (damageable == null || detectedDamageableInstanceIDs.Contains(item.GetInstanceID()))
+                {
+                    continue;
+                }
+                detectedDamageableInstanceIDs.Add(item.GetInstanceID());
+                AttackDetails attackDetails = new(_entity.transform, _core.Movement.FacingDirection, _stateData.AttackDamage);
+                damageable.OnHit(attackDetails);
             }
-            detectedDamageableInstanceIDs.Add(collider.GetInstanceID());
-            AttackDetails attackDetails = new(_entity.transform, _core.Movement.FacingDirection, _stateData.AttackDamage);
-            damageable?.OnHit(attackDetails);
-            // knockback
-            IKnockbackable knockbackable = collider.GetComponent<IKnockbackable>();
-            knockbackable?.Knockback(_stateData.KnockbackAngle, _stateData.KnockbackForce, _core.Movement.FacingDirection);
+            if (item.TryGetComponent(out IKnockbackable knockbackable))
+            {
+                knockbackable.KnockBack(_stateData.KnockbackAngle, _stateData.KnockbackForce, _core.Movement.FacingDirection);
+            }
         }
     }
 }

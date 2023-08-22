@@ -3,37 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-[System.Serializable]
+[Serializable]
 public class Stats : CoreComponent
 {
-    public event Action OnZeroHealth;
-    [SerializeField]
-    private float maxHealth;
 
-    private float currentHealth;
-
+    [field: SerializeField]
+    public Stat Health { get; private set; }
+    [field: SerializeField]
+    public Stat Poise { get; private set; }
+    [SerializeField] private float poiseRecoveryRate;
     protected override void Awake()
     {
         base.Awake();
-        currentHealth = maxHealth;
+        Health.Init();
+        Poise.Init();
     }
 
-    public void DecreaseHealth(float amount)
+    public override void Update()
     {
-        currentHealth -= amount;
-        if (currentHealth <= 0)
+        base.Update();
+        if (Poise.CurrentValue.Equals(Poise.MaxValue))
         {
-            currentHealth = 0;
-            OnZeroHealth?.Invoke();
+            return;
         }
+        Poise.Increase(poiseRecoveryRate * Time.deltaTime);
     }
-    public void IncreaseHealth(float amount)
-    {
-        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        if (currentHealth <= 0)
-        {
-            currentHealth = 0;
-        }
-    }
-
 }

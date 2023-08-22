@@ -15,10 +15,10 @@ public class Death : CoreComponent
 
     protected void Start()
     {
-        if (core.Stats == null) return;
-        core.Stats.OnZeroHealth += Die;
+        core.Stats.Health.OnCurrentValueZero += Die;
     }
-    protected void OnDestroy(){
-        core.Stats.OnZeroHealth -= Die;
+    protected void OnDestroy()
+    {
+        core.Stats.Health.OnCurrentValueZero -= Die;
     }
 }

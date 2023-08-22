@@ -6,6 +6,11 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
+/// <summary>
+/// Custom editor for WeaponDataSO
+/// Buttons to add component data
+/// Buttons to force update component names
+/// </summary>
 [CustomEditor(typeof(WeaponDataSO))]
 public class WeaponDataSOEditor : Editor
 {
@@ -20,6 +25,9 @@ public class WeaponDataSOEditor : Editor
         dataSO = target as WeaponDataSO;
     }
 
+    /// <summary>
+    /// Create buttons
+    /// </summary>
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -66,7 +74,10 @@ public class WeaponDataSOEditor : Editor
             }
         }
     }
-
+    
+    /// <summary>
+    /// Every time the project is recompiled, get all the ComponentData's children 
+    /// </summary>
     [DidReloadScripts]
     private static void OnRecompile()
     {
