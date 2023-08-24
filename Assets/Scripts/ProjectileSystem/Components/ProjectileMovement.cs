@@ -5,7 +5,7 @@ public class ProjectileMovement : ProjectileComponent
     [field: SerializeField] public bool ApplyContinuously { get; private set; }
     [field: SerializeField] public float Speed { get; private set; }
     [field: SerializeField] public float MaxTraveledDistance { get; private set; }
-
+    private float drawTraveledDistance;
     private float gravityScale;
     private float traveledDistance;
     private Vector2 startPosition;
@@ -14,6 +14,7 @@ public class ProjectileMovement : ProjectileComponent
         base.Awake();
         gravityScale = rb.gravityScale;
         projectile.RB.gravityScale = 0f;
+        drawTraveledDistance = MaxTraveledDistance;
     }
 
     // On Init, set projectile velocity once
@@ -31,7 +32,7 @@ public class ProjectileMovement : ProjectileComponent
         if (!isActive) return;
         base.Update();
         traveledDistance = Vector2.Distance(startPosition, projectile.transform.position);
-        if (traveledDistance >= MaxTraveledDistance)
+        if (traveledDistance >= drawTraveledDistance)
         {
             rb.gravityScale = gravityScale;
         }
@@ -45,5 +46,14 @@ public class ProjectileMovement : ProjectileComponent
             return;
 
         SetVelocity();
+    }
+    protected override void HandleReceiveDataPackage(ProjectileDataPackage dataPackage)
+    {
+        base.HandleReceiveDataPackage(dataPackage);
+
+        if (dataPackage is not DrawDataPackage package)
+            return;
+
+        drawTraveledDistance = package.DrawPercentage * MaxTraveledDistance;
     }
 }

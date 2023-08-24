@@ -5,4 +5,5 @@ using System;
 public class AttackFireProjectile : AttackData
 {
     [field: SerializeField] public DamageDataPackage DamageData { get; private set; }
+    public DrawDataPackage DrawData;
 }

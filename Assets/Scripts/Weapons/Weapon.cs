@@ -32,7 +32,7 @@ public class Weapon : MonoBehaviour
     public GameObject BaseGameObject { get; private set; }
     public GameObject WeaponSpriteGameObject { get; private set; }
     public AnimationEventHandler EventHandler { get; private set; }
-
+    public float AttackStartTime { get; private set; }
     private int currentAttackCounter;
 
     private Timer attackCounterResetTimer;
@@ -56,6 +56,7 @@ public class Weapon : MonoBehaviour
     }
     public void Enter()
     {
+        AttackStartTime = Time.time;
         attackCounterResetTimer.StopTimer();
         anim.SetBool("Active", true);
         anim.SetInteger("AttackCounter", currentAttackCounter);
