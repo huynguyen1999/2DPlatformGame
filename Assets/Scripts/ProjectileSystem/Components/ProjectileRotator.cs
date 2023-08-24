@@ -3,6 +3,7 @@ public class ProjectileRotator : ProjectileComponent
 {
     protected override void FixedUpdate()
     {
+        if (!isActive) return;
         base.FixedUpdate();
 
         var velocity = rb.velocity;

@@ -1183,7 +1183,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.78, y: -13.75, z: -10.007097}
+  m_LocalPosition: {x: 9.78, y: -13.8810005, z: -10.007097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7456,7 +7456,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139211335}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.22, y: -3.88, z: -0.007096986}
+  m_LocalPosition: {x: 7.22, y: -4.011, z: -0.007096986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -122562,6 +122562,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 0c7b51a5bf9174abf89744fedc017063, type: 2}
+    - target: {fileID: 2030637365858882952, guid: 3b58097f06f7941c49ffa9e5882f126a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2857288621612946300, guid: 3b58097f06f7941c49ffa9e5882f126a, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -122609,6 +122613,22 @@ PrefabInstance:
     - target: {fileID: 5505633900906484393, guid: 3b58097f06f7941c49ffa9e5882f126a, type: 3}
       propertyPath: m_Name
       value: SecondaryWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 6257690683517709964, guid: 3b58097f06f7941c49ffa9e5882f126a, type: 3}
+      propertyPath: m_Size.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6257690683517709964, guid: 3b58097f06f7941c49ffa9e5882f126a, type: 3}
+      propertyPath: m_Size.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6257690683517709964, guid: 3b58097f06f7941c49ffa9e5882f126a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1533299234, guid: 0664d77d040ca48a3b330d10a331edf3, type: 3}
+    - target: {fileID: 6257690683517709964, guid: 3b58097f06f7941c49ffa9e5882f126a, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8760436425109478776, guid: 3b58097f06f7941c49ffa9e5882f126a, type: 3}
       propertyPath: data
@@ -123904,7 +123924,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124966547}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.78, y: -13.75, z: -10.007097}
+  m_LocalPosition: {x: 9.78, y: -13.8810005, z: -10.007097}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -20,6 +20,7 @@ MonoBehaviour:
   - rid: 4906037837392510977
   - rid: 4906037837392510978
   - rid: 4906037885974609920
+  - rid: 4906037911022993408
   references:
     version: 2
     RefIds:
@@ -61,8 +62,21 @@ MonoBehaviour:
         name: WeaponProjectileSpawnerData
         attackData:
         - name: 
-          <Offset>k__BackingField: {x: 0.6, y: 0.07}
+          <Offset>k__BackingField: {x: 0.9, y: 0}
           <Direction>k__BackingField: {x: 1, y: 0}
           <ProjectilePrefab>k__BackingField: {fileID: 5656301708465557552, guid: d5e2b2b0645bb417e8059de4d902fb65, type: 3}
+    - rid: 4906037911022993408
+      type: {class: WeaponDrawData, ns: , asm: Assembly-CSharp}
+      data:
+        name: WeaponDrawData
+        attackData:
+        - name: 
+          <PhaseProjectileOffsets>k__BackingField:
+          - <Phase>k__BackingField: 0
+            <ProjectileOffset>k__BackingField: {x: 0.9, y: 0}
+          - <Phase>k__BackingField: 1
+            <ProjectileOffset>k__BackingField: {x: 0.8, y: 0.2}
+          - <Phase>k__BackingField: 2
+            <ProjectileOffset>k__BackingField: {x: 0.8, y: 0.2}
           <DamageData>k__BackingField:
             <Amount>k__BackingField: 20

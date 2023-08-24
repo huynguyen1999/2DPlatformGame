@@ -14,5 +14,4 @@ public class AttackProjectileSpawner : AttackData
     [field: SerializeField] public Projectile ProjectilePrefab { get; private set; }
 
     // The data to be passed to the projectile when it is spawned
-    [field: SerializeField] public DamageDataPackage DamageData { get; private set; }
 }

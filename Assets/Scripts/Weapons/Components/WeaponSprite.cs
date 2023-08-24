@@ -28,6 +28,7 @@ public class WeaponSprite : WeaponComponent<WeaponSpriteData, AttackSprites>
     {
         currentWeaponSpriteIndex = 0;
         currentPhaseSprites = currentAttackData.PhaseSprites.FirstOrDefault(data => data.Phase == phase).Sprites;
+        weaponSpriteRenderer.sprite = currentPhaseSprites[currentWeaponSpriteIndex];
     }
     private void HandleSpriteChange(SpriteRenderer sr)
     {
@@ -39,10 +40,8 @@ public class WeaponSprite : WeaponComponent<WeaponSpriteData, AttackSprites>
 
         if (currentWeaponSpriteIndex >= currentPhaseSprites.Length)
         {
-            Debug.LogWarning($"{weapon.name} weapon sprites length mismatch");
             return;
         }
- 
         weaponSpriteRenderer.sprite = currentPhaseSprites[currentWeaponSpriteIndex];
         currentWeaponSpriteIndex++;
     }

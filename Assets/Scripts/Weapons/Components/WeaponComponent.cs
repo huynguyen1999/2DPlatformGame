@@ -14,6 +14,8 @@ public abstract class WeaponComponent : MonoBehaviour
     {
         isAttackActive = true;
     }
+    protected virtual void Update() { }
+    protected virtual void FixedUpdate() { }
 
     protected virtual void HandleExit()
     {

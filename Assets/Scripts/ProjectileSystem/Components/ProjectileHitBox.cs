@@ -24,6 +24,7 @@ public class ProjectileHitBox : ProjectileComponent
     #region Plumbing
     protected override void FixedUpdate()
     {
+        if (!isActive) return;
         base.FixedUpdate();
         // Used to compensate for projectile velocity to help stop clipping
         checkDistance = rb.velocity.magnitude * Time.deltaTime;

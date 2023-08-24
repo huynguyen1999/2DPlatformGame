@@ -20,7 +20,7 @@ AnimationClip:
   m_PPtrCurves:
   - serializedVersion: 2
     curve:
-    - time: 0
+    - time: 0.06666667
       value: {fileID: 9044786021765537137, guid: 2c402cfbb25df4c96924dec59198f75a, type: 3}
     - time: 0.2
       value: {fileID: 3647156553916755266, guid: 2c402cfbb25df4c96924dec59198f75a, type: 3}
@@ -74,20 +74,27 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: EnterAttackPhase
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0
-    functionName: StopMovementTrigger
+    functionName: SpawnProjectileTrigger
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.06666667
+    functionName: EnterAttackPhase
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.06666667
+    functionName: StopMovementTrigger
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.13333334
     functionName: StartMovementTrigger
     data: 
     objectReferenceParameter: {fileID: 0}

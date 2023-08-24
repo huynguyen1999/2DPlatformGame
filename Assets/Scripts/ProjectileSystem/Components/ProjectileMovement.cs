@@ -28,9 +28,9 @@ public class ProjectileMovement : ProjectileComponent
 
     protected override void Update()
     {
+        if (!isActive) return;
         base.Update();
         traveledDistance = Vector2.Distance(startPosition, projectile.transform.position);
-        Debug.Log(traveledDistance);
         if (traveledDistance >= MaxTraveledDistance)
         {
             rb.gravityScale = gravityScale;
@@ -38,6 +38,7 @@ public class ProjectileMovement : ProjectileComponent
     }
     protected override void FixedUpdate()
     {
+        if (!isActive) return;
         base.FixedUpdate();
 
         if (!ApplyContinuously)

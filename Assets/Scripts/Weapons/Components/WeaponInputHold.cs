@@ -4,7 +4,6 @@ public class WeaponInputHold : WeaponComponent
 {
     private Animator anim;
     private bool input;
-
     private void HandleCurrentInputChange(bool newInput)
     {
         input = newInput;
@@ -14,6 +13,7 @@ public class WeaponInputHold : WeaponComponent
     {
         anim.SetBool("Hold", input);
     }
+
     protected override void Awake()
     {
         base.Awake();
