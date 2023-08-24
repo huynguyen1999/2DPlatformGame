@@ -21,6 +21,7 @@ MonoBehaviour:
   - rid: 4906037837392510978
   - rid: 4906037885974609920
   - rid: 4906037911022993408
+  - rid: 4906037934137278464
   references:
     version: 2
     RefIds:
@@ -62,7 +63,7 @@ MonoBehaviour:
         name: WeaponProjectileSpawnerData
         attackData:
         - name: 
-          <Offset>k__BackingField: {x: 0.9, y: 0}
+          <Offset>k__BackingField: {x: 0.9, y: -0.1}
           <Direction>k__BackingField: {x: 1, y: 0}
           <ProjectilePrefab>k__BackingField: {fileID: 5656301708465557552, guid: d5e2b2b0645bb417e8059de4d902fb65, type: 3}
     - rid: 4906037911022993408
@@ -71,12 +72,39 @@ MonoBehaviour:
         name: WeaponDrawData
         attackData:
         - name: 
-          <PhaseProjectileOffsets>k__BackingField:
-          - <Phase>k__BackingField: 0
-            <ProjectileOffset>k__BackingField: {x: 0.9, y: 0}
-          - <Phase>k__BackingField: 1
-            <ProjectileOffset>k__BackingField: {x: 0.8, y: 0.2}
-          - <Phase>k__BackingField: 2
-            <ProjectileOffset>k__BackingField: {x: 0.8, y: 0.2}
+          <DrawCurve>k__BackingField:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 0
+              inSlope: 2
+              outSlope: 2
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0
+            - serializedVersion: 3
+              time: 1
+              value: 1
+              inSlope: 0
+              outSlope: 0
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+          <DrawTime>k__BackingField: 2
+          <DrawProjectileOffset>k__BackingField: {x: 0.8, y: 0.132}
+    - rid: 4906037934137278464
+      type: {class: WeaponFireProjectileData, ns: , asm: Assembly-CSharp}
+      data:
+        name: WeaponFireProjectileData
+        attackData:
+        - name: 
           <DamageData>k__BackingField:
             <Amount>k__BackingField: 20
+          DrawData:
+            DrawPercentage: 0.08167277
